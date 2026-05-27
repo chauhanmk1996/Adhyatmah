@@ -13,55 +13,43 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
-import androidx.viewpager2.widget.ViewPager2
 import com.app.adhyatmah.data.preferences.Preferences
-import com.app.adhyatmah.data.preferences.PRODUCT_ID
-import com.app.adhyatmah.data.preferences.PRODUCT_TITLE
 import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
-import com.app.adhyatmah.data.preferences.CART_ID
 import com.app.adhyatmah.data.preferences.CURRENT_PINCODE
-import com.app.adhyatmah.data.preferences.IS_LOGIN
-import com.app.adhyatmah.data.preferences.HANDLER
-import com.app.adhyatmah.data.preferences.MENU_TITLE
-import com.app.adhyatmah.data.preferences.REVIEW_PD_ID
-import com.app.adhyatmah.data.preferences.TYPE
 import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.data.preferences.UserPreference.CART_COUNT
 import com.app.adhyatmah.databinding.FragmentHomeBinding
+import com.app.adhyatmah.domain.model.PopularPooja
+import com.app.adhyatmah.domain.model.Testimonials
 import com.app.adhyatmah.domain.model.TrendingSection
-import com.app.adhyatmah.domain.model.wish_list.wish_list_request.AddWishListRequest
+import com.app.adhyatmah.domain.model.WhyChooseUs
 import com.app.adhyatmah.domain.model.home_banner_response.HomeBanner
-import com.app.adhyatmah.domain.model.home_collection_Response.Payload
 import com.app.adhyatmah.domain.model.home_menu_response.Item
 import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Vendor
 import com.app.adhyatmah.domain.model.profile.manage_address.Addresse
 import com.app.adhyatmah.domain.model.profile.manage_address.ManageAddressRequest
-import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.activity.MainActivity
 import com.app.adhyatmah.presentation.ui.adapter.AdapterBanner
-import com.app.adhyatmah.presentation.ui.adapter.BlogAdapter
-import com.app.adhyatmah.presentation.ui.adapter.DrawerMenuAdapter
-import com.app.adhyatmah.presentation.ui.adapter.FeaturedProductsAdapter
+import com.app.adhyatmah.presentation.ui.adapter.PopularPoojasAdapter
+import com.app.adhyatmah.presentation.ui.adapter.RatingReviewAdapter
 import com.app.adhyatmah.presentation.ui.adapter.TrendingSectionAdapter
 import com.app.adhyatmah.presentation.ui.adapter.ViewPagerAdapter
+import com.app.adhyatmah.presentation.ui.adapter.WhyChooseUsAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.HomePanditJiAdapter
 import com.app.adhyatmah.presentation.ui.viewmodel.HomeViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
-import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -69,46 +57,37 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.material.snackbar.Snackbar
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import java.util.Locale
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-    var viewPagerlist: MutableList<HomeBanner> = mutableListOf()
+
+    var viewPagerList: MutableList<HomeBanner> = mutableListOf()
     private lateinit var viewPagerAdapter: ViewPagerAdapter
-    private lateinit var drawerMenuAdapter: DrawerMenuAdapter
-    private lateinit var productsAdapter: FeaturedProductsAdapter
     private lateinit var bannerAdapter: AdapterBanner
     private val homeViewModel by activityViewModels<HomeViewModel>()
-    private var selectedType: String = "GHS" // Default
-
     private var isCollectionLoaded = false
     private var isBannerLoaded = false
-    private var isBlogLoaded = false
-    private var isMenuLoaded = false
-    private var isYoutubeLoaded = false
+    var token = ""
 
     private val panditJiList: ArrayList<Vendor> = ArrayList()
-    private val trendingSectionList: ArrayList<TrendingSection> = ArrayList()
-
-
-    var videoUrl = ""
-
-    var token = ""
-    private var exoPlayer: ExoPlayer? = null
-
-    private lateinit var youTubePlayerView: YouTubePlayerView
-    private var youtubeVideoId = "" // Replace with actual video ID
-
     private lateinit var panditJiAdapter: HomePanditJiAdapter
+    private val trendingSectionList: ArrayList<TrendingSection> = ArrayList()
     private lateinit var trendingSectionAdapter: TrendingSectionAdapter
+
+    private val popularPoojaList: ArrayList<PopularPooja> = ArrayList()
+    private lateinit var popularPoojasAdapter: PopularPoojasAdapter
+
+    private val whyChooseUsList: ArrayList<WhyChooseUs> = ArrayList()
+    private lateinit var whyChooseUsAdapter: WhyChooseUsAdapter
+
+    private val rateReviewList: ArrayList<Testimonials> = ArrayList()
+    private lateinit var ratingReviewAdapter: RatingReviewAdapter
+
     private val settingsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             // Callback will trigger when user comes back from settings
             handlePermissionResult()
         }
-
 
     override fun setLayout(): Int {
         return R.layout.fragment_home
@@ -132,39 +111,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
         setObserver()
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        setupArrowClickListeners()
-        //initializePlayer()
-        setupYouTubePlayer()
-        redirectOnYoutube()
         navigateFromDrawer()
-        homeViewModel.getYouTubeUrlData()
-        youTubePlayerView = binding.playerView
-        Log.d("TAG", "inczfdsfitView: Token is $token")
         homeViewModel.homeCollectionApi(token)
         homeViewModel.trendingSectionApi()
         homeViewModel.hitPanditListApi()
+        homeViewModel.homeDataApi()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         fetchAddress()
 
-        binding.searchIcon.setOnClickListener {
+        binding.clSearch.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_searchListFragment)
         }
-        binding.tvLocation.setOnClickListener {
+
+        binding.clLocation.setOnClickListener {
             val bundle = Bundle().apply {
                 putString("from", "home")
             }
             findNavController().navigate(R.id.mangeAddressFragment, bundle)
         }
 
-        //TODO
-        /*binding.header.setOnClickListener {
-            ProcessDialog.showDialog(requireActivity(),true)
-        }*/
         binding.tvViewAllPanditJi.setOnClickListener {
             (requireActivity() as? MainActivity)?.switchToPanditJiTab()
         }
-
-
     }
 
     fun fetchAddress() {
@@ -172,27 +140,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         request.accessToken = token
         homeViewModel.getAddressData(request)
     }
-
-
-    fun redirectOnYoutube() {
-
-        binding.youTubeClick.setOnClickListener {
-//            val videoUrl = "https://www.youtube.com/watch?v=fioP1oZDUwo"
-            val intent = Intent(Intent.ACTION_VIEW, videoUrl.toUri())
-            intent.setPackage("com.google.android.youtube") // Try to open in YouTube app
-
-            // Fallback to browser if YouTube app isn't available
-            if (intent.resolveActivity(requireActivity().packageManager) != null) {
-                startActivity(intent)
-            } else {
-                val webIntent = Intent(Intent.ACTION_VIEW, videoUrl.toUri())
-                startActivity(webIntent)
-
-            }
-
-        }
-    }
-
 
     fun drawable(menuItem: List<Item>) {
         //TODO
@@ -222,65 +169,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }*/
     }
 
-    fun setAdapter(data: Payload) {
-
-        productsAdapter = FeaturedProductsAdapter(
-            requireContext(),
-            data,
-            false,
-            onViewAllClick = { position ->
-                val handle = data.collections[position].handle
-                val title = data.collections[position].title
-                Log.d("TAG", "setAdapter1: $handle  $title")
-                (activity as MainActivity).switchToCategoryTab()
-                val bundle = Bundle()
-                bundle.putString("category_handle", handle)
-                findNavController().navigate(R.id.categoryProductFragment, bundle)
-
-
-            },
-            onWishlistClick = { collectionIndex, productIndex, isLiked ->
-
-                val product = data.collections[collectionIndex].products[productIndex]
-                val productId = product.id
-                val isLogin = Preferences.getStringPreference(requireContext(), IS_LOGIN)
-
-                if (isLogin == "1") {
-                    if (isLiked) {
-                        Log.d("TAG", "setAxcvcxvcxdapter: $productId")
-                        var req = AddWishListRequest(token, productId)
-                        homeViewModel.addWishLisData(req)
-                    } else {
-                        Log.d("TAG", "setAxcvcxvcxdapter: $productId")
-                        var requ = AddWishListRequest(token, productId)
-                        homeViewModel.removeWishLisData(requ)
-//                        Toast.makeText(requireActivity(), "Remove from wishlist", Toast.LENGTH_SHORT).show()
-                    }
-
-                } else {
-                    showLoginPrompt()
-                }
-                // Log.d("Fragment", "SubAdapter clicked position: $subPosition, liked: $isLiked")
-            },
-            onSubAdapterClick = { collectionIndex, productIndex, isLiked ->
-                val product = data.collections[collectionIndex].products[productIndex]
-                val productId = product.id
-                Preferences.setStringPreference(requireContext(), REVIEW_PD_ID, productId)
-                val bundle = Bundle()
-                bundle.putString(PRODUCT_ID, productId)
-                findNavController().navigate(
-                    R.id.action_homeFragment_to_productDetailsFragment,
-                    bundle
-                )
-            }
-        )
-
-        binding.featuredProducts.adapter = productsAdapter
-        // setBlog adapter
-
-    }
-
-
     private fun setViewPager(homeBanner: List<HomeBanner>) {
         viewPagerAdapter = ViewPagerAdapter(homeBanner)
         binding.viewPager.adapter = viewPagerAdapter
@@ -302,91 +190,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         })
     }
 
-    private fun setupArrowClickListeners() {
-        //TODO
-        /*binding.leftArrow.setOnClickListener {
-            val currentItem = binding.viewpager.currentItem
-            if (currentItem > 0) {
-                binding.viewpager.currentItem = currentItem - 1
-            }
-        }
-
-        binding.rightArrow.setOnClickListener {
-            val currentItem = binding.viewpager.currentItem
-            if (currentItem < viewPagerlist.size - 1) {
-                binding.viewpager.currentItem = currentItem + 1
-            }
-        }*/
-    }
-
-
-    override fun onStop() {
-        super.onStop()
-        exoPlayer?.release()
-        exoPlayer = null
-    }
-
-    override fun onPause() {
-        super.onPause()
-        exoPlayer?.pause()  // Pause the video when the fragment goes into the background
-    }
-
     override fun onResume() {
         super.onResume()
-        exoPlayer?.playWhenReady = true
         setObserver()
         homeViewModel.homeCollectionApi(token)
     }
-
-    // Declare this at class level
-    private fun setupYouTubePlayer() {
-        youTubePlayerView = binding.playerView // If using ViewBinding
-
-        // Add lifecycle observer for proper cleanup
-        lifecycle.addObserver(youTubePlayerView)
-
-        binding.progressBar.visibility = View.VISIBLE
-
-        youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-            override fun onReady(youTubePlayer: YouTubePlayer) {
-                binding.progressBar.visibility = View.GONE
-                youTubePlayer.cueVideo(youtubeVideoId, 0f)
-            }
-        })
-    }
-
-    private fun showLoginPrompt() {
-        var dialog: AlertDialog? = null
-        dialog = CommonUtils.showCustomAlertDialog(
-            requireActivity(),
-            "Sign Up Required",
-            "Please sign up to add items to your wishlist.",
-            positiveButtonText = "Sign up",
-            negativeButtonText = "Cancel",
-            positiveButtonAction = {
-                dialog?.dismiss()
-                val intent = Intent(context, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                val bundle = Bundle()
-                bundle.putString("previousScreen", "logout")
-                bundle.putString("selectedImage", "0")
-                intent.putExtras(bundle)
-                requireActivity().startActivity(intent)
-            },
-            negativeButtonAction = {
-                dialog?.dismiss()
-            }
-        )
-    }
-
-    /* override fun onDestroyView() {
-         if (this::youTubePlayerView.isInitialized) {
-             youTubePlayerView.release()
-         }
-         super.onDestroyView()
-
-     }
- */
 
     private fun setObserver() {
         homeViewModel.getCustomerAddressRes().observe(viewLifecycleOwner) {
@@ -491,10 +299,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     val code = res.data?.code
                     if (code == 200) {
                         val vendors = res.data.payload.vendors
-                        // Store latest full vendors list (useful for showing full list on blank search)
                         panditJiList.clear()
                         panditJiList.addAll(vendors)
-                        panditJiAdapter = HomePanditJiAdapter(panditJiList) {pos->
+                        panditJiAdapter = HomePanditJiAdapter(panditJiList) { pos ->
                             val data = panditJiList[pos]
                             UserPreference.panditjiBookingRequest.apply {
                                 address = data.address
@@ -543,6 +350,100 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
         }
 
+        homeViewModel.getHomeDataApi().observe(viewLifecycleOwner) { res ->
+            when (res.status) {
+                Status.LOADING -> ProcessDialog.showDialog(requireActivity(), true)
+
+                Status.SUCCESS -> {
+                    ProcessDialog.dismissDialog(true)
+                    val code = res.data?.code
+                    if (code == 200) {
+                        val payload = res.data.payload
+                        payload?.services?.let { list ->
+                            popularPoojaList.clear()
+                            popularPoojaList.addAll(list)
+                            popularPoojasAdapter = PopularPoojasAdapter(popularPoojaList) {
+                                //TODO Popular Pooja Click
+                            }
+                            binding.rvPopularPoojas.adapter = popularPoojasAdapter
+                        }
+
+                        payload?.longBanner?.let { longBanner ->
+                            longBanner.url?.let { url ->
+                                Glide.with(requireContext())
+                                    .load(url)
+                                    .placeholder(R.drawable.pamdit_ji)
+                                    .error(R.drawable.pamdit_ji)
+                                    .into(binding.ivLongBanner)
+                            }
+                            binding.tvTitle.text = longBanner.title ?: ""
+                            binding.tvSubTitle.text = longBanner.subtitle ?: ""
+                        }
+
+                        payload?.whyChooseUs?.let { list ->
+                            whyChooseUsList.clear()
+                            whyChooseUsList.addAll(list)
+                            whyChooseUsAdapter = WhyChooseUsAdapter(whyChooseUsList) {
+                                //TODO Why Choose Us Click
+                            }
+                            binding.rvWhyChooseUs.adapter = whyChooseUsAdapter
+                        }
+
+                        payload?.testimonialsData?.let { testimonialsData ->
+                            val totalRateReview =
+                                "${testimonialsData.rating} (${testimonialsData.totalReviews} reviews)"
+                            binding.tvRatingReview.text = totalRateReview
+
+                            testimonialsData.testimonials?.let { list->
+                                rateReviewList.clear()
+                                rateReviewList.addAll(list)
+
+                                ratingReviewAdapter = RatingReviewAdapter(rateReviewList)
+                                binding.viewPagerRatingReview.adapter = ratingReviewAdapter
+                                binding.indicatorRatingReview.setIndicators(rateReviewList.size)
+
+                                binding.viewPagerRatingReview.addOnPageChangeListener(object : OnPageChangeListener {
+                                    override fun onPageScrolled(
+                                        position: Int,
+                                        positionOffset: Float,
+                                        positionOffsetPixels: Int,
+                                    ) {
+                                        binding.indicatorRatingReview.setCurrentPosition(position)
+                                    }
+
+                                    override fun onPageSelected(p0: Int) {
+                                    }
+
+                                    override fun onPageScrollStateChanged(state: Int) {
+                                    }
+                                })
+                            }
+                        }
+                    } else if (code == 401) {
+                        ProcessDialog.dismissDialog(true)
+                        Toast.makeText(
+                            requireActivity(),
+                            res.data.message ?: "Unauthorized",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.e("TAG", "Unauthorized access $res")
+                    } else {
+                        // handle other codes gracefully
+                        ProcessDialog.dismissDialog(true)
+                    }
+                }
+
+                Status.ERROR -> {
+                    ProcessDialog.dismissDialog(true)
+                    Snackbar.make(
+                        requireView(),
+                        res.message ?: "Something went wrong",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
         homeViewModel.getCollectionLiveData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -552,7 +453,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload
-                            setAdapter(data)
                             CART_COUNT = it.data.payload.cart ?: 0
                             (requireActivity() as? MainActivity)?.updateBagBadge(CART_COUNT)
                             // setup adapter here
@@ -589,11 +489,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         200 -> {
                             val data = it.data.payload.banners.subBanners
                             val homeBanner = it.data.payload.banners.homeBanners
-                            viewPagerlist = homeBanner
+                            viewPagerList = homeBanner
                             setViewPager(homeBanner)
                             bannerAdapter = AdapterBanner(data)
                             binding.bannerRecycler.adapter = bannerAdapter
-                            // setup adapter here
                         }
 
                         401 -> {
@@ -612,110 +511,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 Status.ERROR -> {
                     stopShimmer()
                     Log.e("TAG", "Error: ${it.message}")
-                    //  ProcessDialog.dismissDialog(true)
-                    Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        homeViewModel.getBlogLiveData().observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    isBlogLoaded = true
-                    val statusCode = it.data?.code // assuming your wrapper contains code
-                    when (statusCode) {
-                        200 -> {
-
-                            val blogs = it.data.payload.blogs ?: emptyList()
-
-                            // Flatten all articles from all blogs
-                            val articles = blogs.flatMap { blog ->
-                                blog.articles.edges.map { edge -> edge.node }
-                            }
-
-                            val blogAdapter = BlogAdapter(
-                                articles,
-                                object : BlogAdapter.OnBlogReadMoreClickListener {
-                                    override fun onReadMoreClicked(
-                                        title: String,
-                                        content: String,
-                                        imageUrl: String,
-                                    ) {
-                                        val bundle = Bundle().apply {
-                                            putString("title", title)
-                                            putString("content", content)
-                                            putString("imageUrl", imageUrl)
-                                        }
-                                        findNavController().navigate(
-                                            R.id.action_homeFragment_to_blogDetailsFragment,
-                                            bundle
-                                        )
-                                    }
-                                })
-                            binding.blogsRecyclerview.adapter = blogAdapter
-
-
-                            /* val blogAdapter = BlogAdapter(articles)
-                             binding.blogsRecyclerview.adapter = blogAdapter
-                            */ // setup adapter here
-                        }
-
-                        401 -> {
-                            Log.e("TAG", "Unauthorized access")
-                        }
-                    }
-                    stopShimmer()
-                    //  ProcessDialog.dismissDialog(true)
-                }
-
-                Status.LOADING -> {
-                    startShimmerLayout()
-                    // ProcessDialog.showDialog(requireActivity(), true)
-                }
-
-                Status.ERROR -> {
-                    Log.e("TAG", "Error: ${it.message}")
-                    stopShimmer()
-                    // ProcessDialog.dismissDialog(true)
-                    Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        homeViewModel.getHomeMenuLiveData().observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    isMenuLoaded = true
-
-                    val statusCode = it.data?.code // assuming your wrapper contains code
-                    when (statusCode) {
-                        200 -> {
-                            val menuItem = it.data.payload.menu.items
-                            Log.d("TAG", "setObserver:  $menuItem")
-
-                            // Flatten all articles from all blogs
-
-                            drawable(menuItem)
-
-                            // setup adapter here
-                        }
-
-                        401 -> {
-                            Log.e("TAG", "Unauthorized access")
-                        }
-                    }
-                    stopShimmer()
-                    //  ProcessDialog.dismissDialog(true)
-                }
-
-                Status.LOADING -> {
-                    startShimmerLayout()
-                    //   ProcessDialog.showDialog(requireActivity(), true)
-                }
-
-                Status.ERROR -> {
-                    Log.e("TAG", "Error: ${it.message}")
-                    stopShimmer()
                     //  ProcessDialog.dismissDialog(true)
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
@@ -781,49 +576,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     ).show()
                 }
             }
-        }
-
-        homeViewModel.getYouTubeUrlResponse().observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-
-                    val statusCode = it.data?.code
-                    when (statusCode) {
-                        200 -> {
-                            isYoutubeLoaded = true
-                            val videoUrl = it.data?.payload?.url
-                            youtubeVideoId = videoUrl?.let { extractVideoIdFromUrl(it) }.toString()
-
-                            it.data?.message ?: "Something went wrong"
-//                           Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                            if (!youtubeVideoId.isNullOrEmpty()) {
-                                setupYouTubePlayer()
-                            }
-                            //  stopShimmer()
-                            ProcessDialog.dismissDialog(true)
-                        }
-
-                        401 -> {
-                            Log.e("TAG", "Unauthorized access")
-                        }
-                    }
-                    stopShimmer()
-                    //   ProcessDialog.dismissDialog(true)
-                }
-
-                Status.LOADING -> {
-                    //startShimmerLayout()
-                    ProcessDialog.showDialog(requireActivity(), true)
-                }
-
-                Status.ERROR -> {
-                    Log.e("TAG", "Error: ${it.message}")
-                    //stopShimmer()
-                    ProcessDialog.dismissDialog(true)
-                    Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-
         }
 
         homeViewModel.getPostCurrencyLiveData().observe(viewLifecycleOwner) {
@@ -900,12 +652,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-
-    private fun extractVideoIdFromUrl(url: String): String? {
-        val uri = url.toUri()
-        return uri.getQueryParameter("v")
-    }
-
     private fun navigateFromDrawer() {
         binding.drawerId.apply {
 
@@ -925,11 +671,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun stopShimmer() {
-//        if (isCollectionLoaded && isBannerLoaded && isBlogLoaded && isMenuLoaded && isYoutubeLoaded ) {
         binding.myPropertyShimmer.myPropertyMainShimmer.stopShimmer()
         binding.myPropertyShimmer.myPropertyMainShimmer.visibility = View.GONE
         binding.scrollViewId.visibility = View.VISIBLE
-//        }
     }
 
     private val locationPermissionRequest = registerForActivityResult(
@@ -1009,7 +753,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-
     @SuppressLint("MissingPermission")
     private fun requestNewLocationData() {
         val locationRequest = LocationRequest.create().apply {
@@ -1064,6 +807,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun onLocationPermissionGranted() {
         getCurrentLocation()
     }
-
-
 }

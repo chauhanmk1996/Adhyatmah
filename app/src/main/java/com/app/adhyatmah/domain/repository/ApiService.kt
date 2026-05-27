@@ -6,6 +6,7 @@ import com.app.adhyatmah.domain.create_order.creater_order_response.CreateCODRes
 import com.app.adhyatmah.domain.model.wish_list.wish_list_request.AddWishListRequest
 import com.app.adhyatmah.domain.model.AllCategoryListResponse
 import com.app.adhyatmah.domain.model.GetLanguagesResponse
+import com.app.adhyatmah.domain.model.HomeResponse
 import com.app.adhyatmah.domain.model.ProductReviewListResponse
 import com.app.adhyatmah.domain.model.TrendingSectionResponse
 import com.app.adhyatmah.domain.model.add_to_bag.add_to_bag_request.AddToBagRequest
@@ -85,11 +86,9 @@ import com.app.adhyatmah.payment.payment_varify_response.PaymentVerifyResponse
 import com.app.adhyatmah.payment.payment_verify_request.PaymentVerifyRequest
 import com.app.panditji.data.model.get_booking.GetBookingResponse
 import com.app.adhyatmah.domain.model.update_booking_status.UpdateBookingStatusRequest
-import com.app.adhyatmah.domain.model.verify_otp.VerifyOtpResponse
 import com.app.adhyatmah.payment.payment_initialize_response.PaymentIniResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -349,7 +348,9 @@ interface ApiService {
     suspend fun trendingSectionApi(
     ): TrendingSectionResponse
 
-
+    @GET("getHomepagePoojaServices")
+    suspend fun homeDataApi(
+    ): HomeResponse
 
     @POST("createBooking")
     suspend fun createBookingApi(

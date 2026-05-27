@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.app.adhyatmah.domain.model.wish_list.wish_list_request.AddWishListRequest
 import com.app.adhyatmah.domain.model.AllCategoryListResponse
+import com.app.adhyatmah.domain.model.HomeResponse
 import com.app.adhyatmah.domain.model.ProductReviewListResponse
 import com.app.adhyatmah.domain.model.TrendingSectionResponse
 import com.app.adhyatmah.domain.model.add_to_bag.add_to_bag_request.AddToBagRequest
@@ -60,6 +61,7 @@ class HomeViewModel @Inject constructor(application: Application) :AndroidViewMo
 
     private val singleLiveEventPanditList = SingleLiveEvent<Resources<GetPanditResponse>>()
     private val trendingSectionResponse = SingleLiveEvent<Resources<TrendingSectionResponse>>()
+    private val homeResponse = SingleLiveEvent<Resources<HomeResponse>>()
 
     fun trendingSectionApi() {
         trendingSectionResponse.postValue(Resources.loading(null))
@@ -92,6 +94,20 @@ class HomeViewModel @Inject constructor(application: Application) :AndroidViewMo
 
     fun getPanditListLiveData(): LiveData<Resources<GetPanditResponse>> = singleLiveEventPanditList
 
+    fun homeDataApi() {
+        homeResponse.postValue(Resources.loading(null))
+        viewModelScope.launch {
+            try {
+                val response = ApiRepository().homeDataApi()
+                homeResponse.postValue(Resources.success(response))
+            } catch (ex: Exception) {
+                homeResponse.postValue(Resources.error(ex.localizedMessage ?: "Error", null))
+            }
+        }
+    }
+
+    fun getHomeDataApi():LiveData<Resources<HomeResponse>> = homeResponse
+
     fun addToBagApi(request : AddToBagRequest) {
         try {
             addToaBagLiveData.postValue(Resources.loading(null))
@@ -114,7 +130,6 @@ class HomeViewModel @Inject constructor(application: Application) :AndroidViewMo
             ex.printStackTrace()
         }
     }
-
 
     fun homeCollectionApi(token:String) {
         try {

@@ -1,4 +1,5 @@
 package com.app.adhyatmah.domain.repository
+
 import co.paystack.android.api.model.ApiResponse
 import com.app.adhyatmah.domain.create_order.creat_order_request.CreaterOrderRequest
 import com.app.adhyatmah.domain.create_order.creater_order_response.CreateCODResponse
@@ -87,37 +88,52 @@ class ApiRepository {
 
     suspend fun getHomeMenuApi(/*token: String*/) = service.getHomeMenu()
 
-    suspend fun getProductDetailsApi(id: String, token: String) = service.getProductAttributes(id,token)
+    suspend fun getProductDetailsApi(id: String, token: String) =
+        service.getProductAttributes(id, token)
 
-    suspend fun getAllCatDetailsApi(page: Int, limit: Int) = service.getAllCollections(page,limit)
+    suspend fun getAllCatDetailsApi(page: Int, limit: Int) = service.getAllCollections(page, limit)
 
-    suspend fun getAllReviewList(productId: String, page: Int, limit: Int) = service.getReviewData(productId,page,limit)
+    suspend fun getAllReviewList(productId: String, page: Int, limit: Int) =
+        service.getReviewData(productId, page, limit)
 
-    suspend fun getViewAllDataApi(token: String, handle: ViewAllProductRequest): ViewAllProductResponse = service.getViewAllData(token,handle)
+    suspend fun getViewAllDataApi(
+        token: String,
+        handle: ViewAllProductRequest,
+    ): ViewAllProductResponse = service.getViewAllData(token, handle)
 
-    suspend fun addWishListApi(request: AddWishListRequest): AddWishListResponse = service.addWishListData(request)
+    suspend fun addWishListApi(request: AddWishListRequest): AddWishListResponse =
+        service.addWishListData(request)
 
-    suspend fun getWishListApi(token: String): FetchWishListResponse = service.getWishListData(token)
+    suspend fun getWishListApi(token: String): FetchWishListResponse =
+        service.getWishListData(token)
 
     suspend fun getLoginAPIs(request: LoginRequest): GetSignUpResponse = service.login(request)
-    suspend fun getLoginWIthMobileApi(request: LoginWithMobileRequest): GetLoginResponse = service.loginWithMobile(request)
-    suspend fun getVerifyOtpApi(request: RegistrationModel): GetSignUpResponse = service.verifyOtp(request)
+    suspend fun getLoginWIthMobileApi(request: LoginWithMobileRequest): GetLoginResponse =
+        service.loginWithMobile(request)
+
+    suspend fun getVerifyOtpApi(request: RegistrationModel): GetSignUpResponse =
+        service.verifyOtp(request)
+
     suspend fun getResendOtpApi(request: SendOtpModel): ApiResponse = service.reSendOtp(request)
     suspend fun getLandingAPIs(): GetLandingPageResponse = service.getLandingPage()
 
     suspend fun getSignUpAPIs(request: SignUpRequest): GetSignUpResponse = service.signUp(request)
 
-    suspend fun getShortCollectionApi(request: GetSortedCollectionRequest): ViewAllProductResponse = service.getSortedCollection(request)
+    suspend fun getShortCollectionApi(request: GetSortedCollectionRequest): ViewAllProductResponse =
+        service.getSortedCollection(request)
 
     suspend fun getPrivacyAPIs(): TermPrivacyResponse = service.getPolicies()
 
     suspend fun getLogOutAPIs(token: LogOutRequest): GetLoginResponse = service.logout(token)
 
-    suspend fun getForgotApi(request: ForgotPassRequest): ForgotPassResponse = service.forgotPass(request)
+    suspend fun getForgotApi(request: ForgotPassRequest): ForgotPassResponse =
+        service.forgotPass(request)
 
-    suspend fun filterApi(request: FilterRequest): ViewAllProductResponse = service.filterCollection(request)
+    suspend fun filterApi(request: FilterRequest): ViewAllProductResponse =
+        service.filterCollection(request)
 
-    suspend fun removeWishList(request: AddWishListRequest): RemoveWishListResponse = service.removeWishList(request)
+    suspend fun removeWishList(request: AddWishListRequest): RemoveWishListResponse =
+        service.removeWishList(request)
 
     suspend fun getContactUsApi(/*token: String*/) = service.getContactUs()
 
@@ -125,14 +141,17 @@ class ApiRepository {
 
     suspend fun getCustomerAddApi(token: ManageAddressRequest) = service.getCustomerAdd()
 
-    suspend fun getCartListApi(token: String): GetCartListResponse = service.getAllCartListData(token)
+    suspend fun getCartListApi(token: String): GetCartListResponse =
+        service.getAllCartListData(token)
 
     suspend fun getCouponListApi(): GetAllCouponsResponse = service.getAllCoupons()
 
-    suspend fun getIncreaseQtyApi(request: IncreaseQtyRequest): CartQtyIncreaseResponse = service.updateQty(request)
+    suspend fun getIncreaseQtyApi(request: IncreaseQtyRequest): CartQtyIncreaseResponse =
+        service.updateQty(request)
 
 
-    suspend fun customerAllOrdersApi(request: ManageAddressRequest) = service.customerAllOrders(request)
+    suspend fun customerAllOrdersApi(request: ManageAddressRequest) =
+        service.customerAllOrders(request)
 
     suspend fun applyCouponsApi(request: ApplyCouponsRequest) = service.applyCoupons(request)
 
@@ -142,32 +161,55 @@ class ApiRepository {
     suspend fun getPaymentMethodApi() = service.getPaymentMethod()
 
     suspend fun addToBagApi(request: AddToBagRequest) = service.addToBag(request)
-    suspend fun deleteAddressAPI(request: DeleteAddressRequest): DeleteAddressResponse = service.deleteCustomAddress(request)
-    suspend fun editAddressAPI(request: AddAddressRequest): CreateAddressResponse = service.editCustomAddress(request)
+    suspend fun deleteAddressAPI(request: DeleteAddressRequest): DeleteAddressResponse =
+        service.deleteCustomAddress(request)
+
+    suspend fun editAddressAPI(request: AddAddressRequest): CreateAddressResponse =
+        service.editCustomAddress(request)
+
     suspend fun getProfileAPI(request: String): GetProfileResponse = service.getProfile(request)
-    suspend fun editProfileAPI(request: EditProfileRequest): GetProfileResponse = service.editProfile(request)
+    suspend fun editProfileAPI(request: EditProfileRequest): GetProfileResponse =
+        service.editProfile(request)
+
     suspend fun getFilterAPI(): GetFilterResponse = service.getFilter()
 
     suspend fun uploadImage(file: MultipartBody.Part, customerId: RequestBody): GetProfileResponse {
         return service.upLoadImg(file, customerId)
     }
-     suspend fun getProfileImage(customerId: String): GetProfileImgResponse  =service.getProfileImg(customerId)
 
-    suspend fun getOrderDetailsAPIs(orderId: String): GetMyOrderDetailsResponse  =service.getOrderDetails(orderId)
-    suspend fun cancelOrderAPIs(request: CancelOrderRequest): CancelOrderResponse  =service.cancelOrderApi(request)
+    suspend fun getProfileImage(customerId: String): GetProfileImgResponse =
+        service.getProfileImg(customerId)
 
-    suspend fun createCODPaymentAPI(request: CreaterOrderRequest): CreateCODResponse = service.createCODOrder(request)
+    suspend fun getOrderDetailsAPIs(orderId: String): GetMyOrderDetailsResponse =
+        service.getOrderDetails(orderId)
 
-    suspend fun payStackPaymentAPI(request: PaymentIniRequest): PaymentIniResponse = service.paymentIniApi(request)
-    suspend fun paymentVerifyAPI(request: PaymentVerifyRequest): PaymentVerifyResponse = service.paymentVerifyApi(request)
+    suspend fun cancelOrderAPIs(request: CancelOrderRequest): CancelOrderResponse =
+        service.cancelOrderApi(request)
+
+    suspend fun createCODPaymentAPI(request: CreaterOrderRequest): CreateCODResponse =
+        service.createCODOrder(request)
+
+    suspend fun payStackPaymentAPI(request: PaymentIniRequest): PaymentIniResponse =
+        service.paymentIniApi(request)
+
+    suspend fun paymentVerifyAPI(request: PaymentVerifyRequest): PaymentVerifyResponse =
+        service.paymentVerifyApi(request)
+
     suspend fun faqAPI(role: String): FAQResponse = service.faq(role)
 
-    suspend fun smsAPi(request:SMSRequest):SMSResponse = service.smsApi(request)
-    suspend fun paymentSucClearOrderAPI(accessToken: PaymentSuccessClearOrderRequest): PaymentSuccessClearAllOrderResp = service.paymentSuccessClearAllOrderApi(accessToken)
-    suspend fun removeCouponAPI(request: RemoveCouponRequest): RemoveCouponResponse = service.removeCoupon(request)
+    suspend fun smsAPi(request: SMSRequest): SMSResponse = service.smsApi(request)
+    suspend fun paymentSucClearOrderAPI(accessToken: PaymentSuccessClearOrderRequest): PaymentSuccessClearAllOrderResp =
+        service.paymentSuccessClearAllOrderApi(accessToken)
+
+    suspend fun removeCouponAPI(request: RemoveCouponRequest): RemoveCouponResponse =
+        service.removeCoupon(request)
+
     suspend fun getcurrencyAPI(): GetCurrencyResponse = service.getCurrency()
-    suspend fun postcurrencyAPI(request: CurencyPostRequest): PostCurrencyResponse = service.postCurrency(request)
-    suspend fun deleteAccountAPI(request: DeleteRequest): DeleteResponse = service.deleteAccountApi(request)
+    suspend fun postcurrencyAPI(request: CurencyPostRequest): PostCurrencyResponse =
+        service.postCurrency(request)
+
+    suspend fun deleteAccountAPI(request: DeleteRequest): DeleteResponse =
+        service.deleteAccountApi(request)
 
     suspend fun shippingUrlAPI(): ShippingUrlResponse = service.getShippingUrl()
     suspend fun youtubeResponse(): YoutubeResponse = service.getYoutubeVideo()
@@ -175,19 +217,28 @@ class ApiRepository {
 
     suspend fun trendingSectionApi() = service.trendingSectionApi()
 
+    suspend fun homeDataApi() = service.homeDataApi()
+
     // Pandit List
 
-    suspend fun getPanditListApi(name: String? = null, serviceName: String? = null) = service.getPanditList(name, serviceName)
+    suspend fun getPanditListApi(name: String? = null, serviceName: String? = null) =
+        service.getPanditList(name, serviceName)
 
-    suspend fun panditjiBookingAPI(request: PanditjiBookingRequest): PanditjiBookingResponse = service.createBookingApi(request)
+    suspend fun panditjiBookingAPI(request: PanditjiBookingRequest): PanditjiBookingResponse =
+        service.createBookingApi(request)
 
-    suspend fun getPanditjiServicesApi(panditId:String): GetServicesResponse = service.getPanditjiServices(panditId)
+    suspend fun getPanditjiServicesApi(panditId: String): GetServicesResponse =
+        service.getPanditjiServices(panditId)
 
-    suspend fun getBookingHistoryApi(type:String): GetBookingResponse = service.getBookings(type)
+    suspend fun getBookingHistoryApi(type: String): GetBookingResponse = service.getBookings(type)
 
-    suspend fun updateBookingStatusApi(type:String, request: UpdateBookingStatusRequest): GetBookingResponse = service.updateBookingStatus(type, request)
+    suspend fun updateBookingStatusApi(
+        type: String,
+        request: UpdateBookingStatusRequest,
+    ): GetBookingResponse = service.updateBookingStatus(type, request)
 
-    suspend fun createBookingPaymentApi(request: BookingPaymentRequest): BookingPaymentResponse = service.createBookingPayment( request)
+    suspend fun createBookingPaymentApi(request: BookingPaymentRequest): BookingPaymentResponse =
+        service.createBookingPayment(request)
 
     suspend fun getAllLanguagesApi(): GetLanguagesResponse = service.getAllLanguages()
 

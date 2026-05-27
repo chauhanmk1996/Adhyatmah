@@ -1,5 +1,6 @@
 package com.app.adhyatmah.utils
 
+import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 
@@ -25,4 +26,20 @@ fun formatViews(views: Int): String {
         views >= 1_000 -> String.format("%.1fK", views / 1_000f)
         else -> views.toString()
     }
+}
+
+fun Double.getDigit(): String {
+    return if (this % 1.0 == 0.0) {
+        this.toInt().toString()
+    } else {
+        java.text.DecimalFormat("#.##").format(this)
+    }
+}
+
+fun View.show(){
+    this.visibility = View.VISIBLE
+}
+
+fun View.hide(){
+    this.visibility = View.GONE
 }

@@ -1,7 +1,5 @@
 package com.app.adhyatmah.domain.model
 
-import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Payload
-
 data class TrendingSectionResponse(
     val code: Int,
     val error: Boolean,

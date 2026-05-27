@@ -39,6 +39,10 @@ class HomePanditJiAdapter(
 
             val experience = "${panditJi.experience ?: ""} Years Exp."
             tvExperience.text = experience
+
+            cvPanditJi.setOnClickListener {
+                onSelected(position)
+            }
         }
     }
 }
