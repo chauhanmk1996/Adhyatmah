@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <!-- Only Play/Pause Button -->
+    <ImageButton
+        android:id="@+id/exo_play_pause"
+        style="@style/ExoMediaButton.PlayPause"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:contentDescription="Play/Pause"
+        android:padding="4dp" />
+</LinearLayout>

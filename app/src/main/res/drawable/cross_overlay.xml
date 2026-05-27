@@ -1,0 +1,9 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/rectangle_default_bg" />
+    <item>
+        <shape android:shape="line">
+            <size android:width="2dp"/>
+            <solid android:color="#FF0000"/>
+        </shape>
+    </item>
+</layer-list>

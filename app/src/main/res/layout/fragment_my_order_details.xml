@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_opacity_10"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/gg"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:elevation="10dp"
+            tools:ignore="UselessLeaf">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="40dp"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/back_img"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:elevation="2dp"
+                    android:src="@drawable/back_arrow1"
+                    android:tint="#222222" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/my_orders_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/muktamahee_regular"
+                    android:gravity="start"
+                    android:text="@string/my_orders_details"
+                    android:textColor="@color/black"
+                    android:textFontWeight="600"
+                    android:textSize="18sp"
+                    tools:targetApi="28" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="30dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyMyOrderDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp" />
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/rating"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:numStars="5"
+                    android:scaleX="1"
+                    android:scaleY="1"
+                    android:stepSize="1.0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/muktamahee_regular"
+                    android:text="@string/delivery_address"
+                    android:textColor="@color/black"
+                    android:textFontWeight="400"
+                    android:textSize="18dp"
+                    tools:ignore="TextSizeCheck" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/muktamahee_regular"
+                    android:text="@string/address"
+                    android:textColor="#7A7A7A"
+                    android:textFontWeight="500"
+                    android:textSize="12dp"
+                    tools:ignore="TextSizeCheck" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/subtotal_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jost"
+                        android:text="@string/original_price"
+                        android:textColor="#7C7C7C"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/price_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="₹0.00"
+                        android:textColor="#7C7C7C"
+                        android:textFontWeight="500"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jost"
+                        android:text="@string/tax_amount"
+                        android:textColor="#7C7C7C"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tax_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="₹0.00"
+                        android:textColor="#7C7C7C"
+                        android:textFontWeight="500"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jost"
+                        android:text="@string/coupons"
+                        android:textColor="#7C7C7C"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/price_coupons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="INR 0.00"
+                        android:textColor="#7C7C7C"
+                        android:textFontWeight="500"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jost"
+                        android:text="@string/shipping"
+                        android:textColor="#7C7C7C"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/shipping_charges"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="INR 0.00"
+                        android:textColor="#7C7C7C"
+                        android:textFontWeight="500"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jost"
+                        android:text="@string/platform_fee"
+                        android:textColor="#7C7C7C"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/platform_fees"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="INR 0.00"
+                        android:textColor="#7C7C7C"
+                        android:textFontWeight="500"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jost"
+                        android:text="@string/total"
+                        android:textColor="#7C7C7C"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/price_total"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="GHS 0.00"
+                        android:textColor="#FF8039"
+                        android:textFontWeight="500"
+                        android:textSize="20dp"
+                        tools:ignore="TextSizeCheck" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/grey" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jost"
+                        android:text="@string/order_id"
+                        android:textColor="#7C7C7C"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/orderId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="45879987"
+                        android:textColor="#7C7C7C"
+                        android:textFontWeight="500"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/black" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/copy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="@string/copy"
+                        android:textColor="#7C7C7C"
+                        android:textFontWeight="500"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jost"
+                        android:text="@string/purchase_time"
+                        android:textColor="#7C7C7C"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/orderTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="2024-03-04 12:40:52"
+                        android:textColor="#7C7C7C"
+                        android:textFontWeight="500"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/muktamahee_regular"
+                    android:text="@string/pay_method"
+                    android:textColor="@color/black"
+                    android:textFontWeight="400"
+                    android:textSize="18dp"
+                    tools:ignore="TextSizeCheck" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/rectangel_f7f7f7_radius_16"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jost"
+                        android:text="@string/payment_method"
+                        android:textColor="#7C7C7C"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/cash"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="@string/cash"
+                        android:textColor="#3FCA09"
+                        android:textFontWeight="500"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rectangel_f7f7f7_radius_16"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jost"
+                        android:text="@string/status"
+                        android:textColor="#7C7C7C"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/muktamahee_semibold"
+                        android:gravity="end"
+                        android:text="@string/paid"
+                        android:textColor="#3FCA09"
+                        android:textFontWeight="500"
+                        android:textSize="15dp"
+                        tools:ignore="TextSizeCheck" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cancel_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/rectangle_black"
+                    android:fontFamily="@font/jost_bold"
+                    android:gravity="center"
+                    android:text="@string/cancel_order"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cancled"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/jost_bold"
+                    android:gravity="center"
+                    android:text="cancelled"
+                    android:textColor="@color/red"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</layout>

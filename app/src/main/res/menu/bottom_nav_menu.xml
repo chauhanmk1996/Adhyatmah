@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@mipmap/home"
+        android:title="@string/home" />
+     <item
+        android:id="@+id/navigation_pandit_ji"
+        android:icon="@drawable/panditji_menu"
+        android:title="@string/pandit_ji" />
+
+    <item
+        android:id="@+id/navigation_category"
+        android:icon="@mipmap/categories"
+        android:title="@string/category" />
+    <item
+        android:id="@+id/navigation_bag"
+        android:icon="@mipmap/cart_icon"
+        android:title="@string/cart" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@mipmap/profile_icon"
+        android:title="@string/profile" />
+
+</menu>

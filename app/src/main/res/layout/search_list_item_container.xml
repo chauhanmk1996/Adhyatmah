@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <!-- Add variables here if needed -->
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"
+        app:cardCornerRadius="16dp">
+
+        <!-- Use FrameLayout to overlay text on the image -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Background Image -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/wishList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="4dp"
+                android:padding="5dp"
+                android:visibility="gone"
+                android:scaleType="centerCrop"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8sp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/like" />
+
+            <!-- Bottom-aligned content -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/rectangle_top_right_bottom_right"
+                android:layout_marginBottom="20sp"
+                android:layout_marginEnd="20dp"
+                android:gravity="bottom"
+                android:layout_gravity="bottom">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/label"
+                    android:layout_marginTop="5dp"
+                    android:text="Ribbed Top"
+                    android:textSize="12sp"
+                    android:maxLines="1"
+                    android:layout_marginStart="13dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/muktamahee_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/price"
+                    android:text="₹ 599"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="13dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/muktamahee_semibold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

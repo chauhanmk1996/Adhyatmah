@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="15sp"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/featuredProducts"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/featured_products"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/muktamahee_semibold"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/dis"
+            app:layout_constraintTop_toBottomOf="@+id/featuredProducts"
+            android:text="We have your occasion covered"
+            android:textSize="10dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/muktamahee_semibold"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_marginTop="7dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/viewAll"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/view_all"
+            android:textSize="12dp"
+            android:layout_marginEnd="16dp"
+            android:drawablePadding="4dp"
+            android:textColor="@color/theme"
+            android:fontFamily="@font/playfairdisplay_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/subRecycler"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/dis"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

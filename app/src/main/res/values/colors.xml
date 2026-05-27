@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#000000</color>
+    <color name="black_121212">#121212</color>
+    <color name="grey_9B9B9B">#9B9B9B</color>
+    <color name="black_222222">#222222</color>
+    <color name="grey_B6B6B6">#B6B6B6</color>
+    <color name="black_23">#3B000000</color>
+    <color name="black_252B5C">#252B5C</color>
+    <color name="black_acb1c6">#acb1c6</color>
+    <color name="black_252020">#252020</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_75">#F8F8F7</color>
+    <color name="white_ECEDF3">#ECEDF3</color>
+   <!--<color name="theme">#FF000000</color>
+   --> <color name="theme">#FF9933</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="grey_f5f4f8">#F5F4F8</color>
+    <color name="grey_7C7C7C">#7C7C7C</color>
+    <color name="white_F5F4F8">#F5F4F8</color>
+    <color name="black_272727">#272727</color>
+    <color name="grey_9BA0A3_">#9BA0A3</color>
+    <color name="pink_FD3E750F">#3E75030F</color>
+    <color name="white_E3E3E3">#E3E3E3</color>
+    <color name="black_000000"> #000000</color>
+    <color name="black_opacity_10">#f7f7f7</color>
+    <color name="black_1D1D1D"> #1D1D1D</color>
+    <color name="shimmer_placeholder">#E0E0E0</color> <!-- light grey -->
+
+    <color name="green_00da45"> #00DA45</color>
+
+    <color name="red_e30000">#E30000</color>
+    <color name="orange">#E98347</color>
+
+    <color name="white_F9F9F9">#F9F9F9</color>
+    <color name="red_D43E29">#D43E29</color>
+    <color name="white_E9E9E9">#E9E9E9</color>
+    <color name="launch_background_color">#FFBB86FC</color>
+    <color name="gray">#7A7A7A</color>
+    <color name="light_green">#E8F5E9</color>
+    <color name="colorPrimary">#E98347</color>
+    <color name="app_color_second">#E98347</color>
+    <color name="blue"> #006BFF</color>
+
+</resources>

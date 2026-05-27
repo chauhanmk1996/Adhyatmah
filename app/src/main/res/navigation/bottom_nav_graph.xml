@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_productListFragment"
+            app:destination="@id/productListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_reviewsFragment"
+            app:destination="@id/reviewsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchListFragment"
+            app:destination="@id/searchListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_blogDetailsFragment"
+            app:destination="@id/blogDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.ProfileFragment"
+        android:label="ProfileFragment" >
+
+        <action
+            android:id="@+id/action_profile_to_wishlist"
+            app:destination="@id/wishListFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_contactUsFragment"
+            app:destination="@id/contactUsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_helpSupportFragment"
+            app:destination="@id/helpSupportFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_myOrderFragment"
+            app:destination="@id/myOrderFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_mangeAddressFragment"
+            app:destination="@id/mangeAddressFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_termConditionFragment2"
+            app:destination="@id/termConditionFragment2" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_bookingFragment"
+            app:destination="@id/bookingFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_chooseLanguageFragment"
+            app:destination="@id/chooseLanguageFragment" />
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.CategoryFragment"
+        android:label="CategoryFragment" >
+        <action
+            android:id="@+id/action_categoryFragment_to_productListFragment"
+            app:destination="@id/productListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bagFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.BagFragment"
+        android:label="BagFragment">
+        <action
+            android:id="@+id/action_bagFragment_to_applyCouponsFragment"
+            app:destination="@id/applyCouponsFragment">
+        </action>
+        <action
+            android:id="@+id/action_bagFragment_to_paymentGatewayFragment"
+            app:destination="@id/paymentMethodFragment" />
+        <action
+            android:id="@+id/action_bagFragment_to_mangeAddressFragment"
+            app:destination="@id/mangeAddressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.ProductListFragment"
+        android:label="ProductListFragment" >
+        <action
+            android:id="@+id/action_productListFragment_to_shortByBottomSheet"
+            app:destination="@id/shortByBottomSheet" />
+        <action
+            android:id="@+id/action_productListFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
+        <action
+            android:id="@+id/action_productListFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.ProductDetailsFragment"
+        android:label="ProductDetailsFragment" >
+        <action
+            android:id="@+id/action_productDetailsFragment_to_bagFragment"
+            app:destination="@id/bagFragment" />
+        <action
+            android:id="@+id/action_productDetailsFragment_to_reviewsFragment"
+            app:destination="@id/reviewsFragment" />
+        <action
+            android:id="@+id/action_productDetailsFragment_to_sizeImageFragment"
+            app:destination="@id/sizeImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reviewsFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.ReviewsFragment"
+        android:label="ReviewsFragment" />
+    <fragment
+        android:id="@+id/wishListFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.WishListFragment"
+        android:label="WishListFragment" />
+    <dialog
+        android:id="@+id/shortByBottomSheet"
+        android:name="com.app.adhyatmah.presentation.ui.bottom_sheet.ShortByBottomSheet"
+        android:label="ShortByBottomSheet" />
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.FilterFragment"
+        android:label="FilterFragment" >
+        <action
+            android:id="@+id/action_filterFragment_to_productListFragment"
+            app:destination="@id/productListFragment" />
+        <action
+            android:id="@+id/action_filterFragment_to_brandFragment"
+            app:destination="@id/brandFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/applyCouponsFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.ApplyCouponsFragment"
+        android:label="ApplyCouponsFragment" >
+
+        <action
+            android:id="@+id/action_applyCouponsFragment_to_filtersFragment"
+            app:destination="@id/filterFragment" />
+        <action
+            android:id="@+id/action_filterFragment_to_productListFragment"
+            app:destination="@id/productListFragment" />
+        <action
+            android:id="@+id/action_applyCouponsFragment_to_bagFragment"
+            app:destination="@id/bagFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/contactUsFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.ContactUsFragment"
+        android:label="ContactUsFragment" />
+    <fragment
+        android:id="@+id/helpSupportFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.HelpSupportFragment"
+        android:label="fragment_help_support"
+        tools:layout="@layout/fragment_help_support" />
+    <fragment
+        android:id="@+id/myOrderFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.MyOrderFragment"
+        android:label="fragment_my_order"
+        tools:layout="@layout/fragment_my_order" >
+        <action
+            android:id="@+id/action_myOrderFragment_to_myOrderDetailsFragment"
+            app:destination="@id/myOrderDetailsFragment" />
+        <action
+            android:id="@+id/action_myOrderFragment_to_trackOrderFragment"
+            app:destination="@id/trackOrderFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mangeAddressFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.MangeAddressFragment"
+        android:label="fragment_mange_address"
+        tools:layout="@layout/fragment_mange_address" >
+        <action
+            android:id="@+id/action_mangeAddressFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment" />
+        <action
+            android:id="@+id/action_mangeAddressFragment_self"
+            app:destination="@id/mangeAddressFragment" />
+        <action
+            android:id="@+id/action_mangeAddressFragment_to_paymentMethodFragment"
+            app:destination="@id/paymentMethodFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/termConditionFragment2"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.TermConditionFragment"
+        android:label="TermConditionFragment" />
+
+    <fragment
+        android:id="@+id/addAddressFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.AddAddressFragment"
+        android:label="AddAddressFragment" >
+        <action
+            android:id="@+id/action_addAddressFragment_to_mangeAddressFragment"
+            app:popUpTo="@id/addAddressFragment" />
+        <action
+            android:id="@+id/action_addAddressFragment_to_paymentMethodFragment"
+            app:popUpTo="@id/addAddressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.EditProfileFragment"
+        android:label="EditProfileFragment" />
+
+    <fragment
+        android:id="@+id/paymentMethodFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.PaymentMethodFragment"
+        android:label="PaymentMethodFragment" >
+        <action
+            android:id="@+id/action_paymentMethodFragment_to_congratulationFragment"
+            app:destination="@id/congratulationFragment" />
+        <action
+            android:id="@+id/action_paymentMethodFragment_to_stripFragment"
+            app:destination="@id/stripFragment" />
+        <action
+            android:id="@+id/action_paymentMethodFragment_to_confirmOrderFragment"
+            app:destination="@id/confirmOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchListFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.SearchListFragment"
+        android:label="SearchListFragment" >
+        <action
+            android:id="@+id/action_searchListFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/congratulationFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.CongratulationFragment"
+        android:label="CongratulationFragment" >
+        <action
+            android:id="@+id/action_congratulationFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stripFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.StripFragment"
+        android:label="StripFragment" >
+        <action
+            android:id="@+id/action_stripFragment_to_congratulationFragment"
+            app:destination="@id/congratulationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sizeImageFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.SizeImageFragment"
+        android:label="SizeImageFragment" />
+    <fragment
+        android:id="@+id/confirmOrderFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.ConfirmOrderFragment"
+        android:label="ConfirmOrderFragment" >
+        <action
+            android:id="@+id/action_confirmOrderFragment_to_congratulationFragment"
+            app:destination="@id/congratulationFragment" />
+        <action
+            android:id="@+id/action_confirmOrderFragment_to_stripFragment"
+            app:destination="@id/stripFragment" />
+        <action
+            android:id="@+id/action_confirmOrderFragment_to_paymentGatewayFragment"
+            app:destination="@id/paymentGatewayFragment" />
+        <action
+            android:id="@+id/action_confirmOrderFragment_to_razorpayFragment"
+            app:destination="@id/razorpayFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myOrderDetailsFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.MyOrderDetailsFragment"
+        android:label="MyOrderDetailsFragment" >
+        <action
+            android:id="@+id/action_myOrderDetailsFragment_to_trackOrderFragment"
+            app:destination="@id/trackOrderFragment" />
+        <action
+            android:id="@+id/action_myOrderDetailsFragment_to_myOrderFragment"
+            app:destination="@id/myOrderFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/paymentGatewayFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.PaymentGatewayFragment"
+        android:label="PaymentGatewayFragment" >
+        <action
+            android:id="@+id/action_paymentGatewayFragment_to_congratulationFragment"
+            app:destination="@id/congratulationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/brandFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.BrandFragment"
+        android:label="BrandFragment" >
+        <action
+            android:id="@+id/action_brandFragment_to_filterFragment"
+            app:destination="@id/filterFragment"
+            app:popUpTo="@id/filterFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/trackOrderFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.TrackOrderFragment"
+        android:label="TrackOrderFragment" />
+    <fragment
+        android:id="@+id/blogDetailsFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.BlogDetailsFragment"
+        android:label="BlogDetailsFragment" />
+    <fragment
+        android:id="@+id/razorpayFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.RazorpayFragment"
+        android:label="RazorpayFragment" />
+    <fragment
+        android:id="@+id/panditJiFragment"
+        android:name="com.app.adhyatmah.presentation.ui.pandit_ji.PanditJiFragment"
+        android:label="PanditJiFragment" />
+    <fragment
+        android:id="@+id/bookingFragment"
+        android:name="com.app.adhyatmah.presentation.ui.pandit_ji.BookingFragment"
+        android:label="BookingFragment" />
+    <fragment
+        android:id="@+id/confirmBookingFragment"
+        android:name="com.app.adhyatmah.presentation.ui.pandit_ji.ConfirmBookingFragment"
+        android:label="ConfirmBookingFragment" />
+    <fragment
+        android:id="@+id/dateTimeSelectionFragment"
+        android:name="com.app.adhyatmah.presentation.ui.pandit_ji.DateTimeSelectionFragment"
+        android:label="DateTimeSelectionFragment" />
+    <fragment
+        android:id="@+id/bookingDetailsFragment"
+        android:name="com.app.adhyatmah.presentation.ui.pandit_ji.BookingDetailsFragment"
+        android:label="BookingDetailsFragment" />
+    <fragment
+        android:id="@+id/chooseServiceFragment"
+        android:name="com.app.adhyatmah.presentation.ui.pandit_ji.ChooseServiceFragment"
+        android:label="ChooseServiceFragment" />
+    <fragment
+        android:id="@+id/selectLanguageFragment"
+        android:name="com.app.adhyatmah.presentation.ui.pandit_ji.SelectLanguageFragment"
+        android:label="SelectLanguageFragment" />
+    <fragment
+        android:id="@+id/categoryProductFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.CategoryProductFragment"
+        android:label="CategoryProductFragment" />
+    <fragment
+        android:id="@+id/chooseLanguageFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.ChooseLanguageFragment"
+        android:label="ChooseLanguageFragment" />
+
+
+</navigation>

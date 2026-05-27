@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="6dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/theme"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Pooja name with radio -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPoojaType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Grah Shanti Pooja"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/muktamahee_medium" />
+
+                <RadioButton
+                    android:id="@+id/rbSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/theme"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPriceLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/price"
+                android:textColor="@color/theme"
+                android:textSize="13sp"
+                android:fontFamily="@font/muktamahee_medium" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5000"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:fontFamily="@font/muktamahee_bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPoojaTimeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/pooja_time"
+                android:textColor="@color/theme"
+                android:textSize="13sp"
+                android:fontFamily="@font/muktamahee_medium" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2 hours"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:fontFamily="@font/muktamahee_regular" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPoojaSamagriLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/pooja_samagri"
+                android:textColor="@color/theme"
+                android:textSize="13sp"
+                android:fontFamily="@font/muktamahee_medium" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="A traditional puja to welcome Lord Ganesha for prosperity and success"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:fontFamily="@font/muktamahee_regular"
+                android:layout_marginBottom="4dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
+
