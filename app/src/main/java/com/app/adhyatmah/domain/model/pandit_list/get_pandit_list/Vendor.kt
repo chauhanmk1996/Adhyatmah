@@ -1,5 +1,7 @@
 package com.app.adhyatmah.domain.model.pandit_list.get_pandit_list
 
+import com.app.adhyatmah.domain.model.create_booking.SeoContent
+
 data class Vendor(
     val views:Int?,
     val about: String?=null,
@@ -13,7 +15,11 @@ data class Vendor(
     val language: List<String>?=null,
     val lastName: String?=null,
     val phone: String?=null,
-    val services: List<Service>?=null
+    val services: List<Service>?=null,
+    val gotra: String?=null,
+    val verified: Boolean?=null,
+    val trusted: Boolean?=null,
+    var seoContent: SeoContent? = null
 )
 
 data class Image(

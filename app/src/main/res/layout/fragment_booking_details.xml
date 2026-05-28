@@ -3,339 +3,941 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <!-- optional binding variables -->
-    </data>
-
-    <androidx.core.widget.NestedScrollView
-        android:fillViewport="true"
-        android:scrollbars="none"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:paddingTop="50dp"
-        android:paddingHorizontal="16dp">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+        android:background="@color/white">
 
-                <!-- Header -->
-                <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_heading"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="center"
+                android:src="@drawable/back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semi_bold"
+                android:text="@string/about_pandit_ji"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_heading">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_profile_pic"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
+                    android:layout_height="230dp"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/backBtn"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/back_btn"
-                        app:tint="@color/black" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:text="@string/booking_details"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Profile Section -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="24dp">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/profileImage"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:id="@+id/iv_profile_pic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/CircleImageView"
-                        android:src="@drawable/placeholder_icon" />
+                        tools:src="@color/black" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/userName"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_name"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_experience"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/cl_about"
+                        tools:text="Pt. Deepak Panday" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:visibility="gone"
-                        android:id="@+id/bookingId"
+                        android:id="@+id/tv_experience"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="8dp"
+                        android:drawableStart="@drawable/gotra"
+                        android:drawablePadding="4dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toTopOf="@+id/cl_about"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/cl_about"
+                        tools:text="Bhadohi | 25 Years Exp." />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_about"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Booking ID: "
-                        android:textColor="@color/gray"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        android:layout_marginStart="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:background="@drawable/round_70_white_border"
+                        android:elevation="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
 
-                <!-- Info Section -->
-                <LinearLayout
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_about"
+                            android:layout_width="wrap_content"
+                            android:layout_height="38dp"
+                            android:layout_marginHorizontal="12dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/inter_bold"
+                            android:gravity="center_vertical"
+                            android:maxWidth="300dp"
+                            android:singleLine="true"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="आचार्य  ★ 4.8" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+                    app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_profile_pic"
+                    tools:text="Pt. Deepak Panday" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_services_offered"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/orange_border_bg"
+                    android:drawableEnd="@drawable/arrow_left"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="@string/services_offered"
+                    android:textColor="#FF9933"
+                    android:textSize="14dp"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+                    app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_pandit_ji_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/pandit_ji_details"
+                    android:textColor="#506147"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_services_offered" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_gotra"
+                    android:layout_width="0dp"
+                    android:layout_height="82dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/round_12"
+                    app:layout_constraintEnd_toStartOf="@+id/cl_veda"
+                    app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pandit_ji_details">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_gotra_heading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Gotra"
+                        android:textColor="#191C1A"
+                        android:textSize="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_gotra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="#444840"
+                        android:textSize="14dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_gotra_heading"
+                        tools:text="गर्ग" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_veda"
+                    android:layout_width="0dp"
+                    android:layout_height="82dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/round_12"
+                    app:layout_constraintEnd_toStartOf="@+id/cl_pankti"
+                    app:layout_constraintStart_toEndOf="@id/cl_gotra"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pandit_ji_details">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_veda_heading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Veda"
+                        android:textColor="#191C1A"
+                        android:textSize="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_veda"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="#444840"
+                        android:textSize="14dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_veda_heading"
+                        tools:text="यजुर्वेद" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_pankti"
+                    android:layout_width="0dp"
+                    android:layout_height="82dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/round_12"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+                    app:layout_constraintStart_toEndOf="@+id/cl_veda"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pandit_ji_details">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_pankti_heading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Pankti"
+                        android:textColor="#191C1A"
+                        android:textSize="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_pankti"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="#444840"
+                        android:textSize="14dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_pankti_heading"
+                        tools:text="करंजही" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_shakha"
+                    android:layout_width="0dp"
+                    android:layout_height="82dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/round_12"
+                    app:layout_constraintEnd_toEndOf="@+id/cl_gotra"
+                    app:layout_constraintStart_toStartOf="@id/cl_gotra"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_gotra">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_shakha_heading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Shakha"
+                        android:textColor="#191C1A"
+                        android:textSize="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_shakha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="#444840"
+                        android:textSize="14dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_shakha_heading"
+                        tools:text="मध्यांधनी" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_sutra"
+                    android:layout_width="0dp"
+                    android:layout_height="82dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/round_12"
+                    app:layout_constraintEnd_toEndOf="@+id/cl_veda"
+                    app:layout_constraintStart_toStartOf="@id/cl_veda"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_veda">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_sutra_heading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Sutra"
+                        android:textColor="#191C1A"
+                        android:textSize="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_sutra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="#444840"
+                        android:textSize="14dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_sutra_heading"
+                        tools:text="कात्यायनी" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_verified_pandit"
+                    android:layout_width="0dp"
+                    android:layout_height="62dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/round_10_green_border"
+                    app:layout_constraintEnd_toStartOf="@+id/cl_trusted_service"
+                    app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_shakha">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/verified_circle"
+                        android:drawablePadding="4dp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/verified_pandit"
+                        android:textAllCaps="true"
+                        android:textColor="#26C196"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_trusted_service"
+                    android:layout_width="0dp"
+                    android:layout_height="62dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/round_10_orange_border"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+                    app:layout_constraintStart_toEndOf="@id/cl_verified_pandit"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_shakha">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/trusted_circle"
+                        android:drawablePadding="4dp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/trusted_services"
+                        android:textAllCaps="true"
+                        android:textColor="#FF9933"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_additional_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/additional_details"
+                    android:textColor="#506147"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_verified_pandit" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_specialization_details"
+                    android:layout_width="0dp"
+                    android:layout_height="82dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/round_12"
+                    app:layout_constraintEnd_toEndOf="@+id/guidelineEnd"
+                    app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_additional_details">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_specialization_heading"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="@string/specialization"
+                        android:textColor="#191C1A"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toTopOf="@id/tv_specialization"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_specialization"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="#444840"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_specialization_heading"
+                        tools:text="Grah Shanti, Vastu Puja, Satyanarayan Katha, Griha Pravesh" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_services"
+                    android:layout_width="0dp"
+                    android:layout_height="82dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/round_12"
+                    app:layout_constraintEnd_toEndOf="@+id/guidelineEnd"
+                    app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_specialization_details">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_services_heading"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="@string/services"
+                        android:textColor="#191C1A"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toTopOf="@id/tv_services"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_services"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="#444840"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_services_heading"
+                        tools:text="Multiple Puja &amp; Ritual Services" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_availability"
+                    android:layout_width="0dp"
+                    android:layout_height="82dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/round_12"
+                    app:layout_constraintEnd_toEndOf="@+id/guidelineEnd"
+                    app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_services">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_availability_heading"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="@string/availability"
+                        android:textColor="#191C1A"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toTopOf="@id/tv_availability"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_availability"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="#444840"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_availability_heading"
+                        tools:text="Available for Home Services" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_frequently_asked_questions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/frequently_asked_questions"
+                    android:textColor="#506147"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_availability" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_faq"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_frequently_asked_questions"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/list_item_faq" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_faq"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineStart"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="24dp">
+                    app:layout_constraintGuide_begin="16dp" />
 
-                    <!-- Puja Booked -->
-                    <LinearLayout
-                        android:visibility="visible"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:visibility="gone"
-                            app:tint="@color/orange" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="@string/about"
-                            android:textColor="@color/orange"
-                            android:textStyle="bold"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:visibility="visible"
-
-                        android:id="@+id/about"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Shiv Puja"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-
-                    <View
-                        android:visibility="visible"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="12dp"
-                        android:background="#E0E0E0" />
-
-                    <!-- Package Booked -->
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:visibility="gone"
-                            app:tint="@color/orange" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="Package Booked"
-                            android:textColor="@color/orange"
-                            android:textStyle="bold"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:visibility="gone"
-                        android:id="@+id/packageBooked"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="1.25 lakh mantra"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-
-                    <View
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="12dp"
-                        android:background="#E0E0E0" />
-
-                    <!-- Address -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:visibility="gone"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/location_icon"
-                            app:tint="@color/orange" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="@string/booking_address"
-                            android:textColor="@color/orange"
-                            android:textStyle="bold"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/locality_et"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="16dp"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPersonName"
-                        android:background="@drawable/rectangle_radius_16_background_f7f7f7"
-                        android:fontFamily="@font/jost"
-                        android:hint="@string/locality_area_street"
-                        android:paddingHorizontal="15dp"
-                        android:maxLines="1"
-                        android:maxLength="80"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/address_tv" />
-
-
-                    <LinearLayout
-                        android:id="@+id/pin_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/landmark_et"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/pin_code_et"
-                            android:layout_width="match_parent"
-                            android:layout_height="56dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/rectangle_radius_16_background_f7f7f7"
-                            android:fontFamily="@font/jost"
-                            android:hint="@string/pin_code"
-                            android:imeOptions="actionNext"
-                            android:inputType="number"
-                            android:maxLength="10"
-                            android:paddingHorizontal="15dp"
-                            android:layout_marginEnd="10dp"/>
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/city_et"
-                            android:layout_width="match_parent"
-                            android:layout_height="56dp"
-                            android:maxLines="1"
-                            android:maxLength="30"
-                            android:inputType="text"
-                            android:imeOptions="actionNext"
-                            android:layout_marginTop="16dp"
-                            android:background="@drawable/rectangle_radius_16_background_f7f7f7"
-                            android:fontFamily="@font/jost"
-                            android:hint="@string/city"
-                            android:paddingHorizontal="15dp"
-                            android:layout_weight="1"
-                            android:layout_marginStart="10dp"/>
-
-
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/landmark_et"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/state"
-                            android:layout_width="match_parent"
-                            android:layout_height="56dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/rectangle_radius_16_background_f7f7f7"
-                            android:fontFamily="@font/jost"
-                            android:hint="@string/state"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:maxLength="10"
-                            android:paddingHorizontal="15dp"
-                            android:layout_marginEnd="10dp"/>
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/country"
-                            android:layout_width="match_parent"
-                            android:layout_height="56dp"
-                            android:maxLines="1"
-                            android:maxLength="30"
-                            android:inputType="text"
-                            android:imeOptions="actionNext"
-                            android:layout_marginTop="16dp"
-                            android:background="@drawable/rectangle_radius_16_background_f7f7f7"
-                            android:fontFamily="@font/jost"
-                            android:hint="@string/country"
-                            android:paddingHorizontal="15dp"
-                            android:layout_weight="1"
-                            android:layout_marginStart="10dp"/>
-
-
-
-                    </LinearLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="12dp"
-                        android:background="#E0E0E0" />
-
-
-                </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/changeAddress"
-                    android:layout_width="match_parent"
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineEnd"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/change_address"
-                    android:letterSpacing="0"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/theme"
-                    android:layout_marginBottom="24dp"/>
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="16dp" />
 
-            </LinearLayout>
+                <!--<androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:fillViewport="true"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="50dp"
+                    android:scrollbars="none"
+                    android:visibility="gone">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/next"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/theme"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp"                app:cornerRadius="12dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-    </androidx.core.widget.NestedScrollView>
+                            &lt;!&ndash; Header &ndash;&gt;
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/backBtn"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/back_btn"
+                                    app:tint="@color/black" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:text="@string/booking_details"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            &lt;!&ndash; Profile Section &ndash;&gt;
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="24dp"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/profileImage"
+                                    android:layout_width="150dp"
+                                    android:layout_height="150dp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/placeholder_icon"
+                                    app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/userName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="12dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/bookingId"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Booking ID: "
+                                    android:textColor="@color/gray"
+                                    android:textSize="14sp"
+                                    android:visibility="gone" />
+                            </LinearLayout>
+
+                            &lt;!&ndash; Info Section &ndash;&gt;
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="24dp"
+                                android:orientation="vertical">
+
+                                &lt;!&ndash; Puja Booked &ndash;&gt;
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:visibility="visible">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:visibility="gone"
+                                        app:tint="@color/orange" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="6dp"
+                                        android:text="@string/about"
+                                        android:textColor="@color/orange"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/about"
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="Shiv Puja"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    android:visibility="visible" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginVertical="12dp"
+                                    android:background="#E0E0E0"
+                                    android:visibility="visible" />
+
+                                &lt;!&ndash; Package Booked &ndash;&gt;
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:visibility="gone">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:visibility="gone"
+                                        app:tint="@color/orange" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="6dp"
+                                        android:text="Package Booked"
+                                        android:textColor="@color/orange"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/packageBooked"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="1.25 lakh mantra"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    android:visibility="gone" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginVertical="12dp"
+                                    android:background="#E0E0E0"
+                                    android:visibility="gone" />
+
+                                &lt;!&ndash; Address &ndash;&gt;
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:src="@drawable/location_icon"
+                                        android:visibility="gone"
+                                        app:tint="@color/orange" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="6dp"
+                                        android:text="@string/booking_address"
+                                        android:textColor="@color/orange"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/locality_et"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="56dp"
+                                    android:layout_marginTop="16dp"
+                                    android:background="@drawable/rectangle_radius_16_background_f7f7f7"
+                                    android:fontFamily="@font/jost"
+                                    android:hint="@string/locality_area_street"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textPersonName"
+                                    android:maxLength="80"
+                                    android:maxLines="1"
+                                    android:paddingHorizontal="15dp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/address_tv" />
+
+
+                                <LinearLayout
+                                    android:id="@+id/pin_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/landmark_et">
+
+                                    <androidx.appcompat.widget.AppCompatEditText
+                                        android:id="@+id/pin_code_et"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="56dp"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/rectangle_radius_16_background_f7f7f7"
+                                        android:fontFamily="@font/jost"
+                                        android:hint="@string/pin_code"
+                                        android:imeOptions="actionNext"
+                                        android:inputType="number"
+                                        android:maxLength="10"
+                                        android:paddingHorizontal="15dp" />
+
+                                    <androidx.appcompat.widget.AppCompatEditText
+                                        android:id="@+id/city_et"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="56dp"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/rectangle_radius_16_background_f7f7f7"
+                                        android:fontFamily="@font/jost"
+                                        android:hint="@string/city"
+                                        android:imeOptions="actionNext"
+                                        android:inputType="text"
+                                        android:maxLength="30"
+                                        android:maxLines="1"
+                                        android:paddingHorizontal="15dp" />
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/landmark_et">
+
+                                    <androidx.appcompat.widget.AppCompatEditText
+                                        android:id="@+id/state"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="56dp"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/rectangle_radius_16_background_f7f7f7"
+                                        android:fontFamily="@font/jost"
+                                        android:hint="@string/state"
+                                        android:imeOptions="actionNext"
+                                        android:inputType="text"
+                                        android:maxLength="10"
+                                        android:paddingHorizontal="15dp" />
+
+                                    <androidx.appcompat.widget.AppCompatEditText
+                                        android:id="@+id/country"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="56dp"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/rectangle_radius_16_background_f7f7f7"
+                                        android:fontFamily="@font/jost"
+                                        android:hint="@string/country"
+                                        android:imeOptions="actionNext"
+                                        android:inputType="text"
+                                        android:maxLength="30"
+                                        android:maxLines="1"
+                                        android:paddingHorizontal="15dp" />
+
+
+                                </LinearLayout>
+
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginVertical="12dp"
+                                    android:background="#E0E0E0" />
+
+
+                            </LinearLayout>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/changeAddress"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="24dp"
+                                android:backgroundTint="@color/theme"
+                                android:letterSpacing="0"
+                                android:text="@string/change_address"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnNext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="24dp"
+                            android:backgroundTint="@color/theme"
+                            android:text="@string/next"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            app:cornerRadius="12dp" />
+
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

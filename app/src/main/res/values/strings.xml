@@ -252,4 +252,14 @@
     <string name="book_now">Book Now</string>
     <string name="why_choose_us">Why Choose Us</string>
     <string name="voice_of_faith">Voice Of Faith</string>
+    <string name="about_pandit_ji">About Pandit Ji</string>
+    <string name="services_offered">Services Offered</string>
+    <string name="pandit_ji_details">Pandit Ji Details</string>
+    <string name="verified_pandit">Verified\nPandit</string>
+    <string name="trusted_services">Trusted\nServices</string>
+    <string name="additional_details">Additional Details</string>
+    <string name="specialization">Specialization:</string>
+    <string name="services">Services:</string>
+    <string name="availability">Availability:</string>
+    <string name="frequently_asked_questions">Frequently Asked Questions</string>
 </resources>

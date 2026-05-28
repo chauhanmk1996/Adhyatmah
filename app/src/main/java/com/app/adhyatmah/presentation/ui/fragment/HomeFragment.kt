@@ -37,6 +37,8 @@ import com.app.adhyatmah.domain.model.PopularPooja
 import com.app.adhyatmah.domain.model.Testimonials
 import com.app.adhyatmah.domain.model.TrendingSection
 import com.app.adhyatmah.domain.model.WhyChooseUs
+import com.app.adhyatmah.domain.model.create_booking.PanditJiDetails
+import com.app.adhyatmah.domain.model.create_booking.SeoContent
 import com.app.adhyatmah.domain.model.home_banner_response.HomeBanner
 import com.app.adhyatmah.domain.model.home_collection_Response.HomeCollection
 import com.app.adhyatmah.domain.model.home_menu_response.Item
@@ -313,18 +315,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         panditJiList.clear()
                         panditJiList.addAll(vendors)
                         panditJiAdapter = HomePanditJiAdapter(panditJiList) { pos ->
-                            val data = panditJiList[pos]
+                            val panditJi = panditJiList[pos]
+                            UserPreference.panditJiDetails = PanditJiDetails(
+                                id = panditJi.id,
+                                image = panditJi.image?.url ?: "",
+                                firstName = panditJi.firstName ?: "",
+                                lastName = panditJi.lastName ?: "",
+                                city = panditJi.city ?: "",
+                                experience = panditJi.experience ?: "",
+                                about = panditJi.about ?: "",
+                                seoContent = panditJi.seoContent,
+                                gotra = panditJi.gotra ?: "",
+                                verified = panditJi.verified ?: false,
+                                trusted = panditJi.trusted ?: false
+                            )
+
                             UserPreference.panditjiBookingRequest.apply {
-                                address = data.address
-                                vendorId = data.id
-                                firstName = data.firstName
-                                lastName = data.lastName
-                                image = data.image?.url
+                                address = panditJi.address
+                                vendorId = panditJi.id
+                                firstName = panditJi.firstName
+                                lastName = panditJi.lastName
+                                image = panditJi.image?.url
                                 bookingId = ""
-                                about = data.about
+                                about = panditJi.about
                             }
 
-                            if ((data.services?.size ?: 0) > 0) {
+                            if ((panditJi.services?.size ?: 0) > 0) {
                                 findNavController().navigate(R.id.bookingDetailsFragment)
                             } else {
                                 Toast.makeText(
