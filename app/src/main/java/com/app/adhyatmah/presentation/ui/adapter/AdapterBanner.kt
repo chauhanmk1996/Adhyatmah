@@ -7,21 +7,23 @@ import com.bumptech.glide.Glide
 import com.app.adhyatmah.databinding.HomeBannerRecyclerviewBinding
 import com.app.adhyatmah.domain.model.home_banner_response.SubBanner
 
-class AdapterBanner(var data: List<SubBanner>) : RecyclerView.Adapter<AdapterBanner.ViewPagger>() {
+class AdapterBanner(var data: List<SubBanner>, private val onSelected: (Int) -> Unit) :
+    RecyclerView.Adapter<AdapterBanner.ViewPagger>() {
     class ViewPagger(var binding: HomeBannerRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagger {
-        var binding = HomeBannerRecyclerviewBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = HomeBannerRecyclerviewBinding.inflate(LayoutInflater.from(parent.context))
         return ViewPagger(binding)
     }
 
     override fun onBindViewHolder(holder: ViewPagger, position: Int) {
-        var list = data[position]
-
-
+        val list = data[position]
         Glide.with(holder.itemView.context).load(list.url).into(holder.binding.img)
 
+        holder.binding.clBanner.setOnClickListener {
+            onSelected(position)
+        }
     }
 
     override fun getItemCount(): Int {

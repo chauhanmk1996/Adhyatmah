@@ -6,7 +6,7 @@ import com.app.adhyatmah.databinding.ViewPagerHomeBannerBinding
 import com.bumptech.glide.Glide
 import com.app.adhyatmah.domain.model.home_banner_response.HomeBanner
 
-class ViewPagerAdapter(private var viewPagerList: List<HomeBanner>) :
+class ViewPagerAdapter(private var viewPagerList: List<HomeBanner>,private val onSelected: (Int) -> Unit) :
     BasePagerAdapter<ViewPagerHomeBannerBinding>() {
 
 
@@ -20,5 +20,9 @@ class ViewPagerAdapter(private var viewPagerList: List<HomeBanner>) :
         val url = viewPagerList[position].url
         val context = binding.root.context
         Glide.with(context).load(url).into(binding.ivBanner)
+
+        binding.clBanner.setOnClickListener {
+            onSelected(position)
+        }
     }
 }

@@ -13,18 +13,23 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
 import com.app.adhyatmah.data.preferences.CURRENT_PINCODE
+import com.app.adhyatmah.data.preferences.IS_LOGIN
+import com.app.adhyatmah.data.preferences.MENU_TITLE
+import com.app.adhyatmah.data.preferences.PRODUCT_ID
+import com.app.adhyatmah.data.preferences.REVIEW_PD_ID
+import com.app.adhyatmah.data.preferences.TYPE
 import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.data.preferences.UserPreference.CART_COUNT
 import com.app.adhyatmah.databinding.FragmentHomeBinding
@@ -33,12 +38,16 @@ import com.app.adhyatmah.domain.model.Testimonials
 import com.app.adhyatmah.domain.model.TrendingSection
 import com.app.adhyatmah.domain.model.WhyChooseUs
 import com.app.adhyatmah.domain.model.home_banner_response.HomeBanner
+import com.app.adhyatmah.domain.model.home_collection_Response.HomeCollection
 import com.app.adhyatmah.domain.model.home_menu_response.Item
 import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Vendor
 import com.app.adhyatmah.domain.model.profile.manage_address.Addresse
 import com.app.adhyatmah.domain.model.profile.manage_address.ManageAddressRequest
+import com.app.adhyatmah.domain.model.wish_list.wish_list_request.AddWishListRequest
+import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.activity.MainActivity
 import com.app.adhyatmah.presentation.ui.adapter.AdapterBanner
+import com.app.adhyatmah.presentation.ui.adapter.HomeCollectionAdapter
 import com.app.adhyatmah.presentation.ui.adapter.PopularPoojasAdapter
 import com.app.adhyatmah.presentation.ui.adapter.RatingReviewAdapter
 import com.app.adhyatmah.presentation.ui.adapter.TrendingSectionAdapter
@@ -47,6 +56,7 @@ import com.app.adhyatmah.presentation.ui.adapter.WhyChooseUsAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.HomePanditJiAdapter
 import com.app.adhyatmah.presentation.ui.viewmodel.HomeViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
+import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.bumptech.glide.Glide
@@ -83,6 +93,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val rateReviewList: ArrayList<Testimonials> = ArrayList()
     private lateinit var ratingReviewAdapter: RatingReviewAdapter
 
+    private lateinit var productsAdapter: HomeCollectionAdapter
+
     private val settingsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             // Callback will trigger when user comes back from settings
@@ -99,8 +111,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             Log.i("TAG", "onViewCreated: fragment result listener called")
             val user = bundle.getParcelable<Addresse>("resultKey")
             user?.let {
-                binding.tvLocation.text =
-                    it.address1 + ", " + it.city + ", " + it.province + ", " + it.country + " - " + it.zip
+                binding.tvLocation.text = it.address1 + ", " + it.city + ", " + it.province + ", " + it.country + " - " + it.zip
                 Preferences.setStringPreference(requireContext(), CURRENT_PINCODE, it.zip)
             }
         }
@@ -111,7 +122,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
         setObserver()
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        navigateFromDrawer()
         homeViewModel.homeCollectionApi(token)
         homeViewModel.trendingSectionApi()
         homeViewModel.hitPanditListApi()
@@ -170,7 +180,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setViewPager(homeBanner: List<HomeBanner>) {
-        viewPagerAdapter = ViewPagerAdapter(homeBanner)
+        viewPagerAdapter = ViewPagerAdapter(homeBanner){
+            (requireActivity() as? MainActivity)?.switchToPanditJiTab()
+        }
         binding.viewPager.adapter = viewPagerAdapter
         binding.indicatorRecyclerview.setIndicators(homeBanner.size)
         binding.viewPager.addOnPageChangeListener(object : OnPageChangeListener {
@@ -261,8 +273,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         val list = res.data.payload?.collections ?: emptyList()
                         trendingSectionList.clear()
                         trendingSectionList.addAll(list)
-                        trendingSectionAdapter = TrendingSectionAdapter(trendingSectionList) {
+                        trendingSectionAdapter = TrendingSectionAdapter(trendingSectionList) {pos->
+                            val trendingSection = trendingSectionList[pos]
+                            val handle = trendingSection.handle
+                            val title = trendingSection.title
+                            val bundle = Bundle()
+                            bundle.putString(TYPE,"2")
+                            bundle.putString(MENU_TITLE,handle)
+                            bundle.putString("TITLE",title)
 
+                            if (handle.isNullOrEmpty()){
+                                binding.drawerLayout.closeDrawer(GravityCompat.START)
+                            }
+                            else{
+                                findNavController().navigate(R.id.action_homeFragment_to_productListFragment,bundle)
+                            }
                         }
                         binding.rvTrendingSections.adapter = trendingSectionAdapter
                     } else if (code == 401) {
@@ -384,7 +409,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             whyChooseUsList.clear()
                             whyChooseUsList.addAll(list)
                             whyChooseUsAdapter = WhyChooseUsAdapter(whyChooseUsList) {
-                                //TODO Why Choose Us Click
+                                (requireActivity() as? MainActivity)?.switchToPanditJiTab()
                             }
                             binding.rvWhyChooseUs.adapter = whyChooseUsAdapter
                         }
@@ -394,7 +419,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 "${testimonialsData.rating} (${testimonialsData.totalReviews} reviews)"
                             binding.tvRatingReview.text = totalRateReview
 
-                            testimonialsData.testimonials?.let { list->
+                            testimonialsData.testimonials?.let { list ->
                                 rateReviewList.clear()
                                 rateReviewList.addAll(list)
 
@@ -402,7 +427,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 binding.viewPagerRatingReview.adapter = ratingReviewAdapter
                                 binding.indicatorRatingReview.setIndicators(rateReviewList.size)
 
-                                binding.viewPagerRatingReview.addOnPageChangeListener(object : OnPageChangeListener {
+                                binding.viewPagerRatingReview.addOnPageChangeListener(object :
+                                    OnPageChangeListener {
                                     override fun onPageScrolled(
                                         position: Int,
                                         positionOffset: Float,
@@ -444,42 +470,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
         }
 
-        homeViewModel.getCollectionLiveData().observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    isCollectionLoaded = true
-
-                    val statusCode = it.data?.code // assuming your wrapper contains code
-                    when (statusCode) {
-                        200 -> {
-                            val data = it.data.payload
-                            CART_COUNT = it.data.payload.cart ?: 0
-                            (requireActivity() as? MainActivity)?.updateBagBadge(CART_COUNT)
-                            // setup adapter here
-                        }
-
-                        401 -> {
-                            Log.e("TAG", "Unauthorized access")
-                        }
-                    }
-                    stopShimmer()
-                    // ProcessDialog.dismissDialog(true)
-                }
-
-                Status.LOADING -> {
-                    startShimmerLayout()
-                    //   ProcessDialog.showDialog(requireActivity(), true)
-                }
-
-                Status.ERROR -> {
-                    stopShimmer()
-                    //  ProcessDialog.dismissDialog(true)
-                    Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-
-        }
-
         homeViewModel.getBannerLiveData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -491,7 +481,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             val homeBanner = it.data.payload.banners.homeBanners
                             viewPagerList = homeBanner
                             setViewPager(homeBanner)
-                            bannerAdapter = AdapterBanner(data)
+                            bannerAdapter = AdapterBanner(data){
+                                (requireActivity() as? MainActivity)?.switchToPanditJiTab()
+                            }
                             binding.bannerRecycler.adapter = bannerAdapter
                         }
 
@@ -650,12 +642,108 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
 
         }
+
+        homeViewModel.getCollectionLiveData().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    isCollectionLoaded = true
+                    val statusCode = it.data?.code
+                    when (statusCode) {
+                        200 -> {
+                            it.data.payload?.collections?.let { list ->
+                                setAdapter(list)
+                                CART_COUNT = it.data.payload.cart ?: 0
+                                (requireActivity() as? MainActivity)?.updateBagBadge(CART_COUNT)
+                            }
+                        }
+
+                        401 -> {
+                            Log.e("TAG", "Unauthorized access")
+                        }
+                    }
+                    stopShimmer()
+                }
+
+                Status.LOADING -> {
+                    startShimmerLayout()
+                }
+
+                Status.ERROR -> {
+                    stopShimmer()
+                    Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
-    private fun navigateFromDrawer() {
-        binding.drawerId.apply {
+    fun setAdapter(list: ArrayList<HomeCollection>) {
+        val filteredList = ArrayList(
+            list.filter { !it.products.isNullOrEmpty() }
+        )
+        productsAdapter = HomeCollectionAdapter(
+            filteredList,
+            false,
+            onViewAllClick = { position ->
+                val handle = filteredList[position].handle ?: ""
+                val title = filteredList[position].title ?: ""
+                (activity as MainActivity).switchToCategoryTab()
+                val bundle = Bundle()
+                bundle.putString("category_handle", handle)
+                findNavController().navigate(R.id.categoryProductFragment, bundle)
+            },
+            onWishlistClick = { collectionIndex, productIndex, isLiked ->
+                val product = filteredList[collectionIndex].products!![productIndex]
+                val productId = product.id
+                val isLogin = Preferences.getStringPreference(requireContext(), IS_LOGIN)
+                if (isLogin == "1") {
+                    if (isLiked) {
+                        val req = AddWishListRequest(token, productId)
+                        homeViewModel.addWishLisData(req)
+                    } else {
+                        val requ = AddWishListRequest(token, productId)
+                        homeViewModel.removeWishLisData(requ)
+                    }
+                } else {
+                    showLoginPrompt()
+                }
+            },
+            onSubAdapterClick = { collectionIndex, productIndex, isLiked ->
+                val product = filteredList[collectionIndex].products!![productIndex]
+                val productId = product.id
+                Preferences.setStringPreference(requireContext(), REVIEW_PD_ID, productId)
+                val bundle = Bundle()
+                bundle.putString(PRODUCT_ID, productId)
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_productDetailsFragment,
+                    bundle
+                )
+            }
+        )
+        binding.rvFeaturedProducts.adapter = productsAdapter
+    }
 
-        }
+    private fun showLoginPrompt() {
+        var dialog: AlertDialog? = null
+        dialog = CommonUtils.showCustomAlertDialog(
+            requireActivity(),
+            "Sign Up Required",
+            "Please sign up to add items to your wishlist.",
+            positiveButtonText = "Sign up",
+            negativeButtonText = "Cancel",
+            positiveButtonAction = {
+                dialog?.dismiss()
+                val intent = Intent(context, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                val bundle = Bundle()
+                bundle.putString("previousScreen", "logout")
+                bundle.putString("selectedImage", "0")
+                intent.putExtras(bundle)
+                requireActivity().startActivity(intent)
+            },
+            negativeButtonAction = {
+                dialog?.dismiss()
+            }
+        )
     }
 
     private var shimmerLoadingCount = 0
