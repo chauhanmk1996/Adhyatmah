@@ -111,7 +111,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             Log.i("TAG", "onViewCreated: fragment result listener called")
             val user = bundle.getParcelable<Addresse>("resultKey")
             user?.let {
-                binding.tvLocation.text = it.address1 + ", " + it.city + ", " + it.province + ", " + it.country + " - " + it.zip
+                val location =
+                    it.address1 + ", " + it.city + ", " + it.province + ", " + it.country + " - " + it.zip
+                binding.tvLocation.text = location
                 Preferences.setStringPreference(requireContext(), CURRENT_PINCODE, it.zip)
             }
         }
@@ -143,6 +145,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.tvViewAllPanditJi.setOnClickListener {
             (requireActivity() as? MainActivity)?.switchToPanditJiTab()
         }
+
+        binding.ivLanguage.setOnClickListener {
+            findNavController().navigate(R.id.selectLanguageFragment)
+        }
+
+        binding.ivCart.setOnClickListener {
+            (requireActivity() as? MainActivity)?.switchToCartTab()
+        }
     }
 
     fun fetchAddress() {
@@ -151,36 +161,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         homeViewModel.getAddressData(request)
     }
 
-    fun drawable(menuItem: List<Item>) {
-        //TODO
-        /*binding.threeDot.setOnClickListener {
-                binding.drawerLayout.openDrawer(GravityCompat.START)
-                drawerMenuAdapter = DrawerMenuAdapter(menuItem, {
-                    it->
-                    val handle = it.collectionHandle
-                    val title = it.title
-                    val bundle = Bundle()
-                    bundle.putString(TYPE,"2")
-                    bundle.putString(MENU_TITLE,handle)
-                    bundle.putString("TITLE",title)
-                    Log.d("TAG", "setAdapter:jj $handle")
-
-                    if (handle.isNullOrEmpty()){
-
-                        binding.drawerLayout.closeDrawer(GravityCompat.START)
-                    }
-                    else{
-                        findNavController().navigate(R.id.action_homeFragment_to_productListFragment,bundle)
-                    }
-
-                } )
-                binding.drawerId.recyclerDrawer.adapter = drawerMenuAdapter
-
-        }*/
-    }
-
     private fun setViewPager(homeBanner: List<HomeBanner>) {
-        viewPagerAdapter = ViewPagerAdapter(homeBanner){
+        viewPagerAdapter = ViewPagerAdapter(homeBanner) {
             (requireActivity() as? MainActivity)?.switchToPanditJiTab()
         }
         binding.viewPager.adapter = viewPagerAdapter
@@ -229,10 +211,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 checkLocationPermission()
 
                             } else {
-                                binding.tvLocation.text =
+                                val location =
                                     validAddresses?.get(0)?.city + ", " + validAddresses?.get(0)?.province + ", " + validAddresses?.get(
                                         0
                                     )?.country + " - " + validAddresses?.get(0)?.zip
+                                binding.tvLocation.text = location
                                 Preferences.setStringPreference(
                                     requireContext(),
                                     CURRENT_PINCODE,
@@ -273,22 +256,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         val list = res.data.payload?.collections ?: emptyList()
                         trendingSectionList.clear()
                         trendingSectionList.addAll(list)
-                        trendingSectionAdapter = TrendingSectionAdapter(trendingSectionList) {pos->
-                            val trendingSection = trendingSectionList[pos]
-                            val handle = trendingSection.handle
-                            val title = trendingSection.title
-                            val bundle = Bundle()
-                            bundle.putString(TYPE,"2")
-                            bundle.putString(MENU_TITLE,handle)
-                            bundle.putString("TITLE",title)
+                        trendingSectionAdapter =
+                            TrendingSectionAdapter(trendingSectionList) { pos ->
+                                val trendingSection = trendingSectionList[pos]
+                                val handle = trendingSection.handle
+                                val title = trendingSection.title
+                                val bundle = Bundle()
+                                bundle.putString(TYPE, "2")
+                                bundle.putString(MENU_TITLE, handle)
+                                bundle.putString("TITLE", title)
 
-                            if (handle.isNullOrEmpty()){
-                                binding.drawerLayout.closeDrawer(GravityCompat.START)
+                                if (handle.isNullOrEmpty()) {
+                                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                                } else {
+                                    findNavController().navigate(
+                                        R.id.action_homeFragment_to_productListFragment,
+                                        bundle
+                                    )
+                                }
                             }
-                            else{
-                                findNavController().navigate(R.id.action_homeFragment_to_productListFragment,bundle)
-                            }
-                        }
                         binding.rvTrendingSections.adapter = trendingSectionAdapter
                     } else if (code == 401) {
                         ProcessDialog.dismissDialog(true)
@@ -481,7 +467,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             val homeBanner = it.data.payload.banners.homeBanners
                             viewPagerList = homeBanner
                             setViewPager(homeBanner)
-                            bannerAdapter = AdapterBanner(data){
+                            bannerAdapter = AdapterBanner(data) {
                                 (requireActivity() as? MainActivity)?.switchToPanditJiTab()
                             }
                             binding.bannerRecycler.adapter = bannerAdapter

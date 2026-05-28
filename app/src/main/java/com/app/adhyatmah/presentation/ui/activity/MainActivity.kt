@@ -1,8 +1,6 @@
 package com.app.adhyatmah.presentation.ui.activity
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -10,16 +8,11 @@ import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.app.adhyatmah.R
-import com.app.adhyatmah.data.preferences.Preferences
-import com.app.adhyatmah.data.preferences.SELECTED_LANGUAGE_CODE
 import com.app.adhyatmah.databinding.ActivityMainBinding
 import com.app.adhyatmah.utils.base.BaseActivity
-import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
-    private lateinit var navController: androidx.navigation.NavController
-
 
     fun setBottomNavSelected(itemId: Int) {
         binding.bottomNavigationView.selectedItemId = itemId
@@ -29,10 +22,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun getLayoutId(): Int {
         return R.layout.activity_main
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bottomNav()
     }
+
     fun updateBagBadge(count: Int) {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         val badge = bottomNav.getOrCreateBadge(R.id.navigation_bag)
@@ -45,8 +40,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    fun bottomNav(){
-        val navController =findNavController(R.id.nav_host_fragment)
+    fun bottomNav() {
+        val navController = findNavController(R.id.nav_host_fragment)
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         bottomNav.setupWithNavController(navController)
@@ -56,22 +51,29 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     navController.navigate(R.id.homeFragment)
                     true
                 }
+
                 R.id.navigation_pandit_ji -> {
                     navController.navigate(R.id.panditJiFragment)
                     true
                 }
+
                 R.id.navigation_category -> {
                     navController.navigate(R.id.categoryProductFragment)
                     true
-                }R.id.navigation_bag -> {
-                //    navController.navigate(R.id.razorpayFragment)
-                navController.navigate(R.id.bagFragment)
-                true
-            }R.id.navigation_profile -> {
-                navController.navigate(R.id.profileFragment)
-               // navController.navigate(R.id.profileFragment)
-                true
-            }
+                }
+
+                R.id.navigation_bag -> {
+                    //    navController.navigate(R.id.razorpayFragment)
+                    navController.navigate(R.id.bagFragment)
+                    true
+                }
+
+                R.id.navigation_profile -> {
+                    navController.navigate(R.id.profileFragment)
+                    // navController.navigate(R.id.profileFragment)
+                    true
+                }
+
                 else -> false
             }
         }
@@ -79,156 +81,193 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment->{
+                R.id.homeFragment -> {
                     setBottomBarPadding()
                     showBottomNav()
                 }
-                R.id.categoryFragment->{
+
+                R.id.categoryFragment -> {
                     setBottomBarPadding()
                     showBottomNav()
                 }
-                R.id.bagFragment->{
+
+                R.id.bagFragment -> {
                     setBottomBarPadding()
                     showBottomNav()
                 }
+
                 R.id.profileFragment -> {
                     setBottomBarPadding()
                     showBottomNav()
                 }
+
                 R.id.wishListFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
                 }
+
                 R.id.myOrderFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
                 }
-                R.id.mangeAddressFragment ->{
+
+                R.id.mangeAddressFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
                 }
+
                 R.id.termConditionFragment2 -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
                 }
-                R.id.helpSupportFragment ->{
+
+                R.id.helpSupportFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
                 }
-                R.id.contactUsFragment ->{
+
+                R.id.contactUsFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
                 }
-                R.id.filterFragment ->{
+
+                R.id.filterFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
                 }
+
                 R.id.addAddressFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
                 }
+
                 R.id.brandFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
                 }
+
                 R.id.reviewsFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
                 }
-                R.id.editProfileFragment ->{
+
+                R.id.editProfileFragment -> {
                     clearBottomBarPadding()
                     hideBottomNav()
                 }
+
                 R.id.brandFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
                 }
+
                 R.id.editProfileFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
 
                 }
-                R.id.paymentMethodFragment ->{
+
+                R.id.paymentMethodFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
 
                 }
-                R.id.congratulationFragment ->{
+
+                R.id.congratulationFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
 
                 }
-                R.id.confirmOrderFragment ->{
+
+                R.id.confirmOrderFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
 
                 }
+
                 R.id.productDetailsFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
 
                 }
-                R.id.productListFragment ->{
+
+                R.id.productListFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
 
                 }
+
                 R.id.myOrderDetailsFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
 
                 }
+
                 R.id.trackOrderFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
 
                 }
+
                 R.id.sizeImageFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
 
                 }
+
                 R.id.blogDetailsFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
 
                 }
+
                 R.id.paymentGatewayFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
 
-                }R.id.searchListFragment -> {
+                }
+
+                R.id.searchListFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
 
-                }R.id.bookingFragment -> {
+                }
+
+                R.id.bookingFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
                 }
+
                 R.id.bookingDetailsFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
                 }
+
                 R.id.chooseServiceFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
                 }
+
                 R.id.dateTimeSelectionFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
                 }
+
                 R.id.selectLanguageFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
                 }
+
                 R.id.confirmBookingFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
                 }
+
                 R.id.chooseLanguageFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
                 }
+
                 else -> {
                     bottomNav.visibility = View.VISIBLE
                     setBottomBarPadding()
@@ -238,6 +277,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
     }
+
     private fun clearBottomBarPadding() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root, null)
         binding.bottomNavigationView.setPadding(0, 0, 0, 0)
@@ -247,7 +287,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     fun setBottomBarPadding() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            // Remove extra padding from BottomAppBar and its children
             binding.bottomNavigationView.setPadding(0, 0, 0, 0)
             val offset = if (isGestureNavigation()) systemBars.bottom else 0
             binding.bottomNavigationView.setPadding(0, 0, 0, offset)
@@ -255,80 +294,50 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-   /* override fun onBackPressed() {
-        super.onBackPressed()
+    override fun onBackPressed() {
         val navController = findNavController(R.id.nav_host_fragment)
-        val currentFragmentId = navController.currentDestination?.id
+        val currentDestinationId = navController.currentDestination?.id
 
-        if (currentFragmentId != R.id.homeFragment) {
-            // Navigate to home fragment
-            val navOptions = NavOptions.Builder()
-                .setLaunchSingleTop(true)
-                .setPopUpTo(navController.graph.startDestinationId, inclusive = false)
-                .build()
-            navController.navigate(R.id.homeFragment, null, navOptions)
-            binding.bottomNavigationView.selectedItemId = R.id.navigation_home
-        } else {
-            // Already on home fragment - close app
-            //finish()
+        // List of your base fragments (bottom nav tabs)
+        val baseFragments = setOf(
+            R.id.homeFragment,
+            R.id.categoryFragment,
+            R.id.bagFragment,
+            R.id.profileFragment
+        )
+
+        when {
+            // If in a deep stack (not one of base fragments), pop the back stack
+            currentDestinationId !in baseFragments -> {
+                super.onBackPressed()
+            }
+
+            // If currently in a base fragment but NOT homeFragment
+            currentDestinationId != R.id.homeFragment -> {
+                val navOptions = NavOptions.Builder()
+                    .setLaunchSingleTop(true)
+                    .setPopUpTo(navController.graph.startDestinationId, inclusive = false)
+                    .build()
+                navController.navigate(R.id.homeFragment, null, navOptions)
+
+                binding.bottomNavigationView.selectedItemId = R.id.navigation_home
+            }
+
+            else -> {
+                finish()
+            }
         }
     }
-*/
-   override fun onBackPressed() {
-       val navController = findNavController(R.id.nav_host_fragment)
-       val currentDestinationId = navController.currentDestination?.id
-
-       // List of your base fragments (bottom nav tabs)
-       val baseFragments = setOf(
-           R.id.homeFragment,
-           R.id.categoryFragment,
-           R.id.bagFragment,
-           R.id.profileFragment
-       )
-
-       when {
-           // If in a deep stack (not one of base fragments), pop the back stack
-           currentDestinationId !in baseFragments -> {
-               super.onBackPressed()
-           }
-
-           // If currently in a base fragment but NOT homeFragment
-           currentDestinationId != R.id.homeFragment -> {
-               val navOptions = NavOptions.Builder()
-                   .setLaunchSingleTop(true)
-                   .setPopUpTo(navController.graph.startDestinationId, inclusive = false)
-                   .build()
-               navController.navigate(R.id.homeFragment, null, navOptions)
-
-               binding.bottomNavigationView.selectedItemId = R.id.navigation_home
-           }
-
-           // If already in homeFragment → double press to exit
-           else -> {
-              finish()
-           }
-       }
-   }
 
     fun showBottomNav() {
-        binding.bottomNavigationView.visibility= View.VISIBLE
+        binding.bottomNavigationView.visibility = View.VISIBLE
     }
 
     fun hideBottomNav() {
-        binding.bottomNavigationView.visibility= View.GONE
+        binding.bottomNavigationView.visibility = View.GONE
     }
 
-   /* private fun setBottomBarPadding() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            // Remove extra padding from BottomAppBar and its children
-            binding.bottomNavigationView.setPadding(0, 0, 0, 0)
-            val offset = if (isGestureNavigation()) systemBars.bottom else 0
-            binding.bottomNavigationView.setPadding(0, 0, 0, offset)
-            WindowInsetsCompat.CONSUMED
-        }
-    }
-   */ private fun isGestureNavigation(): Boolean {
+    private fun isGestureNavigation(): Boolean {
         val resId = resources.getIdentifier("config_navBarInteractionMode", "integer", "android")
         return resId > 0 && resources.getInteger(resId) == 2
     }
@@ -337,26 +346,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.selectedItemId = R.id.navigation_pandit_ji
     }
+
     fun switchToCategoryTab() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.selectedItemId = R.id.navigation_category
     }
+
     fun switchToCartTab() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.selectedItemId = R.id.navigation_bag
     }
-
-    /*override fun attachBaseContext(newBase: Context) {
-        // THIS MUST BE THE VERY FIRST THING — BEFORE onCreate()
-        val localeCode = Preferences.getStringPreference(newBase, SELECTED_LANGUAGE_CODE)
-        Log.i("TAG", "attachBaseContext: "+localeCode)
-        if (localeCode.isNullOrEmpty() || localeCode=="null" || localeCode=="") {
-            Preferences.setStringPreference(newBase, SELECTED_LANGUAGE_CODE, "en")
-        }
-        super.attachBaseContext(CommonUtils.setLocale(newBase, localeCode ?: "en"))
-    }*/
-
-
-
-
 }
