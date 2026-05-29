@@ -335,6 +335,10 @@
         android:name="com.app.adhyatmah.presentation.ui.pandit_ji.ChooseServiceFragment"
         android:label="ChooseServiceFragment" />
     <fragment
+        android:id="@+id/chooseAddOnFragment"
+        android:name="com.app.adhyatmah.presentation.ui.pandit_ji.ChooseAddOnFragment"
+        android:label="ChooseAddOnFragment" />
+    <fragment
         android:id="@+id/selectLanguageFragment"
         android:name="com.app.adhyatmah.presentation.ui.pandit_ji.SelectLanguageFragment"
         android:label="SelectLanguageFragment" />

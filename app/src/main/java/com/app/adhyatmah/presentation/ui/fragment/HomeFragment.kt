@@ -38,10 +38,8 @@ import com.app.adhyatmah.domain.model.Testimonials
 import com.app.adhyatmah.domain.model.TrendingSection
 import com.app.adhyatmah.domain.model.WhyChooseUs
 import com.app.adhyatmah.domain.model.create_booking.PanditJiDetails
-import com.app.adhyatmah.domain.model.create_booking.SeoContent
 import com.app.adhyatmah.domain.model.home_banner_response.HomeBanner
 import com.app.adhyatmah.domain.model.home_collection_Response.HomeCollection
-import com.app.adhyatmah.domain.model.home_menu_response.Item
 import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Vendor
 import com.app.adhyatmah.domain.model.profile.manage_address.Addresse
 import com.app.adhyatmah.domain.model.profile.manage_address.ManageAddressRequest
@@ -50,7 +48,7 @@ import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.activity.MainActivity
 import com.app.adhyatmah.presentation.ui.adapter.AdapterBanner
 import com.app.adhyatmah.presentation.ui.adapter.HomeCollectionAdapter
-import com.app.adhyatmah.presentation.ui.adapter.PopularPoojasAdapter
+import com.app.adhyatmah.presentation.ui.adapter.PopularPujasAdapter
 import com.app.adhyatmah.presentation.ui.adapter.RatingReviewAdapter
 import com.app.adhyatmah.presentation.ui.adapter.TrendingSectionAdapter
 import com.app.adhyatmah.presentation.ui.adapter.ViewPagerAdapter
@@ -87,7 +85,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private lateinit var trendingSectionAdapter: TrendingSectionAdapter
 
     private val popularPoojaList: ArrayList<PopularPooja> = ArrayList()
-    private lateinit var popularPoojasAdapter: PopularPoojasAdapter
+    private lateinit var popularPujasAdapter: PopularPujasAdapter
 
     private val whyChooseUsList: ArrayList<WhyChooseUs> = ArrayList()
     private lateinit var whyChooseUsAdapter: WhyChooseUsAdapter
@@ -145,6 +143,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.tvViewAllPanditJi.setOnClickListener {
+            (requireActivity() as? MainActivity)?.switchToPanditJiTab()
+        }
+
+        binding.clLongBanner.setOnClickListener {
             (requireActivity() as? MainActivity)?.switchToPanditJiTab()
         }
 
@@ -389,10 +391,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         payload?.services?.let { list ->
                             popularPoojaList.clear()
                             popularPoojaList.addAll(list)
-                            popularPoojasAdapter = PopularPoojasAdapter(popularPoojaList) {
+                            popularPujasAdapter = PopularPujasAdapter(popularPoojaList) {
                                 //TODO Popular Pooja Click
                             }
-                            binding.rvPopularPoojas.adapter = popularPoojasAdapter
+                            binding.rvPopularPujas.adapter = popularPujasAdapter
                         }
 
                         payload?.longBanner?.let { longBanner ->
@@ -524,13 +526,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
 
                 Status.LOADING -> {
-                    // startShimmerLayout()
                     ProcessDialog.showDialog(requireActivity(), true)
                 }
 
                 Status.ERROR -> {
                     Log.e("TAG", "Error: ${it.message}")
-                    //stopShimmer()
                     ProcessDialog.dismissDialog(true)
                     Snackbar.make(
                         requireView(),
@@ -548,21 +548,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
                     val message = it.data?.message ?: "Something went wrong"
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-
-//                    Toast.makeText(requireActivity(), "Remove from wishlist", Toast.LENGTH_SHORT).show()
-                    //  stopShimmer()
                     ProcessDialog.dismissDialog(true)
                 }
 
                 Status.LOADING -> {
                     startShimmerLayout()
-                    //  ProcessDialog.showDialog(requireActivity(), true)
                 }
 
                 Status.ERROR -> {
                     Log.e("TAG", "Error: ${it.message}")
                     stopShimmer()
-                    // ProcessDialog.dismissDialog(true)
                     Snackbar.make(
                         requireView(),
                         it.message ?: "Unknown error",

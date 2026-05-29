@@ -2,7 +2,6 @@ package com.app.adhyatmah.presentation.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
@@ -45,7 +44,7 @@ class ChooseLanguageFragment : BaseFragment<FragmentSelectLanguageBinding>() {
 
         }
 
-        binding.rvServices.adapter = adapter
+        binding.rvLanguage.adapter = adapter
 
         binding.btnNext.setOnClickListener {
             Log.i("TAG", "btn next: "+selectedLanguage)
@@ -58,7 +57,7 @@ class ChooseLanguageFragment : BaseFragment<FragmentSelectLanguageBinding>() {
             saveLanguageAndApply(selectedLanguage!!)
         }
 
-        binding.backBtn.setOnClickListener {
+        binding.ivBack.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }

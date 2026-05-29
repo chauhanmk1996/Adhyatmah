@@ -248,7 +248,7 @@
     <string name="resend_confirmation_code">Resend confirmation code</string>
     <string name="invalid_credentials">Invalid credentials</string>
     <string name="trending_sections">Trending Sections</string>
-    <string name="popular_poojas">Popular Poojas</string>
+    <string name="popular_pujas">Popular Pujas</string>
     <string name="book_now">Book Now</string>
     <string name="why_choose_us">Why Choose Us</string>
     <string name="voice_of_faith">Voice Of Faith</string>
@@ -262,4 +262,14 @@
     <string name="services">Services:</string>
     <string name="availability">Availability:</string>
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
+    <string name="book_puja">Book Puja</string>
+    <string name="select_puja">Select Puja</string>
+    <string name="add_ons">Add ons</string>
+    <string name="addon_puja_kit_here">Addon Puja Kit here</string>
+    <string name="add">Add</string>
+    <string name="puja_kit">Puja Kit</string>
+    <string name="instant_kit">Instant Kit</string>
+    <string name="skip">Skip</string>
+    <string name="quantity_can_t_be_more_then_5">Quantity can\'t be more then 5</string>
+    <string name="available_slots">Available Slots</string>
 </resources>

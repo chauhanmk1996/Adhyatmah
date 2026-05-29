@@ -45,6 +45,7 @@ import com.app.adhyatmah.domain.model.faq.FAQResponse
 import com.app.adhyatmah.domain.model.fetch_wish_data.FetchWishListResponse
 import com.app.adhyatmah.domain.model.filter.filter_request.FilterRequest
 import com.app.adhyatmah.domain.model.filter.getFilter.GetFilterResponse
+import com.app.adhyatmah.domain.model.get_services.GetPujaKitResponse
 import com.app.adhyatmah.domain.model.get_services.GetServicesResponse
 import com.app.adhyatmah.domain.model.get_short_collection.request.GetSortedCollectionRequest
 import com.app.adhyatmah.domain.model.home_banner_response.HomeBannerResponse
@@ -361,6 +362,11 @@ interface ApiService {
     suspend fun getPanditjiServices(
         @Query("panditId") panditId: String
     ): GetServicesResponse
+
+    @GET("getHomepagePoojaServicesKit")
+    suspend fun getAddOnKit(
+        @Query("serviceId") serviceId: String
+    ): GetPujaKitResponse
 
     @GET("getBookings")
     suspend fun getBookings(

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.databinding.FragmentDateTimeSelectionBinding
@@ -24,7 +23,7 @@ class DateTimeSelectionFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentDateTimeSelectionBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,6 +34,13 @@ class DateTimeSelectionFragment : Fragment() {
         setupRecycler()
         setupCalendar()
         setupListeners()
+    }
+
+    private fun setupRecycler() {
+        timeAdapter = TimeSlotAdapter { selected ->
+            selectedTime = selected
+        }
+        binding.rvSlot.adapter = timeAdapter
     }
 
     private fun setupCalendar() {
@@ -52,7 +58,8 @@ class DateTimeSelectionFragment : Fragment() {
             calendar.set(year, month, dayOfMonth)
 
             if (calendar.timeInMillis < System.currentTimeMillis() - 86400000) {
-                Toast.makeText(requireContext(), "You can't select a past date", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "You can't select a past date", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnDateChangeListener
             }
 
@@ -61,15 +68,11 @@ class DateTimeSelectionFragment : Fragment() {
         }
     }
 
-    private fun setupRecycler() {
-        binding.rvTimeSlots.layoutManager = LinearLayoutManager(requireContext())
-        timeAdapter = TimeSlotAdapter { selected ->
-            selectedTime = selected
-        }
-        binding.rvTimeSlots.adapter = timeAdapter
-    }
-
     private fun setupListeners() {
+        binding.ivBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
         binding.btnNext.setOnClickListener {
             if (selectedDate == null) {
                 Toast.makeText(requireContext(), "Please select a date", Toast.LENGTH_SHORT).show()
@@ -77,23 +80,18 @@ class DateTimeSelectionFragment : Fragment() {
             }
 
             if (selectedTime == null) {
-                Toast.makeText(requireContext(), "Please select a time slot", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please select a time slot", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
             // Combine date and time into ISO format
             val isoDateTime = convertToIsoFormat(selectedDate!!, selectedTime!!)
 
-//            Toast.makeText(requireContext(), "Selected: $isoDateTime", Toast.LENGTH_LONG).show()
             UserPreference.panditjiBookingRequest.dateTime = isoDateTime
             findNavController().navigate(R.id.selectLanguageFragment)
         }
-
-        binding.backBtn.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
     }
-
 
     private fun refreshSlots(date: String) {
         val slots = mutableListOf<String>()
@@ -116,7 +114,6 @@ class DateTimeSelectionFragment : Fragment() {
                 hour++
             }
         }
-
         timeAdapter.updateSlots(slots, date)
     }
 
@@ -136,5 +133,4 @@ class DateTimeSelectionFragment : Fragment() {
         }
         return ""
     }
-
 }

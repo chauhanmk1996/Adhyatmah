@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adhyatmah.R
-import com.app.adhyatmah.databinding.RecyclerMultiplePoojaBinding
+import com.app.adhyatmah.databinding.ListItemMultilplePujaBinding
 import com.app.panditji.data.model.app_language.AppLanguage
 import java.util.Locale
 
@@ -15,11 +15,11 @@ class ChooseLanguageAdapter(
     private val onSelect: (AppLanguage) -> Unit
 ) : RecyclerView.Adapter<ChooseLanguageAdapter.LanguageViewHolder>() {
 
-    inner class LanguageViewHolder(val binding: RecyclerMultiplePoojaBinding) :
+    inner class LanguageViewHolder(val binding: ListItemMultilplePujaBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
-        val binding = RecyclerMultiplePoojaBinding.inflate(
+        val binding = ListItemMultilplePujaBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

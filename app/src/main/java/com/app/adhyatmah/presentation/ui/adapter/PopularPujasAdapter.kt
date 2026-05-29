@@ -2,23 +2,24 @@ package com.app.adhyatmah.presentation.ui.adapter
 
 import com.app.adhyatmah.R
 import com.app.adhyatmah.base.BaseRecyclerAdapter
-import com.app.adhyatmah.databinding.ListItemPopularPoojasBinding
+import com.app.adhyatmah.databinding.ListItemPopularPujasBinding
 import com.app.adhyatmah.domain.model.PopularPooja
 import com.app.adhyatmah.utils.formatViews
 import com.app.adhyatmah.utils.getDigit
 import com.bumptech.glide.Glide
 
-class PopularPoojasAdapter(
-    private val popularPoojaList: ArrayList<PopularPooja>, private val onSelected: (Int) -> Unit,
-) : BaseRecyclerAdapter<ListItemPopularPoojasBinding>() {
+class PopularPujasAdapter(
+    private val popularPoojaList: ArrayList<PopularPooja>,
+    private val onSelected: (PopularPooja) -> Unit,
+) : BaseRecyclerAdapter<ListItemPopularPujasBinding>() {
 
-    override fun getLayoutId(): Int = R.layout.list_item_popular_poojas
+    override fun getLayoutId(): Int = R.layout.list_item_popular_pujas
 
     override fun getItemCount(): Int {
         return popularPoojaList.size
     }
 
-    override fun bind(binding: ListItemPopularPoojasBinding, position: Int) {
+    override fun bind(binding: ListItemPopularPujasBinding, position: Int) {
         binding.apply {
             val context = binding.root.context
             val popularPooja = popularPoojaList[position]
@@ -37,8 +38,8 @@ class PopularPoojasAdapter(
             tvOfferPrice.text = (popularPooja.price?.getDigit() ?: "")
             tvOldPrice.text = (popularPooja.originalPrice?.getDigit() ?: "")
 
-            cvPopularPooja.setOnClickListener {
-                onSelected(position)
+            clBookNow.setOnClickListener {
+                onSelected(popularPooja)
             }
         }
     }

@@ -38,6 +38,7 @@ import com.app.adhyatmah.domain.model.faq.FAQResponse
 import com.app.adhyatmah.domain.model.fetch_wish_data.FetchWishListResponse
 import com.app.adhyatmah.domain.model.filter.filter_request.FilterRequest
 import com.app.adhyatmah.domain.model.filter.getFilter.GetFilterResponse
+import com.app.adhyatmah.domain.model.get_services.GetPujaKitResponse
 import com.app.adhyatmah.domain.model.get_services.GetServicesResponse
 import com.app.adhyatmah.domain.model.logout.LogOutRequest
 import com.app.adhyatmah.domain.model.privacy_policy.TermPrivacyResponse
@@ -229,6 +230,9 @@ class ApiRepository {
 
     suspend fun getPanditjiServicesApi(panditId: String): GetServicesResponse =
         service.getPanditjiServices(panditId)
+
+    suspend fun getAddOnKitApi(serviceId: String): GetPujaKitResponse =
+        service.getAddOnKit(serviceId)
 
     suspend fun getBookingHistoryApi(type: String): GetBookingResponse = service.getBookings(type)
 

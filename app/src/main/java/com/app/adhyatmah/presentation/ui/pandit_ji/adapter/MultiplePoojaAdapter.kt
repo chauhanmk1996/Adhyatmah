@@ -2,7 +2,7 @@ package com.app.adhyatmah.presentation.ui.pandit_ji.adapter
 
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adhyatmah.databinding.RecyclerMultiplePoojaBinding
+import com.app.adhyatmah.databinding.ListItemMultilplePujaBinding
 
 class MultiplePoojaAdapter(var list: MutableList<String>,
                             var onMultipleClick :(selectedListPosition: List<Int>, selectedListItem: List<String>) -> Unit
@@ -11,7 +11,7 @@ class MultiplePoojaAdapter(var list: MutableList<String>,
     private var selectedItems: MutableList<String> = mutableListOf()
 
     override fun onCreateViewHolder(parent: android.view.ViewGroup, viewType: Int): ViewHolder {
-        var binding = RecyclerMultiplePoojaBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        var binding = ListItemMultilplePujaBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
 
@@ -62,5 +62,5 @@ class MultiplePoojaAdapter(var list: MutableList<String>,
     override fun getItemCount(): Int {
         return list.size
     }
-    inner class ViewHolder(var binding : RecyclerMultiplePoojaBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(var binding : ListItemMultilplePujaBinding) : RecyclerView.ViewHolder(binding.root)
 }

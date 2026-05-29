@@ -1,5 +1,7 @@
 package com.app.adhyatmah.domain.model.create_booking
 
+import com.app.adhyatmah.domain.model.get_services.PujaKit
+
 data class PanditjiBookingRequest(
     var image: String? = null,
     var firstName: String? = null,
@@ -19,6 +21,8 @@ data class PanditjiBookingRequest(
     var bookingId: String? = null,
     var address: String? = null,
     var language: List<String>? = null,
+    var selectedPujaKit: ArrayList<PujaKit>? = null,
+    var selectedInstantKit: ArrayList<PujaKit>? = null,
 )
 
 data class PanditJiDetails(
