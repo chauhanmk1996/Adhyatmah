@@ -393,8 +393,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         payload?.services?.let { list ->
                             popularPoojaList.clear()
                             popularPoojaList.addAll(list)
-                            popularPujasAdapter = PopularPujasAdapter(popularPoojaList) {
-                                //TODO Popular Pooja Click
+                            popularPujasAdapter = PopularPujasAdapter(popularPoojaList) {selectedPuja ->
+                                (requireActivity() as? MainActivity)?.switchToPanditJiTab("Service",selectedPuja.name?:"" )
                             }
                             binding.rvPopularPujas.adapter = popularPujasAdapter
                         }

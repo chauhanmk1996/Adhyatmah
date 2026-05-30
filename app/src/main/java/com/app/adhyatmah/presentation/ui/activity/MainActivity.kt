@@ -6,6 +6,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.app.adhyatmah.R
 import com.app.adhyatmah.databinding.ActivityMainBinding
@@ -342,8 +343,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         return resId > 0 && resources.getInteger(resId) == 2
     }
 
-    fun switchToPanditJiTab() {
+    fun switchToPanditJiTab(selectedType: String? = null, search: String? = null) {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bundle = Bundle().apply {
+            putString("selectedType", selectedType)
+            putString("search", search)
+        }
+        supportFragmentManager.setFragmentResult("searchData", bundle)
+
         bottomNav.selectedItemId = R.id.navigation_pandit_ji
     }
 

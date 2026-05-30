@@ -27,7 +27,6 @@ import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.databinding.FragmentPanditJiBinding
 import com.app.adhyatmah.domain.model.create_booking.PanditjiBookingRequest
 import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Vendor
-import com.app.adhyatmah.domain.model.search_list_response.search_list_request.SearchListRequest
 import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.PanditJiAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.MultiplePoojaAdapter
@@ -43,11 +42,10 @@ import kotlinx.coroutines.launch
 
 class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
 
-    private var selectedType: String = "PanditJi" // Default selection
+    private var selectedType: String = "PanditJi"
     private lateinit var panditJiAdapter: PanditJiAdapter
     private lateinit var multiplePoojaAdapter: MultiplePoojaAdapter
     private val viewmodel by activityViewModels<PanditListViewModel>()
-
     private val currentPanditList = mutableListOf<Vendor>()
     private var searchJob: Job? = null
     private val SEARCH_DEBOUNCE_MS = 300L
@@ -100,7 +98,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
 
     private fun showFullList() {
         if (currentPanditList.isNotEmpty()) {
-            setAdapter(selectedType, currentPanditList)
+            setAdapter(currentPanditList)
             binding.recSearch.visibility = View.VISIBLE
             binding.noResult.visibility = View.GONE
         } else {
@@ -111,12 +109,15 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     private var ignoreNextSpinnerSelection = false
 
     private fun setSpinnerOptions(options: List<String>, panditjiList: List<Vendor>) {
-        // Prepend a placeholder so selection can be toggled
         val spinnerItems = mutableListOf<String>()
-        spinnerItems.add(getString(R.string.select)) // index 0 placeholder
+        spinnerItems.add(getString(R.string.select))
         spinnerItems.addAll(options) // e.g. "PanditJi", "Service"
 
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, spinnerItems)
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            spinnerItems
+        )
         binding.mySpinner.adapter = adapter
 
         currentPanditList.clear()
@@ -128,8 +129,16 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         // Delay setting the listener to avoid premature calls during spinner initialization
         binding.mySpinner.post {
             binding.mySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                    Log.d("SpinnerDebug", "onItemSelected called: position=$position, value=${spinnerItems[position]}, ignoreNextSpinnerSelection=$ignoreNextSpinnerSelection")
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long,
+                ) {
+                    Log.d(
+                        "SpinnerDebug",
+                        "onItemSelected called: position=$position, value=${spinnerItems[position]}, ignoreNextSpinnerSelection=$ignoreNextSpinnerSelection"
+                    )
 
                     // Skip if this is a programmatic selection
                     if (ignoreNextSpinnerSelection) {
@@ -161,7 +170,10 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                         // Reset spinner to placeholder to allow re-triggering
                         ignoreNextSpinnerSelection = true
                         binding.mySpinner.setSelection(0, false)
-                        Log.d("SpinnerDebug", "Reset spinner to placeholder after Service selection")
+                        Log.d(
+                            "SpinnerDebug",
+                            "Reset spinner to placeholder after Service selection"
+                        )
                     } else {
                         // PanditJi selected -> clear search and show full list
                         binding.searchView.setText("")
@@ -180,17 +192,42 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         // Reset ignore flag after initial setup
         ignoreNextSpinnerSelection = false
 
-        // Show initial adapter content
-        setAdapter(selectedType, panditjiList)
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            "searchData",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            if (bundle.isEmpty) return@setFragmentResultListener
+            val type = bundle.getString("selectedType")
+            val search = bundle.getString("search")
+
+            if (!type.isNullOrEmpty()) {
+                selectedType = type
+            }
+
+            if (!search.isNullOrEmpty()) {
+                for (i in 0 until adapter.count) {
+                    if (adapter.getItem(i).toString() == search) {
+                        binding.mySpinner.setSelection(i)
+                        break
+                    }
+                }
+                binding.searchView.setText(search)
+            }
+        }
+
+        setAdapter(panditjiList)
     }
-    /** Dialog showing list of poojas */
+
     private fun openPoojaSelectionDialog() {
         val poojaList = poojaList
 
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_multiple_pooja)
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val recycler = dialog.findViewById<RecyclerView>(R.id.recMultiplePooja)
@@ -211,7 +248,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         dialog.show()
     }
 
-    private fun setAdapter(selectedType: String, panditjiList: List<Vendor>) {
+    private fun setAdapter(panditjiList: List<Vendor>) {
         panditJiAdapter = PanditJiAdapter(panditjiList.toMutableList(), { imgClickPosition ->
             Log.d("TAG", "Pandit Image Clicked at position: $imgClickPosition")
         }, { data ->
@@ -225,15 +262,16 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                 bookingId = ""
                 about = data.about
             }
-            if(Preferences.getStringPreference(requireContext(), IS_LOGIN)=="1"){
+            if (Preferences.getStringPreference(requireContext(), IS_LOGIN) == "1") {
                 if ((data.services?.size ?: 0) > 0) {
                     findNavController().navigate(R.id.bookingDetailsFragment)
 //                    findNavController().navigate(R.id.selectLanguageFragment)
 
                 } else {
-                    Toast.makeText(requireActivity(), "No Service Available!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), "No Service Available!", Toast.LENGTH_SHORT)
+                        .show()
                 }
-            }else{
+            } else {
                 showLoginPrompt()
             }
         })
@@ -243,10 +281,11 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         binding.recSearch.visibility = View.VISIBLE
         binding.noResult.visibility = if (panditjiList.isEmpty()) View.VISIBLE else View.GONE
     }
+
     private fun showLoginPrompt() {
         var dialog: AlertDialog? = null
-        dialog=  CommonUtils.showCustomAlertDialog(
-            requireActivity() ,
+        dialog = CommonUtils.showCustomAlertDialog(
+            requireActivity(),
             "Sign Up Required",
             "Sign up required to Book a Pandit Ji.",
             positiveButtonText = "Sign up",
@@ -255,13 +294,15 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                 dialog?.dismiss()
                 val intent = Intent(context, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                val bundle = Bundle()
-                requireActivity().startActivity(intent)            },
+                Bundle()
+                requireActivity().startActivity(intent)
+            },
             negativeButtonAction = {
                 dialog?.dismiss()
             }
         )
     }
+
     private fun setObserver() {
         viewmodel.getPanditListLiveData().observe(viewLifecycleOwner) { res ->
             when (res.status) {
@@ -274,21 +315,26 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                         currentPanditList.clear()
                         currentPanditList.addAll(vendors)
 
-                        val currentQuery = binding.searchView.text?.toString()?.trim() ?: ""
+                        binding.searchView.text?.toString()?.trim() ?: ""
                         val spinnerItems = listOf("PanditJi", "Service")
                         if (binding.mySpinner.adapter == null) {
                             setSpinnerOptions(spinnerItems, vendors)
                         } else {
-                            setAdapter(selectedType, vendors)
+                            setAdapter(vendors)
                         }
                     } else {
                         ProcessDialog.dismissDialog(true)
-                        setAdapter(selectedType, emptyList())
+                        setAdapter(emptyList())
                     }
                 }
+
                 Status.ERROR -> {
                     ProcessDialog.dismissDialog(true)
-                    Snackbar.make(requireView(), res.message ?: "Something went wrong", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        requireView(),
+                        res.message ?: "Something went wrong",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
