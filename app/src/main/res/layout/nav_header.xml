@@ -19,7 +19,7 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="60dp"
-                android:background="@mipmap/main_header"
+                android:background="@drawable/home_logo"
                 android:fontFamily="@font/muktamahee_semibold"
                 android:text="Rontomsongh"
                 android:textColor="@color/black"

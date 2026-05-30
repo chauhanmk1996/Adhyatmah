@@ -26,7 +26,6 @@ data class GetBookingResponse(
             val `package`: String,
             val paymentAmount: Int,
             val poojaType: String,
-            val pujaSamagri: String,
             val service: String,
             val status: String,
             val updatedAt: String,

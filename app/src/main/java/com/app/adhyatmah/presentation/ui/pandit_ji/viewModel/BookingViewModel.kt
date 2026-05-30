@@ -35,13 +35,7 @@ class BookingViewModel @Inject constructor(
             }
         }
     }
-
-
-
-
-
-
-
+    
     private val updateBookingLiveData = SingleLiveEvent<Resources<GetBookingResponse>>()
 
     fun getUpdateBooking(): LiveData<Resources<GetBookingResponse>> = updateBookingLiveData

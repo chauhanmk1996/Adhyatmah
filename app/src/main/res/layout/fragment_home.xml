@@ -64,8 +64,8 @@
                     android:id="@+id/cl_cart_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="-10dp"
                     android:layout_marginTop="-10dp"
+                    android:layout_marginEnd="-10dp"
                     android:background="@drawable/cart_count_circle"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/iv_cart"
@@ -146,21 +146,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_search"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:background="@null"
-                        android:focusable="false"
                         android:fontFamily="@font/inter_thin"
                         android:hint="Search Pooja, Samagri, Pandit"
-                        android:inputType="text"
-                        android:singleLine="true"
                         android:textColor="#000000"
                         android:textSize="13dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/searchIcon" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/searchIcon"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -419,20 +415,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_featured_products"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:clipToPadding="false"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cl_long_banner"
-                    tools:itemCount="0"
-                    tools:listitem="@layout/list_item_home_collection" />
-
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
@@ -455,7 +437,7 @@
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_featured_products" />
+                    app:layout_constraintTop_toBottomOf="@+id/cl_long_banner" />
 
                 <View
                     android:layout_width="0dp"
@@ -491,6 +473,20 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_featured_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_why_choose_us"
+                    tools:itemCount="0"
+                    tools:listitem="@layout/list_item_home_collection" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_voice_of_faith"
                     android:layout_width="wrap_content"
@@ -502,7 +498,7 @@
                     android:textColor="@color/black"
                     android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cl_why_choose_us" />
+                    app:layout_constraintTop_toBottomOf="@+id/rv_featured_products" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_rating_review"

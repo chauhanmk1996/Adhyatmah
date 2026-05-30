@@ -60,8 +60,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         spinnerSet()
-        binding.backImg.setOnClickListener { findNavController().navigateUp() }
-
         binding.searchView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}

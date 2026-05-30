@@ -28,11 +28,11 @@
                     tools:ignore="UselessParent">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="250dp"
-                        android:layout_height="65dp"
+                        android:layout_width="246dp"
+                        android:layout_height="68dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:background="@mipmap/main_header"
+                        android:background="@drawable/home_logo"
                         android:gravity="center_horizontal"
                         android:scaleType="centerCrop"
                         android:textSize="18sp"
