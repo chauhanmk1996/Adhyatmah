@@ -83,4 +83,9 @@ class PujaKitAdapter(
         pujaKitList[pos].quantity = quantity
         notifyItemChanged(pos)
     }
+
+    fun removePos(pos: Int) {
+        pujaKitList.removeAt(pos)
+        notifyItemRemoved(pos)
+    }
 }

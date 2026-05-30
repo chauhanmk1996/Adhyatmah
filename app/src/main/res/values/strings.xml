@@ -272,4 +272,13 @@
     <string name="skip">Skip</string>
     <string name="quantity_can_t_be_more_then_5">Quantity can\'t be more then 5</string>
     <string name="available_slots">Available Slots</string>
+    <string name="change_language">Change Language</string>
+    <string name="puja_details">Puja Details</string>
+    <string name="puja_type_heading">Puja Type:</string>
+    <string name="duration_heading">Duration:</string>
+    <string name="timing_heading">Timing:</string>
+    <string name="language_heading">Language(s):</string>
+    <string name="service_price">Service Price</string>
+    <string name="delivery_charge">Delivery Charge</string>
+    <string name="handling_charge">Handling Charge</string>
 </resources>

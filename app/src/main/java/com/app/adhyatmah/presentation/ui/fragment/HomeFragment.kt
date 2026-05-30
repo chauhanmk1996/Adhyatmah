@@ -59,6 +59,8 @@ import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
+import com.app.adhyatmah.utils.hide
+import com.app.adhyatmah.utils.show
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -151,7 +153,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.ivLanguage.setOnClickListener {
-            findNavController().navigate(R.id.selectLanguageFragment)
+            findNavController().navigate(R.id.chooseLanguageFragment)
         }
 
         binding.ivCart.setOnClickListener {
@@ -651,6 +653,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 setAdapter(list)
                                 CART_COUNT = it.data.payload.cart ?: 0
                                 (requireActivity() as? MainActivity)?.updateBagBadge(CART_COUNT)
+                                if (CART_COUNT > 0) {
+                                    binding.clCartCount.show()
+                                    binding.tvCartCount.text = CART_COUNT.toString()
+                                } else {
+                                    binding.clCartCount.hide()
+                                }
                             }
                         }
 

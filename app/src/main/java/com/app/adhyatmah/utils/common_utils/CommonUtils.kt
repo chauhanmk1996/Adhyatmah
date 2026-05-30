@@ -24,7 +24,8 @@ class CommonUtils {
     companion object {
 
         private const val PREF_LANGUAGE = "selected_language"
-        val languageList = listOf(
+
+        val languageList: ArrayList<AppLanguage> = arrayListOf(
             AppLanguage("English", "en"),
             AppLanguage("Hindi", "hi"),
             AppLanguage("Marathi", "mr"),
@@ -86,10 +87,11 @@ class CommonUtils {
 
         private fun getPersistedLanguage(context: Context): String? {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            Log.i("TAG", "getPersistedLanguage: "+prefs.getString(PREF_LANGUAGE, null))
+            Log.i("TAG", "getPersistedLanguage: " + prefs.getString(PREF_LANGUAGE, null))
             return prefs.getString(PREF_LANGUAGE, null)
         }
-//        fun getLocalisedString(id:Int, locale: Locale, configuration: Configuration, application:Application):String{
+
+        //        fun getLocalisedString(id:Int, locale: Locale, configuration: Configuration, application:Application):String{
 //            configuration.setLocale(locale)
 //            val resources = application.createConfigurationContext(configuration).resources
 //            return resources.getString(id)
@@ -143,7 +145,7 @@ class CommonUtils {
             positiveButtonAction: (() -> Unit)? = null,
             negativeButtonAction: (() -> Unit)? = null,
 
-        ): AlertDialog {
+            ): AlertDialog {
             // Inflate the custom layout
             val customLayout: View = LayoutInflater.from(context)
                 .inflate(R.layout.custom_alert_dialog, null)
@@ -229,6 +231,7 @@ class CommonUtils {
 
             return dialog
         }
+
         fun isNetworkAvailable(context: Context): Boolean {
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
