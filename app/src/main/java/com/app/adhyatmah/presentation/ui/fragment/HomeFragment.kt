@@ -110,7 +110,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().supportFragmentManager.setFragmentResultListener("selectedAddress", viewLifecycleOwner) { _, bundle ->
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            "selectedAddress",
+            viewLifecycleOwner
+        ) { _, bundle ->
             if (bundle.isEmpty) return@setFragmentResultListener
             val address = bundle.getString("address")
             val zip = bundle.getString("zip")
@@ -317,31 +320,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         panditJiList.clear()
                         panditJiList.addAll(vendors)
                         panditJiAdapter = HomePanditJiAdapter(panditJiList) { pos ->
-                            val panditJi = panditJiList[pos]
-                            UserPreference.panditJiDetails = PanditJiDetails(
-                                id = panditJi.id,
-                                image = panditJi.image?.url ?: "",
-                                firstName = panditJi.firstName ?: "",
-                                lastName = panditJi.lastName ?: "",
-                                city = panditJi.city ?: "",
-                                experience = panditJi.experience ?: "",
-                                about = panditJi.about ?: "",
-                                seoContent = panditJi.seoContent,
-                                gotra = panditJi.gotra ?: "",
-                                verified = panditJi.verified ?: false,
-                                trusted = panditJi.trusted ?: false,
-                                address = panditJi.address ?: "",
-                                panditLanguage = panditJi.language
-                            )
+                            if (Preferences.getStringPreference(
+                                    requireContext(),
+                                    IS_LOGIN
+                                ) == "1"
+                            ) {
+                                val panditJi = panditJiList[pos]
+                                UserPreference.panditJiDetails = PanditJiDetails(
+                                    id = panditJi.id,
+                                    image = panditJi.image?.url ?: "",
+                                    firstName = panditJi.firstName ?: "",
+                                    lastName = panditJi.lastName ?: "",
+                                    city = panditJi.city ?: "",
+                                    experience = panditJi.experience ?: "",
+                                    about = panditJi.about ?: "",
+                                    seoContent = panditJi.seoContent,
+                                    gotra = panditJi.gotra ?: "",
+                                    verified = panditJi.verified ?: false,
+                                    trusted = panditJi.trusted ?: false,
+                                    address = panditJi.address ?: "",
+                                    panditLanguage = panditJi.language
+                                )
 
-                            if ((panditJi.services?.size ?: 0) > 0) {
-                                findNavController().navigate(R.id.bookingDetailsFragment)
+                                if ((panditJi.services?.size ?: 0) > 0) {
+                                    findNavController().navigate(R.id.bookingDetailsFragment)
+                                } else {
+                                    Toast.makeText(
+                                        requireActivity(),
+                                        "No Service Available!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             } else {
-                                Toast.makeText(
-                                    requireActivity(),
-                                    "No Service Available!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                showLoginPrompt()
                             }
                         }
                         binding.rvPanditJi.adapter = panditJiAdapter

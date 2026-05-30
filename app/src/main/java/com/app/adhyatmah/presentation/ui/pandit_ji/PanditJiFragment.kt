@@ -25,6 +25,7 @@ import com.app.adhyatmah.data.preferences.IS_LOGIN
 import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.databinding.FragmentPanditJiBinding
+import com.app.adhyatmah.domain.model.create_booking.PanditJiDetails
 import com.app.adhyatmah.domain.model.create_booking.PanditjiBookingRequest
 import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Vendor
 import com.app.adhyatmah.presentation.ui.activity.LoginActivity
@@ -252,26 +253,32 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         panditJiAdapter = PanditJiAdapter(panditjiList.toMutableList(), { imgClickPosition ->
             Log.d("TAG", "Pandit Image Clicked at position: $imgClickPosition")
         }, { data ->
-            UserPreference.panditjiBookingRequest = PanditjiBookingRequest()
-            UserPreference.panditjiBookingRequest.apply {
-                address = data.address
-                vendorId = data.id
-                firstName = data.firstName
-                lastName = data.lastName
-                image = data.image?.url
-                bookingId = ""
-                about = data.about
-            }
+            UserPreference.panditJiDetails = PanditJiDetails(
+                id = data.id,
+                image = data.image?.url ?: "",
+                firstName = data.firstName ?: "",
+                lastName = data.lastName ?: "",
+                city = data.city ?: "",
+                experience = data.experience ?: "",
+                about = data.about ?: "",
+                seoContent = data.seoContent,
+                gotra = data.gotra ?: "",
+                verified = data.verified ?: false,
+                trusted = data.trusted ?: false,
+                address = data.address ?: "",
+                panditLanguage = data.language
+            )
             if (Preferences.getStringPreference(requireContext(), IS_LOGIN) == "1") {
                 if ((data.services?.size ?: 0) > 0) {
                     findNavController().navigate(R.id.bookingDetailsFragment)
-//                    findNavController().navigate(R.id.selectLanguageFragment)
-
                 } else {
-                    Toast.makeText(requireActivity(), "No Service Available!", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(
+                        requireActivity(),
+                        "No Service Available!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            } else {
+            }else {
                 showLoginPrompt()
             }
         })
