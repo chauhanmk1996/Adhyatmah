@@ -5,9 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.app.adhyatmah.domain.model.GetLanguagesResponse
-import com.app.adhyatmah.domain.model.booking_payment.BookingPaymentRequest
-import com.app.adhyatmah.domain.model.create_booking.PanditjiBookingRequest
-import com.app.adhyatmah.domain.model.create_booking.PanditjiBookingResponse
 import com.app.adhyatmah.domain.repository.ApiRepository
 import com.app.adhyatmah.utils.common_utils.Resources
 import com.app.adhyatmah.utils.common_utils.SingleLiveEvent

@@ -109,15 +109,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFragmentResultListener("requestKey") { _, bundle ->
-            Log.i("TAG", "onViewCreated: fragment result listener called")
-            val user = bundle.getParcelable<Addresse>("resultKey")
-            user?.let {
-                val location =
-                    it.address1 + ", " + it.city + ", " + it.province + ", " + it.country + " - " + it.zip
-                binding.tvLocation.text = location
-                Preferences.setStringPreference(requireContext(), CURRENT_PINCODE, it.zip)
-            }
+
+        requireActivity().supportFragmentManager.setFragmentResultListener("selectedAddress", viewLifecycleOwner) { _, bundle ->
+            if (bundle.isEmpty) return@setFragmentResultListener
+            val address = bundle.getString("address")
+            val zip = bundle.getString("zip")
+            binding.tvLocation.text = address
+            Preferences.setStringPreference(requireContext(), CURRENT_PINCODE, zip)
         }
     }
 
@@ -331,18 +329,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 seoContent = panditJi.seoContent,
                                 gotra = panditJi.gotra ?: "",
                                 verified = panditJi.verified ?: false,
-                                trusted = panditJi.trusted ?: false
+                                trusted = panditJi.trusted ?: false,
+                                address = panditJi.address ?: "",
+                                panditLanguage = panditJi.language
                             )
-
-                            UserPreference.panditjiBookingRequest.apply {
-                                address = panditJi.address
-                                vendorId = panditJi.id
-                                firstName = panditJi.firstName
-                                lastName = panditJi.lastName
-                                image = panditJi.image?.url
-                                bookingId = ""
-                                about = panditJi.about
-                            }
 
                             if ((panditJi.services?.size ?: 0) > 0) {
                                 findNavController().navigate(R.id.bookingDetailsFragment)
@@ -393,9 +383,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         payload?.services?.let { list ->
                             popularPoojaList.clear()
                             popularPoojaList.addAll(list)
-                            popularPujasAdapter = PopularPujasAdapter(popularPoojaList) {selectedPuja ->
-                                (requireActivity() as? MainActivity)?.switchToPanditJiTab("Service",selectedPuja.name?:"" )
-                            }
+                            popularPujasAdapter =
+                                PopularPujasAdapter(popularPoojaList) { selectedPuja ->
+                                    (requireActivity() as? MainActivity)?.switchToPanditJiTab(
+                                        "Service",
+                                        selectedPuja.name ?: ""
+                                    )
+                                }
                             binding.rvPopularPujas.adapter = popularPujasAdapter
                         }
 

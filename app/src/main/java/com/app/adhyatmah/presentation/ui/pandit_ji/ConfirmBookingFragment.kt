@@ -22,6 +22,9 @@ import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.databinding.FragmentConfirmBookingBinding
 import com.app.adhyatmah.domain.model.booking_payment.BookingPaymentRequest
+import com.app.adhyatmah.domain.model.create_booking.BookPanditJiRequest
+import com.app.adhyatmah.domain.model.create_booking.PanditjiBookingRequest
+import com.app.adhyatmah.domain.model.create_booking.PujaSamagri
 import com.app.adhyatmah.domain.model.get_services.PujaKit
 import com.app.adhyatmah.presentation.ui.adapter.PujaKitAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.viewModel.ConfirmBookingViewModel
@@ -29,11 +32,13 @@ import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
+import com.app.adhyatmah.utils.getDigit
 import com.app.adhyatmah.utils.hide
 import com.app.adhyatmah.utils.show
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
+import kotlin.String
 
 class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
 
@@ -42,14 +47,20 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
     private var emailId = ""
     private val addOnPujaKitList: ArrayList<PujaKit> = ArrayList()
     private lateinit var addOnKitAdapter: PujaKitAdapter
-
-
     private var selectedPayment: String = "full"
-
+    private lateinit var bookingRequest: PanditjiBookingRequest
+    private var fullPayment: Double = 0.0
+    private var advancePayment: Double = 0.0
 
     override fun setLayout(): Int = R.layout.fragment_confirm_booking
 
     override fun initView(savedInstanceState: Bundle?) {
+
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
         emailId = Preferences.getStringPreference(requireContext(), EMAIL_ID1).toString()
         setUpAddOnKitRecycler()
@@ -57,10 +68,7 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
         updateSelectionUI()
         setUpClick()
         setObserver()
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -73,6 +81,27 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
                     }
                 }
             })
+
+        parentFragmentManager.setFragmentResultListener(
+            "selectedAddress",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val address = bundle.getString("address") ?: return@setFragmentResultListener
+
+            UserPreference.panditjiBookingRequest.address = address
+            binding.apply {
+                if (UserPreference.panditjiBookingRequest.address.isNullOrEmpty()) {
+                    btnSelectAddress.show()
+                    tvSelectedAddress.hide()
+                    tvChange.hide()
+                } else {
+                    btnSelectAddress.hide()
+                    tvSelectedAddress.show()
+                    tvChange.show()
+                    tvSelectedAddress.text = UserPreference.panditjiBookingRequest.address ?: ""
+                }
+            }
+        }
     }
 
     private fun setUpAddOnKitRecycler() {
@@ -82,15 +111,25 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
                 if (quantity < 2) {
                     addOnPujaKitList.removeAt(pos)
                     addOnKitAdapter.removePos(pos)
+
+                    if (addOnPujaKitList.isEmpty()) {
+                        binding.tvAddonPujaKitDetails.hide()
+                        binding.rvPujaKit.hide()
+                        binding.tvAddOnsPriceHeading.hide()
+                        binding.tvAddOnsPrice.hide()
+                        binding.view3.hide()
+                    }
                 } else {
                     addOnPujaKitList[pos].quantity = quantity - 1
                     addOnKitAdapter.updateQuantity(pos, quantity - 1)
                 }
+                addOnPriceUpdate()
             },
             addClick = { pos ->
                 val quantity = addOnPujaKitList[pos].quantity ?: 0
                 addOnPujaKitList[pos].quantity = quantity + 1
                 addOnKitAdapter.updateQuantity(pos, quantity + 1)
+                addOnPriceUpdate()
             }
         )
         binding.rvPujaKit.adapter = addOnKitAdapter
@@ -98,10 +137,12 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
 
     private fun setUi() {
         binding.apply {
-            val bookingRequest = UserPreference.panditjiBookingRequest
+            bookingRequest = UserPreference.panditjiBookingRequest
+
+            val panditJiDetails = UserPreference.panditJiDetails
 
             //Pandit Ji Details
-            bookingRequest.image?.let { url ->
+            panditJiDetails.image?.let { url ->
                 Glide.with(requireContext())
                     .load(url)
                     .placeholder(R.drawable.pamdit_ji)
@@ -109,9 +150,21 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
                     .into(ivPanditPic)
 
             }
-            val panditName = "${bookingRequest.firstName ?: ""} ${bookingRequest.lastName ?: ""}"
+            val panditName = "${panditJiDetails.firstName ?: ""} ${panditJiDetails.lastName ?: ""}"
             tvPanditName.text = panditName
-            tvPanditAddress.text = bookingRequest.address ?: ""
+            tvPanditAddress.text = panditJiDetails.address ?: ""
+
+            //Address Details
+            if (UserPreference.panditjiBookingRequest.address.isNullOrEmpty()) {
+                btnSelectAddress.show()
+                tvSelectedAddress.hide()
+                tvChange.hide()
+            }else{
+                btnSelectAddress.hide()
+                tvSelectedAddress.show()
+                tvChange.show()
+                tvSelectedAddress.text = UserPreference.panditjiBookingRequest.address?:""
+            }
 
             //Puja Details
             val pujaType =
@@ -128,10 +181,8 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
             val timing = "${getString(R.string.timing_heading)} $dateTime"
             tvTiming.text = timing
 
-            val formattedLanguage = bookingRequest.language?.joinToString(", ") {
-                it.replaceFirstChar { c ->
-                    if (c.isLowerCase()) c.titlecase(Locale.ROOT) else c.toString()
-                }
+            val formattedLanguage = bookingRequest.selectedLanguage?.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
             }
             val language = "${getString(R.string.language_heading)} $formattedLanguage"
             tvLanguages.text = language
@@ -152,31 +203,48 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
             } else {
                 tvAddonPujaKitDetails.hide()
                 rvPujaKit.hide()
+                tvAddOnsPriceHeading.hide()
+                tvAddOnsPrice.hide()
+                view3.hide()
             }
 
             //Payment Details
-            val servicePrice = "₹ ${bookingRequest.paymentAmount}"
+            val serviceAmount: Double = (bookingRequest.paymentAmount ?: "0.0").toDouble()
+            val servicePrice = "₹ ${serviceAmount.getDigit()}"
             tvServicePrice.text = servicePrice
 
-            val addOnPrice = "₹ 0"
-            tvAddOnsPrice.text = addOnPrice
-
-            val deliveryCharge = "₹ 0"
+            val deliveryCharge = "Free"
             tvDeliveryCharge.text = deliveryCharge
 
-            val handlingCharge = "₹ 0"
+            val handlingCharge = "Free"
             tvHandlingCharge.text = handlingCharge
 
-            val platformFee = "₹ 0"
+            val platformFee = "Free"
             tvPlatformFee.text = platformFee
 
-            val payFull = "₹ ${bookingRequest.paymentAmount ?: 0}"
+            addOnPriceUpdate()
+        }
+    }
+
+    private fun addOnPriceUpdate() {
+        var addOnPrice = 0.0
+        addOnPujaKitList.forEach { addOn ->
+            addOnPrice += (addOn.price ?: 0.0) * (addOn.quantity ?: 1)
+        }
+        binding.apply {
+            val addOnPriceText = "₹ ${addOnPrice.getDigit()}"
+            tvAddOnsPrice.text = addOnPriceText
+
+            val serviceAmount: Double = (bookingRequest.paymentAmount ?: "0.0").toDouble()
+            fullPayment = serviceAmount + addOnPrice
+            val payFull = "₹ ${fullPayment.getDigit()}"
             tvPayFull.text = payFull
 
             val paymentAmount = bookingRequest.paymentAmount?.toDoubleOrNull() ?: 0.0
             val advance = bookingRequest.advance?.toDoubleOrNull() ?: 0.0
-            val payAdvance = "₹ ${paymentAmount * advance / 100}"
-            tvPayAdvance.text = payAdvance
+            advancePayment = (paymentAmount * advance / 100) + addOnPrice
+            val payAdvanceText = "₹ ${advancePayment.getDigit()}"
+            tvPayAdvance.text = payAdvanceText
         }
     }
 
@@ -220,6 +288,20 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
             }
         }
 
+        binding.btnSelectAddress.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("from", "bookPanditji")
+            }
+            findNavController().navigate(R.id.mangeAddressFragment, bundle)
+        }
+
+        binding.tvChange.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("from", "bookPanditji")
+            }
+            findNavController().navigate(R.id.mangeAddressFragment, bundle)
+        }
+
         binding.ivPayFull.setOnClickListener {
             selectedPayment = "full"
             updateSelectionUI()
@@ -236,32 +318,46 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
     }
 
     private fun hitPanditJiBooking() {
-        val bookingRequest = UserPreference.panditjiBookingRequest.copy().apply {
-            val totalAmount = paymentAmount?.toDoubleOrNull() ?: 0.0
-            val advancePercent = advance?.toDoubleOrNull() ?: 0.0
-            val advanceAmount = totalAmount * advancePercent / 100
+        val panditJiDetails = UserPreference.panditJiDetails
+        val language: ArrayList<String> = ArrayList()
+        language.add(bookingRequest.selectedLanguage ?: "")
 
-            paymentAmount = if (selectedPayment == "advance") {
-                advanceAmount.toString()
-            } else {
-                totalAmount.toString()
-            }
-
-            `package` = "Standard"
-            pujaSamagri = listOf("Incense Sticks", "Flowers", "Sandalwood Paste", "Camphor")
-            lastName = ""
-            firstName = ""
-            about = ""
-            image = ""
-            pujaDescription = ""
-            advance = ""
-            gst = ""
+        val pujaKit: ArrayList<String> = ArrayList()
+        bookingRequest.selectedPujaKit?.forEach { kit ->
+            pujaKit.add(kit.id)
         }
-        confirmBookingViewModel.hitBookPanditji(bookingRequest)
+
+        val instantKit: ArrayList<String> = ArrayList()
+        bookingRequest.selectedInstantKit?.forEach { kit ->
+            instantKit.add(kit.id)
+        }
+
+        val paymentAmount: Double = if (selectedPayment == "advance") {
+            advancePayment
+        } else {
+            fullPayment
+        }
+
+        val bookPanditJiRequest = BookPanditJiRequest(
+            vendorId = panditJiDetails.id ?: "",
+            address = bookingRequest.address ?: "",
+            serviceId = bookingRequest.serviceId ?: "",
+            poojaType = bookingRequest.poojaType ?: "",
+            `package` = "Standard",
+            dateTime = bookingRequest.dateTime ?: "",
+            duration = bookingRequest.duration ?: "",
+            language = language,
+            pujaSamagri = PujaSamagri(
+                pujaKit = pujaKit,
+                instantKit = instantKit,
+            ),
+            paymentAmount = paymentAmount
+        )
+        confirmBookingViewModel.hitBookPanditJi(bookPanditJiRequest)
     }
 
     private fun setObserver() {
-        confirmBookingViewModel.getBookPanditji().observe(viewLifecycleOwner) {
+        confirmBookingViewModel.getBookPanditJi().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     val statusCode = it.data?.code
@@ -282,6 +378,7 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
                 }
 
                 Status.LOADING -> ProcessDialog.showDialog(requireActivity(), true)
+
                 Status.ERROR -> {
                     Log.e("TAG", "Error: ${it.message}")
                     ProcessDialog.dismissDialog(true)
@@ -296,7 +393,8 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
                     val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT)
+                                .show()
                             binding.nvCart.hide()
                             binding.btnBook.hide()
                             binding.webView.show()
@@ -348,11 +446,11 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
 
                     when {
                         current.startsWith(successUrl) -> {
-                            handlePaymentResult(true, current)
+                            handlePaymentResult(true)
                         }
 
                         current.startsWith("cancel") -> {
-                            handlePaymentResult(false, current)
+                            handlePaymentResult(false)
                         }
                     }
                 }
@@ -379,12 +477,12 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
                 Log.i("TAG", "shouldOverrideUrlLoading: $url")
                 when {
                     url.startsWith(successUrl) -> {
-                        handlePaymentResult(true, url)
+                        handlePaymentResult(true)
                         return true
                     }
 
                     url.startsWith("cancel") -> {
-                        handlePaymentResult(false, url)
+                        handlePaymentResult(false)
                         return true
                     }
                 }
@@ -399,11 +497,13 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
         }
     }
 
-    private fun handlePaymentResult(isSuccess: Boolean, redirectUrl: String) {
+    private fun handlePaymentResult(isSuccess: Boolean) {
         if (!isAdded) return
         if (isSuccess) {
             Toast.makeText(requireContext(), "Payment Successful", Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack(R.id.panditJiFragment, false)
+
+
+            findNavController().navigate(R.id.action_profileFragment_to_bookingFragment)
         } else {
             Toast.makeText(requireContext(), "Payment Cancelled", Toast.LENGTH_SHORT).show()
             binding.nvCart.show()

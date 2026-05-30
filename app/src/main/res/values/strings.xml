@@ -281,4 +281,7 @@
     <string name="service_price">Service Price</string>
     <string name="delivery_charge">Delivery Charge</string>
     <string name="handling_charge">Handling Charge</string>
+    <string name="address_details">Address Details</string>
+    <string name="select_address">Select Address</string>
+    <string name="change">Change</string>
 </resources>

@@ -12,7 +12,7 @@ data class Vendor(
     val firstName: String?=null,
     val id: String?=null,
     val image: Image?=null,
-    val language: List<String>?=null,
+    val language: ArrayList<String>?=null,
     val lastName: String?=null,
     val phone: String?=null,
     val services: List<Service>?=null,

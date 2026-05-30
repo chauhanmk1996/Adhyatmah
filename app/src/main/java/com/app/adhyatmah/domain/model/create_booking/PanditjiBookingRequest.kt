@@ -3,6 +3,7 @@ package com.app.adhyatmah.domain.model.create_booking
 import com.app.adhyatmah.domain.model.get_services.PujaKit
 
 data class PanditjiBookingRequest(
+    var vendorId: String? = null,
     var image: String? = null,
     var firstName: String? = null,
     var lastName: String? = null,
@@ -17,10 +18,10 @@ data class PanditjiBookingRequest(
     var pujaDescription: String? = null,
     var pujaSamagri: List<String>? = null,
     var serviceId: String? = null,
-    var vendorId: String? = null,
+
     var bookingId: String? = null,
     var address: String? = null,
-    var language: List<String>? = null,
+    var selectedLanguage: String? = null,
     var selectedPujaKit: ArrayList<PujaKit>? = null,
     var selectedInstantKit: ArrayList<PujaKit>? = null,
 )
@@ -37,6 +38,8 @@ data class PanditJiDetails(
     var gotra: String? = null,
     var verified: Boolean? = null,
     var trusted: Boolean? = null,
+    var panditLanguage: ArrayList<String>? = null,
+    var address: String? = null,
 )
 
 data class SeoContent(
@@ -63,4 +66,22 @@ data class Faq(
     val question: String? = null,
     val answer: String? = null,
     var isOpen: Boolean? = false,
+)
+
+data class BookPanditJiRequest(
+    var vendorId: String,
+    var address: String,
+    var serviceId: String,
+    var poojaType: String,
+    var `package`: String = "Standard",
+    var dateTime: String,
+    var duration: String,
+    var language: ArrayList<String>,
+    var pujaSamagri: PujaSamagri? = null,
+    var paymentAmount: Double,
+)
+
+data class PujaSamagri(
+    val pujaKit: ArrayList<String>? = null,
+    val instantKit: ArrayList<String>? = null,
 )

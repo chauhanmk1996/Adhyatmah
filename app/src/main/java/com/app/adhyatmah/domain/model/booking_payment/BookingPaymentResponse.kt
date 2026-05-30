@@ -5,41 +5,18 @@ data class BookingPaymentResponse(
     val error: Boolean,
     val message: String,
     val payload: Payload,
-    val status: Int
-) {
-    data class Payload(
-        val amount: Int,
-        val booking: Booking,
-        val currency: String,
-        val success_url_app: String,
-        val razorpay: Razorpay,
-        val receipt: String,
-        val stripe: Stripe
-    ) {
-        data class Booking(
-            val bookingID: String,
-            val id: String,
-            val poojaType: String
-        )
+    val status: Int,
+)
 
-        data class Razorpay(
-            val amount: Int,
-            val currency: String,
-            val keyId: String,
-            val orderId: String,
-            val payment_link: PaymentLink,
-            val receiptId: String
-        ) {
-            data class PaymentLink(
-                val id: String,
-                val short_url: String
-            )
-        }
+data class Payload(
+    val razorpay: Razorpay,
+    val success_url_app: String,
+)
 
-        data class Stripe(
-            val payment_intent_id: String,
-            val payment_link_id: String,
-            val payment_url: String
-        )
-    }
-}
+data class Razorpay(
+    val payment_link: PaymentLink,
+)
+
+data class PaymentLink(
+    val short_url: String,
+)

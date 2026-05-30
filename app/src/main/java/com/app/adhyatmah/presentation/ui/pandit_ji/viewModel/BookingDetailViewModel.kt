@@ -24,19 +24,15 @@ class BookingDetailViewModel@Inject constructor(application: Application):Androi
             getServicesLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     getServicesLiveData.postValue(
                         Resources.success(
                             ApiRepository().getPanditjiServicesApi(panditId)
                         )
-
                     )
                 } catch (ex: Exception) {
                     getServicesLiveData.postValue(Resources.error(ex.localizedMessage, null))
-
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }

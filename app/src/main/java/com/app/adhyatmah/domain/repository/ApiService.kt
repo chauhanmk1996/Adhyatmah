@@ -28,8 +28,8 @@ import com.app.adhyatmah.domain.model.bag_response.remove_coupon.remove_coupon_r
 import com.app.adhyatmah.domain.model.bag_response.remove_coupon.remove_coupon_response.RemoveCouponResponse
 import com.app.adhyatmah.domain.model.booking_payment.BookingPaymentRequest
 import com.app.adhyatmah.domain.model.booking_payment.BookingPaymentResponse
-import com.app.adhyatmah.domain.model.create_booking.PanditjiBookingRequest
-import com.app.adhyatmah.domain.model.create_booking.PanditjiBookingResponse
+import com.app.adhyatmah.domain.model.create_booking.BookPanditJiRequest
+import com.app.adhyatmah.domain.model.create_booking.PanditJiBookingResponse
 import com.app.adhyatmah.domain.model.currency.get_currency.GetCurrencyResponse
 import com.app.adhyatmah.domain.model.currency.post_currency.post_currency_request.CurencyPostRequest
 import com.app.adhyatmah.domain.model.currency.post_currency.post_currency_response.PostCurrencyResponse
@@ -355,8 +355,8 @@ interface ApiService {
 
     @POST("createBooking")
     suspend fun createBookingApi(
-        @Body request: PanditjiBookingRequest
-    ): PanditjiBookingResponse
+        @Body request: BookPanditJiRequest
+    ): PanditJiBookingResponse
 
     @GET("services")
     suspend fun getPanditjiServices(

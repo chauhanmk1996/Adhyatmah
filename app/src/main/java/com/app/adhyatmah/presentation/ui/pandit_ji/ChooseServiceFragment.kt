@@ -41,7 +41,7 @@ class ChooseServiceFragment : Fragment() {
         setObserver()
         onClick()
 
-        viewmodel.hitGetServices(UserPreference.panditjiBookingRequest.vendorId ?: "")
+        viewmodel.hitGetServices(UserPreference.panditJiDetails.id ?: "")
     }
 
     private fun setupRecyclerView() {

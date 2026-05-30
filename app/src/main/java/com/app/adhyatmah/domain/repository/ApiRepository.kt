@@ -22,8 +22,8 @@ import com.app.adhyatmah.domain.model.bag_response.remove_coupon.remove_coupon_r
 import com.app.adhyatmah.domain.model.bag_response.remove_coupon.remove_coupon_response.RemoveCouponResponse
 import com.app.adhyatmah.domain.model.booking_payment.BookingPaymentRequest
 import com.app.adhyatmah.domain.model.booking_payment.BookingPaymentResponse
-import com.app.adhyatmah.domain.model.create_booking.PanditjiBookingRequest
-import com.app.adhyatmah.domain.model.create_booking.PanditjiBookingResponse
+import com.app.adhyatmah.domain.model.create_booking.BookPanditJiRequest
+import com.app.adhyatmah.domain.model.create_booking.PanditJiBookingResponse
 import com.app.adhyatmah.domain.model.currency.get_currency.GetCurrencyResponse
 import com.app.adhyatmah.domain.model.currency.post_currency.post_currency_request.CurencyPostRequest
 import com.app.adhyatmah.domain.model.currency.post_currency.post_currency_response.PostCurrencyResponse
@@ -68,7 +68,6 @@ import com.app.adhyatmah.payment.payment_varify_response.PaymentVerifyResponse
 import com.app.adhyatmah.payment.payment_verify_request.PaymentVerifyRequest
 import com.app.panditji.data.model.get_booking.GetBookingResponse
 import com.app.adhyatmah.domain.model.update_booking_status.UpdateBookingStatusRequest
-import com.app.adhyatmah.domain.model.verify_otp.VerifyOtpResponse
 import com.app.adhyatmah.payment.payment_initialize_response.PaymentIniResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -225,7 +224,7 @@ class ApiRepository {
     suspend fun getPanditListApi(name: String? = null, serviceName: String? = null) =
         service.getPanditList(name, serviceName)
 
-    suspend fun panditjiBookingAPI(request: PanditjiBookingRequest): PanditjiBookingResponse =
+    suspend fun panditJiBookingApi(request: BookPanditJiRequest): PanditJiBookingResponse =
         service.createBookingApi(request)
 
     suspend fun getPanditjiServicesApi(panditId: String): GetServicesResponse =

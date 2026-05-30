@@ -34,6 +34,7 @@
     <color name="shimmer_placeholder">#E0E0E0</color> <!-- light grey -->
 
     <color name="green_00da45"> #00DA45</color>
+    <color name="green"> #00FF00</color>
 
     <color name="red_e30000">#E30000</color>
     <color name="orange">#E98347</color>
