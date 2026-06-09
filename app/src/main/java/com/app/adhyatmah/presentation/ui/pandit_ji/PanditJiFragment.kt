@@ -40,6 +40,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.core.graphics.drawable.toDrawable
 
 class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
 
@@ -50,6 +51,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     private val currentPanditList = mutableListOf<Vendor>()
     private var searchJob: Job? = null
     private val SEARCH_DEBOUNCE_MS = 300L
+    private var poojaSelectFromHomeName: String = ""
 
     override fun setLayout(): Int = R.layout.fragment_pandit_ji
 
@@ -156,17 +158,14 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                         return
                     }
 
-                    // Actual selections are shifted by +1 because of the placeholder
                     val actual = spinnerItems[position] // "PanditJi" or "Service"
                     selectedType = actual
                     Log.d("SpinnerDebug", "Selected type: $selectedType")
 
                     if (selectedType == "Service") {
-                        // Clear the search and open pooja dialog
                         binding.searchView.setText("")
                         Log.d("SpinnerDebug", "Opening pooja selection dialog")
                         openPoojaSelectionDialog()
-                        // Reset spinner to placeholder to allow re-triggering
                         ignoreNextSpinnerSelection = true
                         binding.mySpinner.setSelection(0, false)
                         Log.d(
@@ -174,7 +173,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                             "Reset spinner to placeholder after Service selection"
                         )
                     } else {
-                        // PanditJi selected -> clear search and show full list
                         binding.searchView.setText("")
                         searchJob?.cancel()
                         showFullList()
@@ -198,6 +196,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             if (bundle.isEmpty) return@setFragmentResultListener
             val type = bundle.getString("selectedType")
             val search = bundle.getString("search")
+            poojaSelectFromHomeName = search ?: ""
 
             if (!type.isNullOrEmpty()) {
                 selectedType = type
@@ -227,7 +226,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
         val recycler = dialog.findViewById<RecyclerView>(R.id.recMultiplePooja)
         recycler.layoutManager = LinearLayoutManager(requireContext())
@@ -264,7 +263,8 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                 verified = data.verified ?: false,
                 trusted = data.trusted ?: false,
                 address = data.address ?: "",
-                panditLanguage = data.language
+                panditLanguage = data.language,
+                poojaSelectFromHomeName = poojaSelectFromHomeName
             )
             if (Preferences.getStringPreference(requireContext(), IS_LOGIN) == "1") {
                 if ((data.services?.size ?: 0) > 0) {
@@ -276,7 +276,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }else {
+            } else {
                 showLoginPrompt()
             }
         })

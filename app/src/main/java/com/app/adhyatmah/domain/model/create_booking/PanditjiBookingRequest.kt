@@ -40,6 +40,7 @@ data class PanditJiDetails(
     var trusted: Boolean? = null,
     var panditLanguage: ArrayList<String>? = null,
     var address: String? = null,
+    val poojaSelectFromHomeName:String? = null
 )
 
 data class SeoContent(

@@ -263,8 +263,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         val list = res.data.payload?.collections ?: emptyList()
                         trendingSectionList.clear()
                         trendingSectionList.addAll(list)
-                        trendingSectionAdapter =
-                            TrendingSectionAdapter(trendingSectionList) { pos ->
+                        trendingSectionAdapter = TrendingSectionAdapter(trendingSectionList) { pos ->
                                 val trendingSection = trendingSectionList[pos]
                                 val handle = trendingSection.handle
                                 val title = trendingSection.title

@@ -1,4 +1,5 @@
 package com.app.adhyatmah.presentation.ui.fragment
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -39,21 +40,19 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private val filterViewModel by activityViewModels<FilterViewModel>()
 
-    var categoryHandle =""
-    var collectionHandle =""
-    var title =""
-    var manuTitle=""
-    var productId=""
+    var categoryHandle = ""
+    var collectionHandle = ""
+    var title = ""
+    var manuTitle = ""
+    var productId = ""
     var token = ""
-    var discardType=""
+    var discardType = ""
     var fromFilter = ""
-    var type =""
-
-
+    var type = ""
 
 
     override fun setLayout(): Int {
-        return  R.layout.fragment_product_list
+        return R.layout.fragment_product_list
     }
 
 
@@ -67,7 +66,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         manuTitle = arguments?.getString("TITLE").toString()
         title = arguments?.getString(PRODUCT_TITLE).toString()
 
-        Log.d("Tafdfd","fdkjhj: $collectionHandle")
+        Log.d("Tafdfd", "fdkjhj: $collectionHandle")
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
 
 
@@ -83,16 +82,16 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         try {
 
             if (type == "1") {
-              /*  binding.filterLayoutId.setOnClickListener {
-                    val bundle = Bundle()
-                    categoryHandle = arguments?.getString(CATEGORY_TITLE).toString()
-                    Log.d("TAG", "filterAction:fdhj  $categoryHandle")
-                    bundle.putString("TYPE", "5")
-                    bundle.putString("menu_handle",collectionHandle)
-                    bundle.putString(CATEGORY_HANDLE_FILTER, categoryHandle)
-                    findNavController().navigate(R.id.action_productListFragment_to_filterFragment, bundle)
+                /*  binding.filterLayoutId.setOnClickListener {
+                      val bundle = Bundle()
+                      categoryHandle = arguments?.getString(CATEGORY_TITLE).toString()
+                      Log.d("TAG", "filterAction:fdhj  $categoryHandle")
+                      bundle.putString("TYPE", "5")
+                      bundle.putString("menu_handle",collectionHandle)
+                      bundle.putString(CATEGORY_HANDLE_FILTER, categoryHandle)
+                      findNavController().navigate(R.id.action_productListFragment_to_filterFragment, bundle)
 
-                }*/
+                  }*/
 
                 binding.shortLayout.setOnClickListener {
 
@@ -101,17 +100,16 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
                     //  findNavController().navigate(R.id.action_productListFragment_to_filterFragment)
                 }
 
-            }
-            else if (type == "2"){
-               /* binding.filterLayoutId.setOnClickListener {
-                    val bundle = Bundle()
-                    collectionHandle = arguments?.getString(MENU_TITLE).toString()
-                    Log.d("TAG", "filterAction:fdhj  $collectionHandle")
-                    bundle.putString("TYPE", "6")
-                    bundle.putString("menu_handle",collectionHandle)
-                    findNavController().navigate(R.id.action_productListFragment_to_filterFragment, bundle)
+            } else if (type == "2") {
+                /* binding.filterLayoutId.setOnClickListener {
+                     val bundle = Bundle()
+                     collectionHandle = arguments?.getString(MENU_TITLE).toString()
+                     Log.d("TAG", "filterAction:fdhj  $collectionHandle")
+                     bundle.putString("TYPE", "6")
+                     bundle.putString("menu_handle",collectionHandle)
+                     findNavController().navigate(R.id.action_productListFragment_to_filterFragment, bundle)
 
-                }*/
+                 }*/
 
                 binding.shortLayout.setOnClickListener {
 
@@ -134,7 +132,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
             productId = categoryHandle
             productId = categoryHandle
             Log.d("tag", "initdd: $categoryHandle")
-            homeViewModel.getViewAllData(token,ViewAllProductRequest(categoryHandle))
+            homeViewModel.getViewAllData(token, ViewAllProductRequest(categoryHandle))
 
             when (fromFilter) {
                 "fromFilter" -> {
@@ -142,11 +140,11 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
                 }
 
                 "fromDisCart" -> {
-                    homeViewModel.getViewAllData(token,ViewAllProductRequest(categoryHandle))
+                    homeViewModel.getViewAllData(token, ViewAllProductRequest(categoryHandle))
                 }
 
                 else -> {
-                    homeViewModel.getViewAllData(token,ViewAllProductRequest(categoryHandle))
+                    homeViewModel.getViewAllData(token, ViewAllProductRequest(categoryHandle))
                 }
             }
             /* if(fromFilter =="fromFilter"){
@@ -155,29 +153,28 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
             else{
                 homeViewModel.getViewAllData(ViewAllProductRequest(categoryHandle))
             }*/
-        }
-        else if (type == "2") {
+        } else if (type == "2") {
 
-            binding.header.text =manuTitle.toString() ?: "Men's T-shirt"
-            homeViewModel.getViewAllData(token,ViewAllProductRequest(collectionHandle))
+            binding.header.text = manuTitle.toString() ?: "Men's T-shirt"
+            homeViewModel.getViewAllData(token, ViewAllProductRequest(collectionHandle))
             productId = categoryHandle
 
-        /*else if (type == "2") {
-            binding.header.text =manuTitle.toString() ?: "Men's T-shirt"
+            /*else if (type == "2") {
+                binding.header.text =manuTitle.toString() ?: "Men's T-shirt"
 
-//            binding.header.text = title.toString() ?: "Men's T-shirt"
-*/
+    //            binding.header.text = title.toString() ?: "Men's T-shirt"
+    */
             when (fromFilter) {
                 "fromFilter" -> {
 
                 }
 
                 "fromDisCart" -> {
-                    homeViewModel.getViewAllData(token,ViewAllProductRequest(collectionHandle))
+                    homeViewModel.getViewAllData(token, ViewAllProductRequest(collectionHandle))
                 }
 
                 else -> {
-                    homeViewModel.getViewAllData(token,ViewAllProductRequest(collectionHandle))
+                    homeViewModel.getViewAllData(token, ViewAllProductRequest(collectionHandle))
                 }
             }
 //            productId = categoryHandle
@@ -190,7 +187,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
             this.productId = productId
 
             binding.header.text = title.toString() ?: "Men's T-shirt"
-            homeViewModel.getViewAllData(token,ViewAllProductRequest(productId))
+            homeViewModel.getViewAllData(token, ViewAllProductRequest(productId))
 
             /*if(fromFilter =="fromFilter"){
 
@@ -201,16 +198,16 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
             when (fromFilter) {
                 "fromFilter" -> {
 //                    homeViewModel.getViewAllData(ViewAllProductRequest(productId, token))
-                    homeViewModel.getViewAllData(token,ViewAllProductRequest(productId,""))
+                    homeViewModel.getViewAllData(token, ViewAllProductRequest(productId, ""))
                 }
 
                 "fromDisCart" -> {
 //                    homeViewModel.getViewAllData(ViewAllProductRequest(productId, token))
-                    homeViewModel.getViewAllData(token,ViewAllProductRequest(productId))
+                    homeViewModel.getViewAllData(token, ViewAllProductRequest(productId))
                 }
 
                 else -> {
-                    homeViewModel.getViewAllData(token,ViewAllProductRequest(productId))
+                    homeViewModel.getViewAllData(token, ViewAllProductRequest(productId))
                 }
             }
         }
@@ -245,14 +242,14 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         val request = AddWishListRequest(token, product.id)
         val isLogin = Preferences.getStringPreference(requireContext(), IS_LOGIN)
 
-        if(isLogin == "1"){
+        if (isLogin == "1") {
             if (isLike) {
                 homeViewModel.addWishLisData(request)
             } else {
                 homeViewModel.removeWishLisData(request)
             }
 
-        }else{
+        } else {
             showLoginPrompt()
         }
     }
@@ -273,8 +270,8 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
 
     private fun showLoginPrompt() {
         var dialog: AlertDialog? = null
-        dialog=  CommonUtils.showCustomAlertDialog(
-            requireActivity() ,
+        dialog = CommonUtils.showCustomAlertDialog(
+            requireActivity(),
             "Sign Up Required",
             "Please sign up to add items to your wishlist.",
             positiveButtonText = "Sign up",
@@ -287,7 +284,8 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
                 bundle.putString("previousScreen", "logout")
                 bundle.putString("selectedImage", "0")
                 intent.putExtras(bundle)
-                requireActivity().startActivity(intent)            },
+                requireActivity().startActivity(intent)
+            },
             negativeButtonAction = {
                 dialog?.dismiss()
             }
@@ -306,7 +304,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
                             val data = it.data.payload.collection.products
                             setAdapter(data)
                             adapter.updateData(data)
-                           // Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
+                            // Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
 
                         }
 
@@ -417,7 +415,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
                     val data = it.data?.payload
 
                     val message = it.message ?: "Something went wrong"
-                 //   Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    //   Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 
 //                    Toast.makeText(requireActivity(), "Remove from wishlist", Toast.LENGTH_SHORT).show()
 
@@ -445,15 +443,15 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
 
 
     fun filterAction() {
-       /* binding.filterLayoutId.setOnClickListener {
-            val bundle = Bundle()
-            val handle = arguments?.getString(HANDLER).toString()
+        /* binding.filterLayoutId.setOnClickListener {
+             val bundle = Bundle()
+             val handle = arguments?.getString(HANDLER).toString()
 
-            Log.d("TAG", "filterAction:cdcd  $categoryHandle $handle")
-            bundle.putString(PRODUCT_ID, handle)
-            findNavController().navigate(R.id.action_productListFragment_to_filterFragment, bundle)
+             Log.d("TAG", "filterAction:cdcd  $categoryHandle $handle")
+             bundle.putString(PRODUCT_ID, handle)
+             findNavController().navigate(R.id.action_productListFragment_to_filterFragment, bundle)
 
-        }*/
+         }*/
         binding.shortLayout.setOnClickListener {
             val handle = arguments?.getString(HANDLER).toString()
             val productId = arguments?.getString(PRODUCT_TITLE).toString()
@@ -474,7 +472,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         }
         bottomSheet.onSortRequestSent = { request ->
             Log.i("TAG", "showSortBottomSheet: request ")
-            homeViewModel.getViewAllData(token,request)
+            homeViewModel.getViewAllData(token, request)
         }
         bottomSheet.show(parentFragmentManager, "ShortByBottomSheet")
     }
