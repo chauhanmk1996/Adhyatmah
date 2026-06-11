@@ -16,6 +16,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Adhyatmah"
+rootProject.name = "Adhyatmah User"
 include(":app")
  
