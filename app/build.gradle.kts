@@ -93,16 +93,10 @@ dependencies {
     //country picker
     implementation ("com.hbb20:ccp:2.7.3")
 
-
     //otp
     implementation ("com.github.appsfeature:otp-view:1.1")
 
-    // Hilt main library
-   /* implementation("com.google.dagger:hilt-android:2.48")
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-*/
-    implementation(libs.hilt.android)     // This uses version 2.50 from libs
     implementation(libs.hilt.compiler)
 
     implementation ("com.github.appsfeature:otp-view:1.1")
@@ -110,11 +104,7 @@ dependencies {
     implementation (libs.shimmer)
     implementation (libs.circleimageview)
 
-
-    // payStack
-   // implementation ("com.paystack.android:paystack-ui:0.0.9")
     implementation("com.razorpay:checkout:1.6.41")
-   // implementation ("com.razorpay:razorpay-android:1.6.10")
 
     implementation ("co.paystack.android:paystack:3.1.3")
 
@@ -123,10 +113,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.0")
     implementation("com.google.firebase:firebase-auth:21.0.1")
-// Example
     implementation("com.google.firebase:firebase-firestore:24.0.1")
-// Example
 
     implementation("com.google.android.gms:play-services-location:21.0.1")
-
 }

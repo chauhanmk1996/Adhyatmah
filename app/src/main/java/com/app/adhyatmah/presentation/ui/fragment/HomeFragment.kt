@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.app.adhyatmah.data.preferences.Preferences
@@ -41,7 +40,6 @@ import com.app.adhyatmah.domain.model.create_booking.PanditJiDetails
 import com.app.adhyatmah.domain.model.home_banner_response.HomeBanner
 import com.app.adhyatmah.domain.model.home_collection_Response.HomeCollection
 import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Vendor
-import com.app.adhyatmah.domain.model.profile.manage_address.Addresse
 import com.app.adhyatmah.domain.model.profile.manage_address.ManageAddressRequest
 import com.app.adhyatmah.domain.model.wish_list.wish_list_request.AddWishListRequest
 import com.app.adhyatmah.presentation.ui.activity.LoginActivity
@@ -99,7 +97,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val settingsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            // Callback will trigger when user comes back from settings
             handlePermissionResult()
         }
 
@@ -147,6 +144,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         binding.tvViewAllPanditJi.setOnClickListener {
             (requireActivity() as? MainActivity)?.switchToPanditJiTab()
+        }
+
+        binding.tvViewAllPopularPujas.setOnClickListener {
+            //TODO View All Popular Puja
         }
 
         binding.clLongBanner.setOnClickListener {
@@ -263,7 +264,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         val list = res.data.payload?.collections ?: emptyList()
                         trendingSectionList.clear()
                         trendingSectionList.addAll(list)
-                        trendingSectionAdapter = TrendingSectionAdapter(trendingSectionList) { pos ->
+                        trendingSectionAdapter =
+                            TrendingSectionAdapter(trendingSectionList) { pos ->
                                 val trendingSection = trendingSectionList[pos]
                                 val handle = trendingSection.handle
                                 val title = trendingSection.title
@@ -491,8 +493,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             val homeBanner = it.data.payload.banners.homeBanners
                             viewPagerList = homeBanner
                             setViewPager(homeBanner)
-                            bannerAdapter = AdapterBanner(data) {
-                                (requireActivity() as? MainActivity)?.switchToPanditJiTab()
+                            bannerAdapter = AdapterBanner(data) { pos ->
+                                when (pos) {
+                                    0 -> {
+                                        (requireActivity() as? MainActivity)?.switchToCategoryTab()
+                                    }
+
+                                    1 -> {
+                                        (requireActivity() as? MainActivity)?.switchToPanditJiTab()
+                                    }
+                                }
                             }
                             binding.bannerRecycler.adapter = bannerAdapter
                         }

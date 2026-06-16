@@ -48,5 +48,6 @@
     <color name="colorPrimary">#E98347</color>
     <color name="app_color_second">#E98347</color>
     <color name="blue"> #006BFF</color>
+    <color name="color_505050">#505050</color>
 
 </resources>

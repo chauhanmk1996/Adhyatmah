@@ -63,8 +63,7 @@ class BookingDetailsFragment : Fragment() {
             val name = "${panditJiDetails.firstName ?: ""} ${panditJiDetails.lastName ?: ""}"
             tvName.text = name
 
-            val experience =
-                "${panditJiDetails.city ?: ""} | ${panditJiDetails.seoContent?.details?.experience ?: ""}"
+            val experience = "${panditJiDetails.city ?: ""} | ${panditJiDetails.seoContent?.details?.experience ?: ""}"
             tvExperience.text = experience
 
             val about = "${panditJiDetails.about ?: ""}  ★ 4.8"

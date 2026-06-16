@@ -3,7 +3,6 @@ package com.app.adhyatmah.presentation.ui.pandit_ji
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -26,7 +25,6 @@ import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.databinding.FragmentPanditJiBinding
 import com.app.adhyatmah.domain.model.create_booking.PanditJiDetails
-import com.app.adhyatmah.domain.model.create_booking.PanditjiBookingRequest
 import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Vendor
 import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.PanditJiAdapter
@@ -50,7 +48,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     private val viewmodel by activityViewModels<PanditListViewModel>()
     private val currentPanditList = mutableListOf<Vendor>()
     private var searchJob: Job? = null
-    private val SEARCH_DEBOUNCE_MS = 300L
     private var poojaSelectFromHomeName: String = ""
 
     override fun setLayout(): Int = R.layout.fragment_pandit_ji
@@ -78,7 +75,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                 // Debounce API calls
                 searchJob?.cancel()
                 searchJob = lifecycleScope.launch {
-                    delay(SEARCH_DEBOUNCE_MS)
+                    delay(300)
                     performSearch(query)
                 }
             }
@@ -109,7 +106,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
 
     private var ignoreNextSpinnerSelection = false
 
-    private fun setSpinnerOptions(options: List<String>, panditjiList: List<Vendor>) {
+    private fun setSpinnerOptions(options: List<String>, panditJiList: List<Vendor>) {
         val spinnerItems = mutableListOf<String>()
         spinnerItems.add(getString(R.string.select))
         spinnerItems.addAll(options) // e.g. "PanditJi", "Service"
@@ -122,7 +119,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         binding.mySpinner.adapter = adapter
 
         currentPanditList.clear()
-        currentPanditList.addAll(panditjiList)
+        currentPanditList.addAll(panditJiList)
 
         // Set initial selection to placeholder without triggering listener
         binding.mySpinner.setSelection(0, false)
@@ -186,7 +183,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             }
         }
 
-        // Reset ignore flag after initial setup
         ignoreNextSpinnerSelection = false
 
         requireActivity().supportFragmentManager.setFragmentResultListener(
@@ -213,7 +209,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             }
         }
 
-        setAdapter(panditjiList)
+        setAdapter(panditJiList)
     }
 
     private fun openPoojaSelectionDialog() {
@@ -235,8 +231,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             if (selectedItems.isNotEmpty()) {
                 val selectedPooja = selectedItems.first()
                 dialog.dismiss()
-
-                // set text and hit API
                 binding.searchView.setText(selectedPooja)
                 performSearch(selectedPooja)
             }
@@ -246,10 +240,8 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         dialog.show()
     }
 
-    private fun setAdapter(panditjiList: List<Vendor>) {
-        panditJiAdapter = PanditJiAdapter(panditjiList.toMutableList(), { imgClickPosition ->
-            Log.d("TAG", "Pandit Image Clicked at position: $imgClickPosition")
-        }, { data ->
+    private fun setAdapter(panditJiList: List<Vendor>) {
+        panditJiAdapter = PanditJiAdapter(panditJiList.toMutableList()){data ->
             UserPreference.panditJiDetails = PanditJiDetails(
                 id = data.id,
                 image = data.image?.url ?: "",
@@ -279,12 +271,10 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             } else {
                 showLoginPrompt()
             }
-        })
-
+        }
         binding.recSearch.adapter = panditJiAdapter
-        binding.btnNext.visibility = View.GONE
         binding.recSearch.visibility = View.VISIBLE
-        binding.noResult.visibility = if (panditjiList.isEmpty()) View.VISIBLE else View.GONE
+        binding.noResult.visibility = if (panditJiList.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun showLoginPrompt() {
@@ -316,7 +306,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                     ProcessDialog.dismissDialog(true)
                     val code = res.data?.code
                     if (code == 200) {
-                        val vendors = res.data.payload.vendors ?: emptyList()
+                        val vendors = res.data.payload.vendors
                         currentPanditList.clear()
                         currentPanditList.addAll(vendors)
 
