@@ -147,7 +147,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.tvViewAllPopularPujas.setOnClickListener {
-            //TODO View All Popular Puja
+            findNavController().navigate(R.id.popularPujaFragment)
         }
 
         binding.clLongBanner.setOnClickListener {
@@ -397,6 +397,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             popularPoojaList.addAll(list)
                             popularPujasAdapter =
                                 PopularPujasAdapter(popularPoojaList) { selectedPuja ->
+                                    (requireActivity() as? MainActivity)?.panditJiFromPopularPuja = false
                                     (requireActivity() as? MainActivity)?.switchToPanditJiTab(
                                         "Service",
                                         selectedPuja.name ?: ""
@@ -421,7 +422,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             whyChooseUsList.clear()
                             whyChooseUsList.addAll(list)
                             whyChooseUsAdapter = WhyChooseUsAdapter(whyChooseUsList) {
-                                (requireActivity() as? MainActivity)?.switchToPanditJiTab()
                             }
                             binding.rvWhyChooseUs.adapter = whyChooseUsAdapter
                         }
@@ -815,14 +815,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
-
                 val lat = location.latitude
                 val lng = location.longitude
-
-                // ✅ Convert to address and set on TextView
                 getAddressFromLatLng(lat, lng)
-                Log.i("TAG", "getCurrentLocation: $location")
-
             } else {
                 requestNewLocationData()
             }
@@ -835,13 +830,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
 
             if (!addresses.isNullOrEmpty()) {
-
-                val address = addresses[0].getAddressLine(0) // Full Address
-
-                // ✅ Set fetched address to TextView
-                Log.i("TAG", "getAddressFromLatLng: " + address)
-                Log.i("TAG", "getAddressFromLatLng: " + addresses)
-                Log.i("TAG", "getAddressFromLatLng: " + addresses[0].postalCode)
+                val address = addresses[0].getAddressLine(0)
                 binding.tvLocation.text =
                     addresses[0].subAdminArea + ", " + addresses[0].adminArea + ", " + addresses[0].countryName + " - " + addresses[0].postalCode
                 Preferences.setStringPreference(
@@ -903,10 +892,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun handlePermissionResult() {
         if (isLocationPermissionGranted()) {
-            // ✅ Permission granted
             onLocationPermissionGranted()
         } else {
-            // ❌ Still not granted — send back to settings again
             openAppSettings()
         }
     }

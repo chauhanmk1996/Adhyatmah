@@ -18,6 +18,7 @@ import com.app.adhyatmah.presentation.ui.pandit_ji.viewModel.BookingDetailViewMo
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.app.adhyatmah.utils.hide
+import com.app.adhyatmah.utils.setHtml
 import com.app.adhyatmah.utils.show
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -69,7 +70,8 @@ class BookingDetailsFragment : Fragment() {
             val about = "${panditJiDetails.about ?: ""}  ★ 4.8"
             tvAbout.text = about
 
-            tvDescription.text = panditJiDetails.seoContent?.intro?.content?.toString() ?: ""
+            val description = panditJiDetails.seoContent?.intro?.content?.toString() ?: ""
+            tvDescription.setHtml(description)
 
             tvGotra.text = panditJiDetails.gotra ?: ""
 

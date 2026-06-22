@@ -21,28 +21,29 @@ import com.app.adhyatmah.presentation.ui.bottom_sheet.LogoutBottomSheetFragment
 import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.common_utils.CommonUtils
 
-class ProfileFragment : BaseFragment<FragmentProfileBinding>(){
-    var isLogin=""
-        override fun setLayout(): Int {
-            return R.layout.fragment_profile
-        }
+class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
+
+    var isLogin = ""
+    override fun setLayout(): Int {
+        return R.layout.fragment_profile
+    }
 
     override fun onResume() {
         super.onResume()
         setProfileData()
     }
-        override fun initView(savedInstanceState: Bundle?) {
-            setProfileData()
-            // Initialize RecyclerView
-            setupRecyclerView()
 
+    override fun initView(savedInstanceState: Bundle?) {
+        setProfileData()
+        // Initialize RecyclerView
+        setupRecyclerView()
+    }
 
-        }
-
-    fun setProfileData(){
+    fun setProfileData() {
         isLogin = Preferences.getStringPreference(requireContext(), IS_LOGIN).toString()
-       var img = Preferences.getStringPreference(requireContext(),PROFILE_IMG).toString()
-        var profileData = Preferences.getCustomModelPreference<Payload>(requireContext(),IS_PROFILE_DATA)
+        val img = Preferences.getStringPreference(requireContext(), PROFILE_IMG).toString()
+        val profileData =
+            Preferences.getCustomModelPreference<Payload>(requireContext(), IS_PROFILE_DATA)
         Log.d("TAG", "indditView: $profileData $img")
         binding.userNameTv.text = if (profileData != null) {
             "${profileData.user?.firstName} ${profileData.user?.lastName}"
@@ -66,10 +67,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(){
                 .into(binding.img)
         }
         binding.rightArrowImg.setOnClickListener {
-           // Toast.makeText(requireContext(),"Under development",Toast.LENGTH_SHORT).show()
-            if(isLogin=="1"){
+            // Toast.makeText(requireContext(),"Under development",Toast.LENGTH_SHORT).show()
+            if (isLogin == "1") {
                 findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
-            }else{
+            } else {
                 showLoginPrompt()
             }
 
@@ -77,90 +78,100 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(){
 
     }
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun setupRecyclerView() {
+        // Sample data as a list of Pair<String, Int>
+        val profileItems = mutableListOf(
+            Pair(getString(R.string.wishlist), R.drawable.wishlist_icon),
+            Pair(getString(R.string.my_orders), R.drawable.my_order_icon),
+            Pair(getString(R.string.my_booking), R.drawable.term_icon),
+            Pair(getString(R.string.manage_address), R.drawable.address_icon),
+            Pair(getString(R.string.select_language), R.drawable.language_home),
+            Pair(getString(R.string.terms_of_services), R.drawable.term_icon),
+            Pair(getString(R.string.privacy_policy), R.drawable.privacy_policy_icon),
+            Pair(getString(R.string.faq_support), R.drawable.help_suport_icon),
+            Pair(getString(R.string.contact_us), R.drawable.contact_us_icon),
+        )
+        if (isLogin == "1") {
+            profileItems.add(Pair(getString(R.string.delete_account), R.drawable.delete_account))
+            profileItems.add(Pair(getString(R.string.logout), R.drawable.logout_icon))
         }
+        // Set up adapter
+        val adapter = ProfileAdapter(profileItems) { itemTitle ->
+            // Handle item click
+            when (itemTitle) {
+                getString(R.string.wishlist) -> {
 
-        private fun setupRecyclerView() {
-            // Sample data as a list of Pair<String, Int>
-            val profileItems = mutableListOf(
-                Pair(getString(R.string.wishlist), R.drawable.wishlist_icon),
-                Pair(getString(R.string.my_orders), R.drawable.my_order_icon),
-                Pair(getString(R.string.my_booking), R.drawable.term_icon),
-                Pair(getString(R.string.manage_address), R.drawable.address_icon),
-                Pair(getString(R.string.select_language), R.drawable.language),
-                Pair(getString(R.string.terms_of_services), R.drawable.term_icon),
-                Pair(getString(R.string.privacy_policy), R.drawable.privacy_policy_icon),
-                Pair(getString(R.string.faq_support), R.drawable.help_suport_icon),
-                Pair(getString(R.string.contact_us), R.drawable.contact_us_icon),
-/*
-                Pair("Logout", R.drawable.logout_icon),
-*/
-            )
-            if (isLogin == "1") {
-                profileItems.add(Pair(getString(R.string.delete_account), R.drawable.delete_account))
-                profileItems.add(Pair(getString(R.string.logout), R.drawable.logout_icon))
-            }
-            // Set up adapter
-            val adapter = ProfileAdapter(profileItems) { itemTitle ->
-                // Handle item click
-                when (itemTitle) {
-                    getString(R.string.wishlist) -> {
+                    findNavController().navigate(R.id.action_profile_to_wishlist)
+                }
 
-                        findNavController().navigate(R.id.action_profile_to_wishlist)
-                    }
-                    getString(R.string.my_orders) -> {
+                getString(R.string.my_orders) -> {
 
-                        findNavController().navigate(R.id.action_profileFragment_to_myOrderFragment)
-                    }
-                    getString(R.string.manage_address) -> {
+                    findNavController().navigate(R.id.action_profileFragment_to_myOrderFragment)
+                }
 
-                        findNavController().navigate(R.id.action_profileFragment_to_mangeAddressFragment)
-                    }
-                    getString(R.string.select_language) -> {
+                getString(R.string.manage_address) -> {
 
-                        findNavController().navigate(R.id.action_profileFragment_to_chooseLanguageFragment)
-                    }
-                    getString(R.string.terms_of_services) -> {
-                        val bundle  = Bundle()
-                        bundle.putString("terms","1")
-                        findNavController().navigate(R.id.action_profileFragment_to_termConditionFragment2,bundle)
+                    findNavController().navigate(R.id.action_profileFragment_to_mangeAddressFragment)
+                }
 
-                    }
-                    getString(R.string.privacy_policy) -> {
-                        // Handle Policy
-                        findNavController().navigate(R.id.action_profileFragment_to_termConditionFragment2)
+                getString(R.string.select_language) -> {
 
-                    }
-                    getString(R.string.faq_support)-> {
+                    findNavController().navigate(R.id.action_profileFragment_to_chooseLanguageFragment)
+                }
 
-                        findNavController().navigate(R.id.action_profileFragment_to_helpSupportFragment)
-
-                    }
-                    getString(R.string.contact_us) -> {
-                        findNavController().navigate(R.id.action_profileFragment_to_contactUsFragment)
-                    }
-                    getString(R.string.my_booking)->{
-                        findNavController().navigate(R.id.action_profileFragment_to_bookingFragment)
-                    }
-                    getString(R.string.delete_account) -> {
-                        Log.d("TAG", "setupRecyclerView: delete account")
-                        showSortBottomSheet("1")
-                    }
-                    getString(R.string.logout) -> {
-                    Log.d("TAG", "setupRecyclerView: logout account")
-                    showSortBottomSheet("2")
-                    }
+                getString(R.string.terms_of_services) -> {
+                    val bundle = Bundle()
+                    bundle.putString("terms", "1")
+                    findNavController().navigate(
+                        R.id.action_profileFragment_to_termConditionFragment2,
+                        bundle
+                    )
 
                 }
-            }
 
-            // Set up RecyclerView
-            binding.itemsBagRecycler.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                this.adapter = adapter
+                getString(R.string.privacy_policy) -> {
+                    // Handle Policy
+                    findNavController().navigate(R.id.action_profileFragment_to_termConditionFragment2)
+
+                }
+
+                getString(R.string.faq_support) -> {
+
+                    findNavController().navigate(R.id.action_profileFragment_to_helpSupportFragment)
+
+                }
+
+                getString(R.string.contact_us) -> {
+                    findNavController().navigate(R.id.action_profileFragment_to_contactUsFragment)
+                }
+
+                getString(R.string.my_booking) -> {
+                    findNavController().navigate(R.id.action_profileFragment_to_bookingFragment)
+                }
+
+                getString(R.string.delete_account) -> {
+                    Log.d("TAG", "setupRecyclerView: delete account")
+                    showSortBottomSheet("1")
+                }
+
+                getString(R.string.logout) -> {
+                    Log.d("TAG", "setupRecyclerView: logout account")
+                    showSortBottomSheet("2")
+                }
+
             }
         }
+
+        // Set up RecyclerView
+        binding.itemsBagRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            this.adapter = adapter
+        }
+    }
 
     /*private fun showSortBottomSheet(type:String) {
         val bottomSheet = LogoutBottomSheetFragment()
@@ -175,8 +186,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(){
 
     private fun showLoginPrompt() {
         var dialog: AlertDialog? = null
-        dialog=  CommonUtils.showCustomAlertDialog(
-            requireActivity() ,
+        dialog = CommonUtils.showCustomAlertDialog(
+            requireActivity(),
             getString(R.string.sign_up_required),
             getString(R.string.sign_up_required_to_go_to_profile),
             positiveButtonText = getString(R.string.sign_up),
@@ -187,15 +198,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(){
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 val bundle = Bundle()
                 requireActivity().startActivity(intent)
-                                   },
-                 negativeButtonAction = {
+            },
+            negativeButtonAction = {
                 dialog?.dismiss()
             }
         )
     }
 
     private fun showToast(message: String) {
-            android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_SHORT).show()
-        }
+        android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_SHORT)
+            .show()
+    }
 
 }

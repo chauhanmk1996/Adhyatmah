@@ -6,7 +6,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.app.adhyatmah.R
 import com.app.adhyatmah.databinding.ActivityMainBinding
@@ -14,6 +13,8 @@ import com.app.adhyatmah.utils.base.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
+
+    var panditJiFromPopularPuja: Boolean = false
 
     fun setBottomNavSelected(itemId: Int) {
         binding.bottomNavigationView.selectedItemId = itemId
@@ -299,28 +300,32 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         val navController = findNavController(R.id.nav_host_fragment)
         val currentDestinationId = navController.currentDestination?.id
 
-        // List of your base fragments (bottom nav tabs)
+        if (currentDestinationId == R.id.panditJiFragment && panditJiFromPopularPuja) {
+            panditJiFromPopularPuja = false
+            binding.bottomNavigationView.selectedItemId = R.id.navigation_home
+            findNavController(R.id.nav_host_fragment).navigate(R.id.popularPujaFragment)
+            return
+        }
+
         val baseFragments = setOf(
             R.id.homeFragment,
+            R.id.panditJiFragment,
             R.id.categoryFragment,
             R.id.bagFragment,
             R.id.profileFragment
         )
 
         when {
-            // If in a deep stack (not one of base fragments), pop the back stack
             currentDestinationId !in baseFragments -> {
                 super.onBackPressed()
             }
 
-            // If currently in a base fragment but NOT homeFragment
             currentDestinationId != R.id.homeFragment -> {
                 val navOptions = NavOptions.Builder()
                     .setLaunchSingleTop(true)
                     .setPopUpTo(navController.graph.startDestinationId, inclusive = false)
                     .build()
                 navController.navigate(R.id.homeFragment, null, navOptions)
-
                 binding.bottomNavigationView.selectedItemId = R.id.navigation_home
             }
 

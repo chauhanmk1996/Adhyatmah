@@ -1,8 +1,10 @@
 package com.app.adhyatmah.utils
 
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.text.HtmlCompat
 
 fun AppCompatTextView.getString(): String {
     return this.text.trim().toString()
@@ -36,10 +38,23 @@ fun Double.getDigit(): String {
     }
 }
 
-fun View.show(){
+fun View.show() {
     this.visibility = View.VISIBLE
 }
 
-fun View.hide(){
+fun View.hide() {
     this.visibility = View.GONE
+}
+
+fun TextView.setHtml(html: String) {
+    this.text = HtmlCompat.fromHtml(
+        html,
+        HtmlCompat.FROM_HTML_MODE_LEGACY
+    )
+}
+
+fun String.capitalizeFirst(): String {
+    return this.replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase() else it.toString()
+    }
 }

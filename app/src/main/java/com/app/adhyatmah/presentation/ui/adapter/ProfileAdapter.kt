@@ -5,61 +5,59 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.R
-import com.app.adhyatmah.data.preferences.IS_LOGIN
 import com.app.adhyatmah.databinding.ProfileItemContainerBinding
 
 class ProfileAdapter(
-        private val profileItems: List<Pair<String, Int>>,
-        private val onItemClick: (String) -> Unit
-    ) : RecyclerView.Adapter<ProfileAdapter.ProfileViewHolder>() {
+    private val profileItems: List<Pair<String, Int>>,
+    private val onItemClick: (String) -> Unit,
+) : RecyclerView.Adapter<ProfileAdapter.ProfileViewHolder>() {
 
-        inner class ProfileViewHolder(private val binding: ProfileItemContainerBinding) :
-            RecyclerView.ViewHolder(binding.root) {
-                var isLogin = Preferences.getStringPreference(binding.view.context, IS_LOGIN).toString()=="1"
-            fun bind(item: Pair<String, Int>, isLastItem: Boolean) {
-                val context = itemView.context
-                val redColor = ContextCompat.getColor(itemView.context, R.color.red_D43E29)
-                val defaultTextColor = ContextCompat.getColor(context, R.color.black_272727) // or your default color
+    inner class ProfileViewHolder(private val binding: ProfileItemContainerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-                val isLogoutOrDelete = (item.first == "Logout" || item.first == "Delete account") && isLogin
-                binding.wishlistTv.setTextColor(if (isLogoutOrDelete) redColor else defaultTextColor)
-                binding.view.visibility = if (isLastItem) View.GONE else View.VISIBLE
+        fun bind(item: Pair<String, Int>, isLastItem: Boolean) {
+            val context = itemView.context
+            val redColor = ContextCompat.getColor(itemView.context, R.color.red_D43E29)
+            val defaultColor = ContextCompat.getColor(context, R.color.black_272727)
 
-
-                /* binding.wishlistTv.setTextColor( if (isLastItem &&isLogin ) redColor else defaultTextColor)
-                 binding.view.visibility = if (isLastItem) View.GONE else View.VISIBLE
- */
-                binding.wishlistTv.text = item.first
-                binding.wishlistImg.setImageResource(item.second)
-
-                binding.root.setOnClickListener {
-                    onItemClick(item.first)
+            when (item.first) {
+                "Select Language" -> {
+                    binding.wishlistTv.setTextColor(defaultColor)
+                }
+                "Logout", "Delete account" -> {
+                    binding.wishlistTv.setTextColor(redColor)
+                }
+                else -> {
+                    binding.wishlistTv.setTextColor(defaultColor)
                 }
             }
+
+            binding.view.visibility = if (isLastItem) View.GONE else View.VISIBLE
+
+            binding.wishlistTv.text = item.first
+            binding.wishlistImg.setImageResource(item.second)
+
+            binding.root.setOnClickListener {
+                onItemClick(item.first)
+            }
         }
+    }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileViewHolder {
-            val binding = ProfileItemContainerBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-            return ProfileViewHolder(binding)
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileViewHolder {
+        val binding = ProfileItemContainerBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ProfileViewHolder(binding)
+    }
 
-        override fun onBindViewHolder(holder: ProfileViewHolder, position: Int) {
-            val isLastItem = position == profileItems.size - 1
+    override fun onBindViewHolder(holder: ProfileViewHolder, position: Int) {
+        val isLastItem = position == profileItems.size - 1
+        holder.bind(profileItems[position], isLastItem)
+    }
 
-            holder.bind(profileItems[position],isLastItem)
-
-
-            //   holder.
-
-
-        }
-
-        override fun getItemCount(): Int = profileItems.size
+    override fun getItemCount(): Int = profileItems.size
 
 }

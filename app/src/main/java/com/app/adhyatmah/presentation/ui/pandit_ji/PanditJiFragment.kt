@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.IS_LOGIN
@@ -32,13 +31,16 @@ import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.MultiplePoojaAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.viewModel.PanditListViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.common_utils.CommonUtils
-import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.core.graphics.drawable.toDrawable
+import com.app.adhyatmah.domain.model.PopularPooja
+import com.app.adhyatmah.presentation.ui.adapter.PopularPujasGridAdapter
+import com.app.adhyatmah.presentation.ui.viewmodel.HomeViewModel
+import com.app.adhyatmah.utils.common_utils.ProcessDialog
 
 class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
 
@@ -49,12 +51,16 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     private val currentPanditList = mutableListOf<Vendor>()
     private var searchJob: Job? = null
     private var poojaSelectFromHomeName: String = ""
+    private val homeViewModel by activityViewModels<HomeViewModel>()
+    private val popularPoojaList: ArrayList<PopularPooja> = ArrayList()
+    private lateinit var popularPujasGridAdapter: PopularPujasGridAdapter
 
     override fun setLayout(): Int = R.layout.fragment_pandit_ji
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObserver()
+        homeViewModel.homeDataApi()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -109,7 +115,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     private fun setSpinnerOptions(options: List<String>, panditJiList: List<Vendor>) {
         val spinnerItems = mutableListOf<String>()
         spinnerItems.add(getString(R.string.select))
-        spinnerItems.addAll(options) // e.g. "PanditJi", "Service"
+        spinnerItems.addAll(options)
 
         val adapter = ArrayAdapter(
             requireContext(),
@@ -213,35 +219,28 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     }
 
     private fun openPoojaSelectionDialog() {
-        val poojaList = poojaList
-
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_multiple_pooja)
         dialog.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.MATCH_PARENT
         )
         dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
-        val recycler = dialog.findViewById<RecyclerView>(R.id.recMultiplePooja)
-        recycler.layoutManager = LinearLayoutManager(requireContext())
-
-        multiplePoojaAdapter = MultiplePoojaAdapter(poojaList) { _, selectedItems ->
-            if (selectedItems.isNotEmpty()) {
-                val selectedPooja = selectedItems.first()
+        val rvPopularPuja = dialog.findViewById<RecyclerView>(R.id.rv_popular_puja)
+        popularPujasGridAdapter =
+            PopularPujasGridAdapter(popularPoojaList) { selectedPuja ->
+                binding.searchView.setText(selectedPuja.name ?: "")
+                performSearch(selectedPuja.name ?: "")
                 dialog.dismiss()
-                binding.searchView.setText(selectedPooja)
-                performSearch(selectedPooja)
             }
-        }
-        recycler.adapter = multiplePoojaAdapter
-
+        rvPopularPuja.adapter = popularPujasGridAdapter
         dialog.show()
     }
 
     private fun setAdapter(panditJiList: List<Vendor>) {
-        panditJiAdapter = PanditJiAdapter(panditJiList.toMutableList()){data ->
+        panditJiAdapter = PanditJiAdapter(panditJiList.toMutableList()) { data ->
             UserPreference.panditJiDetails = PanditJiDetails(
                 id = data.id,
                 image = data.image?.url ?: "",
@@ -301,9 +300,11 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     private fun setObserver() {
         viewmodel.getPanditListLiveData().observe(viewLifecycleOwner) { res ->
             when (res.status) {
-                Status.LOADING -> ProcessDialog.showDialog(requireActivity(), true)
+                Status.LOADING -> {
+
+                }
+
                 Status.SUCCESS -> {
-                    ProcessDialog.dismissDialog(true)
                     val code = res.data?.code
                     if (code == 200) {
                         val vendors = res.data.payload.vendors
@@ -318,8 +319,45 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                             setAdapter(vendors)
                         }
                     } else {
-                        ProcessDialog.dismissDialog(true)
                         setAdapter(emptyList())
+                    }
+                }
+
+                Status.ERROR -> {
+                    Snackbar.make(
+                        requireView(),
+                        res.message ?: "Something went wrong",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        homeViewModel.getHomeDataApi().observe(viewLifecycleOwner) { res ->
+            when (res.status) {
+                Status.LOADING -> ProcessDialog.showDialog(requireActivity(), true)
+
+                Status.SUCCESS -> {
+                    ProcessDialog.dismissDialog(true)
+                    val code = res.data?.code
+                    when (code) {
+                        200 -> {
+                            val payload = res.data.payload
+                            payload?.services?.let { list ->
+                                popularPoojaList.clear()
+                                popularPoojaList.addAll(list)
+                            }
+                        }
+
+                        401 -> {
+                            ProcessDialog.dismissDialog(true)
+                            Toast.makeText(requireActivity(), res.data.message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                        else -> {
+                            ProcessDialog.dismissDialog(true)
+                        }
                     }
                 }
 

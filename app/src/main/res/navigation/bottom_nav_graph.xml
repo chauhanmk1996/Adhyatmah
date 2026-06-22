@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_productListFragment"
             app:destination="@id/productListFragment" />
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.ProfileFragment"
-        android:label="ProfileFragment" >
+        android:label="ProfileFragment">
 
         <action
             android:id="@+id/action_profile_to_wishlist"
@@ -63,7 +63,7 @@
     <fragment
         android:id="@+id/categoryFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.CategoryFragment"
-        android:label="CategoryFragment" >
+        android:label="CategoryFragment">
         <action
             android:id="@+id/action_categoryFragment_to_productListFragment"
             app:destination="@id/productListFragment" />
@@ -74,8 +74,7 @@
         android:label="BagFragment">
         <action
             android:id="@+id/action_bagFragment_to_applyCouponsFragment"
-            app:destination="@id/applyCouponsFragment">
-        </action>
+            app:destination="@id/applyCouponsFragment"></action>
         <action
             android:id="@+id/action_bagFragment_to_paymentGatewayFragment"
             app:destination="@id/paymentMethodFragment" />
@@ -86,7 +85,7 @@
     <fragment
         android:id="@+id/productListFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.ProductListFragment"
-        android:label="ProductListFragment" >
+        android:label="ProductListFragment">
         <action
             android:id="@+id/action_productListFragment_to_shortByBottomSheet"
             app:destination="@id/shortByBottomSheet" />
@@ -100,7 +99,7 @@
     <fragment
         android:id="@+id/productDetailsFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.ProductDetailsFragment"
-        android:label="ProductDetailsFragment" >
+        android:label="ProductDetailsFragment">
         <action
             android:id="@+id/action_productDetailsFragment_to_bagFragment"
             app:destination="@id/bagFragment" />
@@ -126,7 +125,7 @@
     <fragment
         android:id="@+id/filterFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.FilterFragment"
-        android:label="FilterFragment" >
+        android:label="FilterFragment">
         <action
             android:id="@+id/action_filterFragment_to_productListFragment"
             app:destination="@id/productListFragment" />
@@ -137,7 +136,7 @@
     <fragment
         android:id="@+id/applyCouponsFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.ApplyCouponsFragment"
-        android:label="ApplyCouponsFragment" >
+        android:label="ApplyCouponsFragment">
 
         <action
             android:id="@+id/action_applyCouponsFragment_to_filtersFragment"
@@ -163,7 +162,7 @@
         android:id="@+id/myOrderFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.MyOrderFragment"
         android:label="fragment_my_order"
-        tools:layout="@layout/fragment_my_order" >
+        tools:layout="@layout/fragment_my_order">
         <action
             android:id="@+id/action_myOrderFragment_to_myOrderDetailsFragment"
             app:destination="@id/myOrderDetailsFragment" />
@@ -176,7 +175,7 @@
         android:id="@+id/mangeAddressFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.MangeAddressFragment"
         android:label="fragment_mange_address"
-        tools:layout="@layout/fragment_mange_address" >
+        tools:layout="@layout/fragment_mange_address">
         <action
             android:id="@+id/action_mangeAddressFragment_to_addAddressFragment"
             app:destination="@id/addAddressFragment" />
@@ -195,7 +194,7 @@
     <fragment
         android:id="@+id/addAddressFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.AddAddressFragment"
-        android:label="AddAddressFragment" >
+        android:label="AddAddressFragment">
         <action
             android:id="@+id/action_addAddressFragment_to_mangeAddressFragment"
             app:popUpTo="@id/addAddressFragment" />
@@ -211,7 +210,7 @@
     <fragment
         android:id="@+id/paymentMethodFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.PaymentMethodFragment"
-        android:label="PaymentMethodFragment" >
+        android:label="PaymentMethodFragment">
         <action
             android:id="@+id/action_paymentMethodFragment_to_congratulationFragment"
             app:destination="@id/congratulationFragment" />
@@ -225,7 +224,7 @@
     <fragment
         android:id="@+id/searchListFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.SearchListFragment"
-        android:label="SearchListFragment" >
+        android:label="SearchListFragment">
         <action
             android:id="@+id/action_searchListFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
@@ -233,7 +232,7 @@
     <fragment
         android:id="@+id/congratulationFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.CongratulationFragment"
-        android:label="CongratulationFragment" >
+        android:label="CongratulationFragment">
         <action
             android:id="@+id/action_congratulationFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -241,7 +240,7 @@
     <fragment
         android:id="@+id/stripFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.StripFragment"
-        android:label="StripFragment" >
+        android:label="StripFragment">
         <action
             android:id="@+id/action_stripFragment_to_congratulationFragment"
             app:destination="@id/congratulationFragment" />
@@ -253,7 +252,7 @@
     <fragment
         android:id="@+id/confirmOrderFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.ConfirmOrderFragment"
-        android:label="ConfirmOrderFragment" >
+        android:label="ConfirmOrderFragment">
         <action
             android:id="@+id/action_confirmOrderFragment_to_congratulationFragment"
             app:destination="@id/congratulationFragment" />
@@ -270,7 +269,7 @@
     <fragment
         android:id="@+id/myOrderDetailsFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.MyOrderDetailsFragment"
-        android:label="MyOrderDetailsFragment" >
+        android:label="MyOrderDetailsFragment">
         <action
             android:id="@+id/action_myOrderDetailsFragment_to_trackOrderFragment"
             app:destination="@id/trackOrderFragment" />
@@ -282,7 +281,7 @@
     <fragment
         android:id="@+id/paymentGatewayFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.PaymentGatewayFragment"
-        android:label="PaymentGatewayFragment" >
+        android:label="PaymentGatewayFragment">
         <action
             android:id="@+id/action_paymentGatewayFragment_to_congratulationFragment"
             app:destination="@id/congratulationFragment" />
@@ -290,13 +289,13 @@
     <fragment
         android:id="@+id/brandFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.BrandFragment"
-        android:label="BrandFragment" >
+        android:label="BrandFragment">
         <action
             android:id="@+id/action_brandFragment_to_filterFragment"
             app:destination="@id/filterFragment"
+            app:launchSingleTop="true"
             app:popUpTo="@id/filterFragment"
-            app:popUpToInclusive="true"
-            app:launchSingleTop="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/trackOrderFragment"
@@ -350,6 +349,8 @@
         android:id="@+id/chooseLanguageFragment"
         android:name="com.app.adhyatmah.presentation.ui.fragment.ChooseLanguageFragment"
         android:label="ChooseLanguageFragment" />
-
-
+    <fragment
+        android:id="@+id/popularPujaFragment"
+        android:name="com.app.adhyatmah.presentation.ui.fragment.PopularPujaFragment"
+        android:label="PopularPujaFragment" />
 </navigation>

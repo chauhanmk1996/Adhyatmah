@@ -93,7 +93,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                     findNavController().navigate(R.id.action_productDetailsFragment_to_reviewsFragment)
                 }
 
-        })
+            })
         binding.reviewRecyclerId.adapter = productDetailReviewAdapter
         updateCartBadge(CART_COUNT)
         setObserve()
@@ -115,11 +115,11 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             //homeViewModel.getAllProductReview(searchProductId, currentPage, limitPerPage)
         } else {
             homeViewModel.getProductDtData(productId, token)
-          //  homeViewModel.getAllProductReview(productId, currentPage, limitPerPage)
+            //  homeViewModel.getAllProductReview(productId, currentPage, limitPerPage)
         }
 
         binding.backBtn.setOnClickListener {
-           findNavController().popBackStack()
+            findNavController().popBackStack()
 
         }
         binding.cartButton.setOnClickListener {
@@ -145,20 +145,23 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         })
 
         binding.shareBtn.setOnClickListener {
-         shareAppProduct()
+            shareAppProduct()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // 👉 This will be called when system back is pressed in this fragment
-                // ✅ You can put any logic here before going back
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // 👉 This will be called when system back is pressed in this fragment
+                    // ✅ You can put any logic here before going back
 
-                findNavController().popBackStack() // same as clicking backBtn
+                    findNavController().popBackStack() // same as clicking backBtn
 
-                 // Toast.makeText(requireContext(), "Back pressed", Toast.LENGTH_SHORT).show()
-            }
-        })
+                    // Toast.makeText(requireContext(), "Back pressed", Toast.LENGTH_SHORT).show()
+                }
+            })
 
     }
+
     fun updateCartBadge(count: Int) {
         val badgeTextView = binding.cartBadge as TextView
 
@@ -198,17 +201,18 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     private fun loadNextPage() {
         isLoading = true
         currentPage++
-      //  homeViewModel.getAllProductReview(productId, currentPage, limitPerPage)
+        //  homeViewModel.getAllProductReview(productId, currentPage, limitPerPage)
     }
 
 
     fun setAdapters(product: Product) {
         val colorOption = product.options.find { it.name.equals("Color", ignoreCase = true) }
         val sizeOption = product.options.find { it.name.equals("Size", ignoreCase = true) }
-        val sleeveOption = product.options.find { it.name.equals("Sleeve length type", ignoreCase = true) }
-      /*  binding.sizeText.text = sizeOption?.name ?: ""
-        binding.colorText.text = colorOption?.name ?: ""
-      */
+        val sleeveOption =
+            product.options.find { it.name.equals("Sleeve length type", ignoreCase = true) }
+        /*  binding.sizeText.text = sizeOption?.name ?: ""
+          binding.colorText.text = colorOption?.name ?: ""
+        */
         // For size
         if (!sizeOption?.name.isNullOrEmpty()) {
             binding.sizeText.text = sizeOption?.name
@@ -223,13 +227,12 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         if (!colorOption?.name.isNullOrEmpty()) {
             binding.colorText.text = colorOption?.name
             binding.colorText.visibility = View.VISIBLE
-            binding.colorRecyclerview.visibility= View.VISIBLE
+            binding.colorRecyclerview.visibility = View.VISIBLE
 
         } else {
-            binding.colorRecyclerview.visibility= View.GONE
+            binding.colorRecyclerview.visibility = View.GONE
             binding.colorText.visibility = View.GONE
         }
-
 
 
         // binding.sleeve.text = sleeveOption?.name ?: ""
@@ -245,7 +248,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
         if (!::productDetailSleeveAdapter.isInitialized) {
             productDetailSleeveAdapter = ProductDetailSleeveAdapter(mutableListOf())
-           // binding.sleeveRecyclerview.adapter = productDetailSleeveAdapter
+            // binding.sleeveRecyclerview.adapter = productDetailSleeveAdapter
         }
 
         val allSizes = sizeOption?.values ?: emptyList()     // all available sizes
@@ -290,7 +293,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         )
 
 
-        productVariants = product.variants?: emptyList()
+        productVariants = product.variants ?: emptyList()
 
         productDetailColorAdapter.onItemClick = { selectedColor ->
             selectedOptions["Color"] = selectedColor
@@ -325,13 +328,10 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
 
 
-        Log.d("dsd","Size :$sizeOption")
+        Log.d("dsd", "Size :$sizeOption")
         // Reviews (no dynamic list, so just set)
 //        productDetailReviewAdapter = ProductDetailReviewAdapter(productReviewList)
 //        binding.reviewRecyclerId.adapter = productDetailReviewAdapter
-
-
-
 
 
     }
@@ -339,7 +339,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
     private fun setViewPager(img: List<Image>) {
         viewPagerlist.clear()
-        viewPagerAdapter= ViewPagerProductDetailAdapter(img)
+        viewPagerAdapter = ViewPagerProductDetailAdapter(img)
         binding.viewpager.adapter = viewPagerAdapter
         binding.viewpager.offscreenPageLimit = 1
         binding.viewpager.clipToPadding = false
@@ -347,7 +347,6 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
         binding.viewpager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         binding.indicatorRecyclerview.setIndicators(img.size)
-
 
 
         // Connect ViewPager to indicators
@@ -376,31 +375,39 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             }
         }
         binding.BagBtn.setOnClickListener {
-            Log.i("TAG", "setupArrowClickListeners: "+availablePincode)
-            Log.i("TAG", "setupArrowClickListeners: "+Preferences.getStringPreference(requireContext(), CURRENT_PINCODE))
-                if(token.isNullOrEmpty()){
-                    showLoginPrompt()
-                }else if(stockQuantity==0){
-                    Toast.makeText(requireContext(), "Product not available!", Toast.LENGTH_SHORT).show()
-                }
-                else if ( (availablePincode.isNullOrEmpty()) || (availablePincode.isNotEmpty() && availablePincode.any { it.equals(Preferences.getStringPreference(requireContext(), CURRENT_PINCODE), ignoreCase = true) } )) {
-                    var request = AddToBagRequest()
-                    request.accessToken= token
-                    request.quantity = 1
-                    request.variantId = variantId
-                    homeViewModel.addToBagApi(request)
-                }
-                else{
-                    showPincodePrompt()
-                }
-
+            Log.i("TAG", "setupArrowClickListeners: " + availablePincode)
+            Log.i(
+                "TAG",
+                "setupArrowClickListeners: " + Preferences.getStringPreference(
+                    requireContext(),
+                    CURRENT_PINCODE
+                )
+            )
+            if (token.isNullOrEmpty()) {
+                showLoginPrompt()
+            } else if (stockQuantity == 0) {
+                Toast.makeText(requireContext(), "Product not available!", Toast.LENGTH_SHORT)
+                    .show()
+            } else if ((availablePincode.isEmpty()) || (availablePincode.isNotEmpty() && availablePincode.any {
+                    it.equals(
+                        Preferences.getStringPreference(requireContext(), CURRENT_PINCODE),
+                        ignoreCase = true
+                    )
+                })) {
+                val request = AddToBagRequest()
+                request.accessToken = token
+                request.quantity = 1
+                request.variantId = variantId
+                homeViewModel.addToBagApi(request)
+            } else {
+                showPincodePrompt()
+            }
         }
-
-
     }
+
     private fun showPincodePrompt() {
         var dialog: AlertDialog? = null
-        dialog=  CommonUtils.showPincodeDialog(
+        dialog = CommonUtils.showPincodeDialog(
             requireActivity(),
             getString(R.string.alert),
             getString(R.string.product_is_not_available_for_your_current_location),
@@ -414,9 +421,10 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             }
         )
     }
+
     private fun showLoginPrompt() {
         var dialog: AlertDialog? = null
-        dialog=  CommonUtils.showCustomAlertDialog(
+        dialog = CommonUtils.showCustomAlertDialog(
             requireActivity(),
             "Sign Up Required",
             "Please sign up to add items to your bag.",
@@ -437,7 +445,8 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             }
         )
     }
-    private fun setObserve(){
+
+    private fun setObserve() {
         homeViewModel.getProductLiveData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -451,21 +460,21 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                             stockQuantity = data.stockQuantity
                             setViewPager(img)
                             setAdapters(data)
-                            binding.greyPullover.text = data.title?:""
-                            binding.productDetailsDis.text = data.description?:""
+                            binding.greyPullover.text = data.title ?: ""
+                            binding.productDetailsDis.text = data.description ?: ""
 
                             Log.d("TAG", "setObservedfgh: $data")
 
-                          //  binding.price.text = data.variants?.get(0)?.price?.amount
+                            //  binding.price.text = data.variants?.get(0)?.price?.amount
                             if (!data.variants.isNullOrEmpty()) {
                                 var price = data.variants[0].price
-                                binding.price.text =price?.currencyCode+" "+price?.amount
+                                binding.price.text = price?.currencyCode + " " + price?.amount
 
 //                                variantId = data.variants?.get(0)?.id?:""
                                 variantId = data.id
 
                             } else {
-                              //  variantId = data.variants?.get(0)?.id?:""
+                                //  variantId = data.variants?.get(0)?.id?:""
                                 binding.price.text = "INR 0.0"
                             }
 
@@ -473,9 +482,9 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
                             binding.fabIcon.setImageResource(
                                 if (isWishListed) {
-                               //     R.drawable.like
+                                    //     R.drawable.like
                                     R.drawable.wish_fev_like_icon
-                                }else {
+                                } else {
                                     R.drawable.wish_fev_unlike_icon
                                 }
                             )
@@ -500,15 +509,15 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
                             }
 
-                            Log.d("tt","sdsfdsfds, $id")
-                          //  variantId = data.variants?.get(0)?.id?:""
+                            Log.d("tt", "sdsfdsfds, $id")
+                            //  variantId = data.variants?.get(0)?.id?:""
 
 
-
-                            Log.d("Tdkjd",data.toString())
+                            Log.d("Tdkjd", data.toString())
 //                            setAdapter(data)
                             // setup adapter here
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -537,11 +546,12 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                         200 -> {
                             var data = it.data.payload.product.reviews
 
-                            Log.d("Tag","Ihjhfds: ${data.size}")
-                            binding.numOfRating.text = data.size.toString()+" "+"Ratings"
+                            Log.d("Tag", "Ihjhfds: ${data.size}")
+                            binding.numOfRating.text = data.size.toString() + " " + "Ratings"
 
                             val totalRating = data.sumOf { it.rating.toDouble() }
-                            val averageRating = if (data.isNotEmpty()) totalRating / data.size else 0.0
+                            val averageRating =
+                                if (data.isNotEmpty()) totalRating / data.size else 0.0
 
                             binding.numOfRating.text = "${data.size} Ratings"
                             binding.numRate.text = String.format("%.1f", averageRating)
@@ -549,8 +559,10 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                             binding.rating.rating = averageRating.toFloat() ?: 0f
 
                             binding.rating.progressTintList = ColorStateList.valueOf(Color.BLACK)
-                            binding.rating.secondaryProgressTintList = ColorStateList.valueOf(Color.BLACK)
-                            binding.rating.progressBackgroundTintList = ColorStateList.valueOf(Color.GRAY)
+                            binding.rating.secondaryProgressTintList =
+                                ColorStateList.valueOf(Color.BLACK)
+                            binding.rating.progressBackgroundTintList =
+                                ColorStateList.valueOf(Color.GRAY)
 
 
                             /*isLoading = false
@@ -565,27 +577,28 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                                 productDetailReviewAdapter.updateItems(newItems)
                             }
 */
-                          /*  val reviewContainer = it.data.payload.product.reviews
-                            productDetailReviewAdapter.updateItems(reviewContainer)
-*/
+                            /*  val reviewContainer = it.data.payload.product.reviews
+                              productDetailReviewAdapter.updateItems(reviewContainer)
+  */
                             val reviewContainer = it.data.payload.product.reviews
                             productDetailReviewAdapter.updateItems(reviewContainer)
 
 
-                           /* if (!::productDetailReviewAdapter.isInitialized) {
-                                productDetailReviewAdapter = ProductDetailReviewAdapter(reviewContainer.toMutableList())
-                                binding.reviewRecyclerId.adapter = productDetailReviewAdapter
-                            } else {
-                                productDetailReviewAdapter.updateItems(reviewContainer)
-                            }*/
+                            /* if (!::productDetailReviewAdapter.isInitialized) {
+                                 productDetailReviewAdapter = ProductDetailReviewAdapter(reviewContainer.toMutableList())
+                                 binding.reviewRecyclerId.adapter = productDetailReviewAdapter
+                             } else {
+                                 productDetailReviewAdapter.updateItems(reviewContainer)
+                             }*/
 
 
 
-                            Log.d("tt","sdsfdsfds, $id")
-                            Log.d("Tdkjd",data.toString())
+                            Log.d("tt", "sdsfdsfds, $id")
+                            Log.d("Tdkjd", data.toString())
 //                            setAdapter(data)
                             // setup adapter here
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -613,18 +626,20 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            var message = it.data.message.toString()
-                            Toast.makeText(requireActivity(),message,Toast.LENGTH_SHORT).show()
-                            Preferences.setStringPreference(requireContext(), CART_ID, it.data.payload.cart.id)
+                            val message = it.data.message
+                            Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+                            Preferences.setStringPreference(
+                                requireContext(),
+                                CART_ID,
+                                it.data.payload.cart.id
+                            )
                             CART_COUNT = it.data.payload.cart.lines.edges.size
                             (requireActivity() as MainActivity).updateBagBadge(CART_COUNT)
                             updateCartBadge(CART_COUNT)
-                          /*  findNavController().navigate(R.id.action_productDetailsFragment_to_bagFragment)
-                            (requireActivity() as MainActivity).setBottomNavSelected(R.id.navigation_bag)
-*/
-//                            setAdapter(data)
-                            // setup adapter here
+
+                            (requireActivity() as MainActivity).switchToCartTab()
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -646,54 +661,66 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
         }
         homeViewModel.getAddWishList().observe(viewLifecycleOwner) {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        val data = it.data?.payload
-                        Toast.makeText(requireActivity(), "Successfully Added to Wishlist", Toast.LENGTH_SHORT).show()
-                        /* if (data?.product?.wishlist==true) {
-     //                        setAdapter(data)
-                         } else {
-                             Log.e("TAG", "Empty data or null payload")
-                             Snackbar.make(requireView(), "No wishlist items found", Snackbar.LENGTH_SHORT).show()
-                         }*/
-                        ProcessDialog.dismissDialog(true)
-                    }
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val data = it.data?.payload
+                    Toast.makeText(
+                        requireActivity(),
+                        "Successfully Added to Wishlist",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    /* if (data?.product?.wishlist==true) {
+ //                        setAdapter(data)
+                     } else {
+                         Log.e("TAG", "Empty data or null payload")
+                         Snackbar.make(requireView(), "No wishlist items found", Snackbar.LENGTH_SHORT).show()
+                     }*/
+                    ProcessDialog.dismissDialog(true)
+                }
 
-                    Status.LOADING -> {
-                        ProcessDialog.showDialog(requireActivity(), true)
-                    }
+                Status.LOADING -> {
+                    ProcessDialog.showDialog(requireActivity(), true)
+                }
 
-                    Status.ERROR -> {
-                        Log.e("TAG", "Error: ${it.message}")
-                        ProcessDialog.dismissDialog(true)
-                        Snackbar.make(requireView(), it.message ?: "Unknown error", Snackbar.LENGTH_SHORT).show()
-                    }
+                Status.ERROR -> {
+                    Log.e("TAG", "Error: ${it.message}")
+                    ProcessDialog.dismissDialog(true)
+                    Snackbar.make(
+                        requireView(),
+                        it.message ?: "Unknown error",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
+        }
         homeViewModel.removeWishList().observe(viewLifecycleOwner) {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        val data = it.data?.payload
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val data = it.data?.payload
 
-                        val message = it.data?.message ?: "Something went wrong"
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    val message = it.data?.message ?: "Something went wrong"
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 
 //                    Toast.makeText(requireActivity(), "Remove from wishlist", Toast.LENGTH_SHORT).show()
 
-                        ProcessDialog.dismissDialog(true)
-                    }
+                    ProcessDialog.dismissDialog(true)
+                }
 
-                    Status.LOADING -> {
-                        ProcessDialog.showDialog(requireActivity(), true)
-                    }
+                Status.LOADING -> {
+                    ProcessDialog.showDialog(requireActivity(), true)
+                }
 
-                    Status.ERROR -> {
-                        Log.e("TAG", "Error: ${it.message}")
-                        ProcessDialog.dismissDialog(true)
-                        Snackbar.make(requireView(), it.message ?: "Unknown error", Snackbar.LENGTH_SHORT).show()
-                    }
+                Status.ERROR -> {
+                    Log.e("TAG", "Error: ${it.message}")
+                    ProcessDialog.dismissDialog(true)
+                    Snackbar.make(
+                        requireView(),
+                        it.message ?: "Unknown error",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
+        }
 
 
     }
@@ -708,7 +735,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             binding.BagBtn.isEnabled = true
             binding.BagBtn.setBackgroundResource(R.drawable.rectangle_000000_radius_12)
             binding.BagBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            variantId = match.id?:""
+            variantId = match.id ?: ""
         } else {
             binding.BagBtn.isEnabled = false
             binding.BagBtn.setBackgroundResource(R.drawable.rectangle_9baoa3_12dp_radius)
@@ -736,11 +763,13 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         productDetailColorAdapter.updateColorList(getAllColors(), availableColors.distinct())
         productDetailSleeveAdapter.updateList(getAllSleeves(), availableSleeves.distinct())
     }
+
     fun Variant.matches(options: Map<String, String>): Boolean {
         return selectedOptions.all { option ->
             options[option.name] == option.value
         }
     }
+
     fun isOptionValid(optionName: String, optionValue: String): Boolean {
         val tempSelection = selectedOptions.toMutableMap()
         tempSelection[optionName] = optionValue
@@ -749,27 +778,28 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             tempSelection.all { (key, value) -> combo[key] == value }
         }
     }
+
     fun Variant.partialMatch(options: Map<String, String>, exclude: String): Boolean {
         return selectedOptions.all {
             it.name == exclude || options[it.name] == it.value
         }
     }
+
     private fun getAllSizes(): List<String> {
         return productVariants.flatMap { variant ->
             variant.selectedOptions.filter { it.name == "Size" }.map { it.value }
         }.distinct()
     }
+
     private fun getAllColors(): List<String> {
         return productVariants.flatMap { variant ->
             variant.selectedOptions.filter { it.name == "Color" }.map { it.value }
         }.distinct()
     }
+
     private fun getAllSleeves(): List<String> {
         return productVariants.flatMap { variant ->
             variant.selectedOptions.filter { it.name == "Sleeve length type" }.map { it.value }
         }.distinct()
     }
-
-
-
 }
