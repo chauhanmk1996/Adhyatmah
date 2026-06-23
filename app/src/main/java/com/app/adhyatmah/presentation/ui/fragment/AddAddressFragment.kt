@@ -10,8 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.ScrollView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -21,7 +19,6 @@ import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
 import com.app.adhyatmah.data.preferences.ADDRESS_ID
 import com.app.adhyatmah.data.preferences.TYPE
 import com.app.adhyatmah.databinding.FragmentAddAddressBinding
-import com.app.adhyatmah.domain.model.currency.post_currency.post_currency_request.CurencyPostRequest
 import com.app.adhyatmah.domain.model.profile.add_address.AddAddressRequest
 import com.app.adhyatmah.domain.model.profile.add_address.AddAddressRequest.Address
 import com.app.adhyatmah.domain.model.profile.manage_address.Addresse
@@ -38,7 +35,7 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
     private var addressId = ""
     var type = ""
     var from = ""
-    var selectedState : String = ""
+    var selectedState: String = ""
     private var statesList: List<String> = emptyList()
 
     override fun setLayout(): Int {
@@ -48,16 +45,15 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObserve()
-
     }
+
     override fun initView(savedInstanceState: Bundle?) {
-        var token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN)
-        var addressData= arguments?.getParcelable<Addresse>("address_data")
+        val addressData = arguments?.getParcelable<Addresse>("address_data")
         type = arguments?.getString("type").toString()
         from = arguments?.getString("from").toString()
         addressId = addressData?.id.toString()
         Log.d("TAG", "initView: $addressId")
-        var addressType = arguments?.getString(TYPE)
+        val addressType = arguments?.getString(TYPE)
         if (addressType == "edit_address" && addressData != null) {
             isEditMode = true
             setData(addressData)
@@ -67,7 +63,7 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
         click()
     }
 
-    fun hitAPi(){
+    fun hitAPi() {
         binding.continueBtn.setOnClickListener {
             if (validateInput()) {
                 if (isEditMode) {
@@ -77,26 +73,24 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
                 }
             }
         }
-
         profileViewModel.hitIndianStateApi()
-
     }
-    fun click(){
-        binding.scrollView?.post {
-            binding.continueBtn?.bottom?.let { binding.scrollView?.smoothScrollTo(0, it) }
+
+    fun click() {
+        binding.scrollView.post {
+            binding.continueBtn.bottom.let { binding.scrollView.smoothScrollTo(0, it) }
         }
 
         binding.backImg.setOnClickListener {
             findNavController().navigateUp()
         }
         keyBoardClose()
-
     }
+
     private fun setSpinnerOptions(options: List<String>) {
-        // Add placeholder at the top
         val listWithPlaceholder = mutableListOf(getString(R.string.select_state))
         listWithPlaceholder.addAll(options)
-        statesList = listWithPlaceholder // Save this for validation and selection
+        statesList = listWithPlaceholder
 
         val adapter = ArrayAdapter(
             requireContext(),
@@ -106,19 +100,23 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
         binding.stateEt.adapter = adapter
 
         if (isEditMode) {
-            // Pre-select the state if editing
-            val index = listWithPlaceholder.indexOfFirst { it.equals(selectedState, ignoreCase = true) }
+            val index =
+                listWithPlaceholder.indexOfFirst { it.equals(selectedState, ignoreCase = true) }
             if (index != -1) {
                 binding.stateEt.setSelection(index)
             }
         } else {
-            // Default selection for add mode: "Select State"
             binding.stateEt.setSelection(0)
-            selectedState = "" // Reset selectedState in add mode
+            selectedState = ""
         }
 
         binding.stateEt.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
                 selectedState = if (position != 0) {
                     listWithPlaceholder[position]
                 } else {
@@ -131,63 +129,19 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
         }
     }
 
-
-    /*private fun setSpinnerOptions(options: List<String>) {
-     //  val countryCodes = options.map { it.toString() }
-         statesList = options // Save to use later in edit mode
-
-       val adapter = ArrayAdapter(
-           requireContext(),
-           android.R.layout.simple_spinner_dropdown_item,
-           statesList
-       )
-       binding.stateEt.adapter = adapter
-
-        if (isEditMode) {
-            // Only set selection if editing
-            val index = statesList.indexOfFirst { it.equals(selectedState, ignoreCase = true) }
-            if (index != -1) {
-                binding.stateEt.setSelection(index)
-            } else {
-                Log.d("Spinner", "State not found in list")
-            }
-        }
-
-       binding.stateEt.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-           override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-               selectedState = options[position].toString() // This still maps correctly
-               Log.d("TAG", "onItemSelected: $selectedState")
-           }
-
-           override fun onNothingSelected(parent: AdapterView<*>) {}
-       }
-   }
-*/
-
-
-
     fun setData(address: Addresse) {
-       // editingAddressId = address.id
         val nameParts = address.name?.split(" ") ?: listOf("", "")
         binding.firstNameEt.setText(nameParts.firstOrNull() ?: "")
         binding.lastNameEt.setText(nameParts.getOrNull(1) ?: "")
         binding.localityEt.setText(address.address1 ?: "")
         binding.landmarkEt.setText(address.address2 ?: "")
         binding.cityEt.setText(address.city ?: "")
-       // binding.stateEt.setText(address.province ?: "")
         binding.countryEt.setText(address.country ?: "United States")
         binding.pinCodeEt.setText(address.zip ?: "")
         binding.phonenumberInput.setText(address.phone ?: "")
         selectedState = address.province ?: ""
-
-        // If spinner data is already loaded, set selected item
-       /* if (statesList.isNotEmpty()) {
-            val index = statesList.indexOfFirst { it.equals(selectedState, ignoreCase = true) }
-            if (index != -1) {
-                binding.stateEt.setSelection(index)
-            }
-        }*/
     }
+
     fun hitEditAddressAPI() {
         val token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN)
         val request = AddAddressRequest()
@@ -197,27 +151,24 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
         address.address1 = binding.localityEt.getString()
         address.address2 = binding.landmarkEt.getString()
         address.city = binding.cityEt.getString()
-        address.province = selectedState   //binding.stateEt.getString()
+        address.province = selectedState
         address.country = binding.countryEt.getString()
         address.zip = binding.pinCodeEt.getString()
         address.phone = binding.phonenumberInput.getString()
         request.accessToken = token
         request.address = address
-        request.addressId =addressId
-
-        profileViewModel.getEditAddressData(request)  // Replace with your update API call
+        request.addressId = addressId
+        profileViewModel.getEditAddressData(request)
     }
 
     @SuppressLint("ClickableViewAccessibility")
     fun keyBoardClose() {
         binding.scrollView.setOnTouchListener { _, motionEvent ->
-            // Check if the touch event is outside an EditText
             if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                // Find the currently focused view
                 val currentFocusedView = requireActivity().currentFocus
                 if (currentFocusedView is EditText) {
-                    // If it's an EditText, hide the keyboard when tapping outside of it
-                    val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm =
+                        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(currentFocusedView.windowToken, 0)
                 }
             }
@@ -225,53 +176,47 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
         }
     }
 
-    fun hitAddAddressAPI(){
-        var token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN)
-        var request = AddAddressRequest()
-        var address = Address()
-//      request.address?.firstName
+    fun hitAddAddressAPI() {
+        val token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN)
+        val request = AddAddressRequest()
+        val address = Address()
         address.firstName = binding.firstNameEt.getString()
-        address.lastName= binding.lastNameEt.getString()
-        address.address1=binding.localityEt.getString()
-        address.address2=binding.landmarkEt.getString()
-        address.city= binding.cityEt.getString()
-        address.province= selectedState    //binding.stateEt.getString()
-        address.country= binding.countryEt.getString()
-        address.zip=binding.pinCodeEt.getString()
-        address.phone=binding.phonenumberInput.getString()
-        request.accessToken=token
+        address.lastName = binding.lastNameEt.getString()
+        address.address1 = binding.localityEt.getString()
+        address.address2 = binding.landmarkEt.getString()
+        address.city = binding.cityEt.getString()
+        address.province = selectedState
+        address.country = binding.countryEt.getString()
+        address.zip = binding.pinCodeEt.getString()
+        address.phone = binding.phonenumberInput.getString()
+        request.accessToken = token
         request.address = address
-
         profileViewModel.getCreateAddressData(request)
-
     }
+
     private fun validateInput(): Boolean {
-        val first_Name = binding.firstNameEt.getString()
-        val last_Name = binding.lastNameEt.getString()
+        val firstName = binding.firstNameEt.getString()
+        val lastName = binding.lastNameEt.getString()
         val phone = binding.phonenumberInput.getString()
-        val email = binding.emailEt.getString()
         val locality = binding.localityEt.getString()
         val city = binding.cityEt.getString()
         val pinCode = binding.pinCodeEt.getString()
-        val state =    selectedState //binding.stateEt.getString()
         val country = binding.countryEt.getString()
-        if(first_Name.isNullOrEmpty()){
+
+        if (firstName.isEmpty()) {
             binding.firstNameEt.error = getString(R.string.enter_first_name)
             return false
         }
-        if(last_Name.isNullOrEmpty()){
+
+        if (lastName.isEmpty()) {
             binding.lastNameEt.error = getString(R.string.enter_last_name)
             return false
         }
+
         if (phone.isEmpty() || phone.length < 10) {
             binding.phonenumberInput.error = getString(R.string.enter_a_valid_phone_number)
             return false
         }
-
-        /*if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.emailEt.error = "Enter a valid email"
-            return false
-        }*/
 
         if (locality.isEmpty()) {
             binding.localityEt.error = getString(R.string.locality_is_required)
@@ -282,20 +227,17 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
             binding.pinCodeEt.error = getString(R.string.enter_a_valid_pin_code)
             return false
         }
+
         if (city.isEmpty()) {
             binding.cityEt.error = getString(R.string.city_is_required)
             return false
         }
-        /*if (state.isEmpty()) {
-            Toast.makeText(requireContext(),"please select state",Toast.LENGTH_SHORT).show()
-           *//* binding.stateEt. = "State is required"
-            return false
-       *//*
-            return false
-        }*/
+
         if (selectedState.isEmpty() || selectedState == getString(R.string.select_state)) {
-            Toast.makeText(requireContext(),
-                getString(R.string.please_select_a_state), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.please_select_a_state), Toast.LENGTH_SHORT
+            ).show()
             return false
         }
 
@@ -303,87 +245,68 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
             binding.countryEt.error = getString(R.string.state_is_required)
             return false
         }
-
         return true
     }
 
-
-    private fun setObserve(){
+    private fun setObserve() {
         profileViewModel.getCreateAddressRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-                            val address = it.data?.payload?.address
-                            Log.d("TAG", "setObserxsxsxve: ${it.data?.payload}")
-                            Log.d("TAG", "setObserxsxsxveD: ${it.data?.payload?.address}")
+                            val address = it.data.payload.address
+                            val id =
+                                address.id
+                            Toast.makeText(
+                                requireActivity(),
+                                it.data.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
 
-                            if (address == null) {
-                                Toast.makeText(requireActivity(),
-                                    getString(R.string.please_enter_valid_address_data), Toast.LENGTH_SHORT).show()
+                            val bundle = Bundle().apply {
+                                putString(ADDRESS_ID, id)
+                            }
+
+                            if (type == "1") {
+                                findNavController().popBackStack()
+                            } else if (isEditMode) {
+                                findNavController().popBackStack()
                             } else {
-                                Log.e("TAG", "Address is not null in the response: ${address.id}")
-                                val id = address.id // This will now only be called if `address` is not null
-                                Toast.makeText(requireActivity(), it.data?.message, Toast.LENGTH_SHORT).show()
-
-                                val bundle = Bundle().apply {
-                                    putString(ADDRESS_ID, id)
-                                }
-
-                                if (type == "1") {
-                                    findNavController().popBackStack() // go back instead of navigating
-
-                                    // findNavController().navigate(R.id.action_addAddressFragment_to_mangeAddressFragment)
-
-                                } else if (isEditMode) {
-                                    findNavController().popBackStack() // go back instead of navigating
-                                    // findNavController().navigate(R.id.action_addAddressFragment_to_mangeAddressFragment, bundle)
-
+                                if (from == "bookPanditji") {
+                                    findNavController().popBackStack()
                                 } else {
-                                    if (from=="bookPanditji"){
-                                        findNavController().popBackStack()
-                                    }else{
-                                        findNavController().navigate(R.id.action_addAddressFragment_to_paymentMethodFragment, bundle)
-                                    }
+                                    findNavController().navigate(
+                                        R.id.action_addAddressFragment_to_paymentMethodFragment,
+                                        bundle
+                                    )
                                 }
-
                             }
+
                             ProcessDialog.dismissDialog(true)
-                           /* var id = it.data.payload.address.id
-                            Toast.makeText(requireActivity(),it.data.message,Toast.LENGTH_SHORT).show()
-                            var bundle = Bundle()
-                            bundle.putString(ADDRESS_ID,id)
-                           // findNavController().navigate(R.id.action_addAddressFragment_to_paymentMethodFragment)
-
-                            if (type == "1"){
-                                findNavController().navigate(R.id.action_addAddressFragment_to_mangeAddressFragment)
-                            }
-                            else if (isEditMode) {
-                                findNavController().navigate(R.id.action_addAddressFragment_to_mangeAddressFragment,bundle)
-                            }else {
-                                findNavController().navigate(R.id.action_addAddressFragment_to_paymentMethodFragment,bundle)
-                            }*/
-
                         }
+
                         401 -> {
-                            Toast.makeText(requireActivity(),it.data.message,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireActivity(), it.data.message, Toast.LENGTH_SHORT)
+                                .show()
                             Log.e("TAG", "Unauthorized access $it")
                         }
                     }
                     ProcessDialog.dismissDialog(true)
                 }
+
                 Status.LOADING -> {
                     ProcessDialog.showDialog(requireActivity(), true)
                 }
 
                 Status.ERROR -> {
                     ProcessDialog.dismissDialog(true)
-                    Snackbar.make(requireView(), "${it.data?.message}", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(), "${it.data?.message}", Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }
-
         }
+
         profileViewModel.getIndianStateRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -391,10 +314,11 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload.states
+                            val data = it.data.payload.states
                             setSpinnerOptions(data)
                             Log.d("TAG", "setObserve: $data")
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -412,46 +336,6 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
-        /* profileViewModel.getCreateAddressRes().observe(viewLifecycleOwner) {
-             when (it.status) {
-                 Status.SUCCESS -> {
-                     val address = it.data?.payload?.address
-                     if (address != null) {
-                         val id = address.id
-                         Toast.makeText(requireActivity(), it.data.message, Toast.LENGTH_SHORT).show()
-
-                         val bundle = Bundle().apply {
-                             putString(ADDRESS_ID, id)
-                         }
-
-                         if (type == "1") {
-                             findNavController().navigate(R.id.action_addAddressFragment_to_mangeAddressFragment)
-                         } else if (isEditMode) {
-                             findNavController().navigate(R.id.action_addAddressFragment_to_mangeAddressFragment, bundle)
-                         } else {
-                             findNavController().navigate(R.id.action_addAddressFragment_to_paymentMethodFragment, bundle)
-                         }
-                     } else {
-                         Log.e("TAG", "Address is null in the response")
-                         Toast.makeText(requireActivity(), "Address data is missing", Toast.LENGTH_SHORT).show()
-                     }
-                     ProcessDialog.dismissDialog(true)
-                 }
-                 Status.LOADING -> {
-                     ProcessDialog.showDialog(requireActivity(), true)
-                 }
-
-                 Status.ERROR -> {
-                     ProcessDialog.dismissDialog(true)
-                     Snackbar.make(requireView(), "${it.data?.message}", Snackbar.LENGTH_SHORT).show()
-                 }
-             }
-         }
- */
     }
-
-
 }

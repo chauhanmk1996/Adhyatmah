@@ -40,27 +40,26 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
 
     @SuppressLint("SuspiciousIndentation")
     override fun initView(savedInstanceState: Bundle?) {
-      token = Preferences.getStringPreference(requireActivity(), ACCESS_TOKEN).toString()
+        token = Preferences.getStringPreference(requireActivity(), ACCESS_TOKEN).toString()
 
         binding.back.setOnClickListener {
             findNavController().popBackStack()
         }
 
         try {
-            if (token.isEmpty()){
+            if (token.isEmpty()) {
                 signupRequired(getString(R.string.please_sign_up_required_to_see_wishlist))
-            }
-            else{
+            } else {
                 setObserve()
                 filterViewModel.getWishListsData(token)
             }
-        } catch (e: Exception){
-            Log.d("TAG","initView: ${e.message}")
+        } catch (e: Exception) {
+            Log.d("TAG", "initView: ${e.message}")
         }
         setAdapter()
     }
 
-    private fun signupRequired(message:String) {
+    private fun signupRequired(message: String) {
         val bottomSheet =
             SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
@@ -82,7 +81,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
     }
 
 
-    private fun setObserve(){
+    private fun setObserve() {
         filterViewModel.getWishListData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -99,6 +98,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
                                 wishListAdapter.updateItems(cateSetContainer)
                             }
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -122,7 +122,10 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
             when (it.status) {
                 Status.SUCCESS -> {
                     filterViewModel.getWishListsData(token)
-                    Toast.makeText(requireActivity(), "Remove from wishlist", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.remove_from_wishlist), Toast.LENGTH_SHORT
+                    ).show()
                     ProcessDialog.dismissDialog(true)
                 }
 
@@ -133,7 +136,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
                 Status.ERROR -> {
                     Log.e("TAG", "Error: ${it.message}")
                     ProcessDialog.dismissDialog(true)
-                    Snackbar.make(requireView(), it.message ?: "Unknown error", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(), it.message ?: "", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }

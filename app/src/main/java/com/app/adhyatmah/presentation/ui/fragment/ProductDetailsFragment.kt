@@ -48,6 +48,7 @@ import com.app.adhyatmah.utils.getString
 import com.google.android.material.snackbar.Snackbar
 
 class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
+
     private var availablePincode: List<String> = listOf()
     private var stockQuantity = 0
     private lateinit var productDetailColorAdapter: ProductDetailColorAdapter
@@ -518,7 +519,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                 Status.SUCCESS -> {
                     Toast.makeText(
                         requireActivity(),
-                        "Successfully Added to Wishlist",
+                        getString(R.string.successfully_added_to_wishlist),
                         Toast.LENGTH_SHORT
                     ).show()
                     ProcessDialog.dismissDialog(true)
@@ -533,7 +534,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                     ProcessDialog.dismissDialog(true)
                     Snackbar.make(
                         requireView(),
-                        it.message ?: "Unknown error",
+                        it.message ?: "",
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -543,7 +544,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         homeViewModel.removeWishList().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    val message = it.data?.message ?: "Something went wrong"
+                    val message = it.data?.message ?: ""
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     ProcessDialog.dismissDialog(true)
                 }
@@ -557,7 +558,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                     ProcessDialog.dismissDialog(true)
                     Snackbar.make(
                         requireView(),
-                        it.message ?: "Unknown error",
+                        it.message ?: "",
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }

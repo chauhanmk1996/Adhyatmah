@@ -1,7 +1,6 @@
 package com.app.adhyatmah.presentation.ui.fragment
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.activityViewModels
@@ -15,6 +14,7 @@ import com.app.adhyatmah.utils.common_utils.Status
 import com.app.adhyatmah.utils.getString
 import com.google.android.material.snackbar.Snackbar
 import kotlin.getValue
+import androidx.core.net.toUri
 
 class ContactUsFragment : BaseFragment<FragmentContactUsBinding>() {
 
@@ -23,61 +23,62 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>() {
 
     override fun setLayout(): Int {
        return R.layout.fragment_contact_us
-
     }
 
     private fun openWhatsApp(phoneNumber: String) {
         try {
-            // Ensure phone number is in the proper format with country code, e.g., "+1234567890"
             val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://wa.me/$phoneNumber") // WhatsApp API URL
-                setPackage("com.whatsapp") // Optional: Ensure it opens WhatsApp specifically
+                data = "https://wa.me/$phoneNumber".toUri()
+                setPackage("com.whatsapp")
             }
 
-            // Check if WhatsApp is installed
             if (intent.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(intent)
             } else {
-                Snackbar.make(requireView(), "WhatsApp is not installed", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(),
+                    getString(R.string.whatsapp_is_not_installed), Snackbar.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
             Log.e("ContactUsFragment", "Error opening WhatsApp: ${e.message}")
-            Snackbar.make(requireView(), "Error opening WhatsApp", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(),
+                getString(R.string.error_opening_whatsapp), Snackbar.LENGTH_SHORT).show()
         }
     }
     private fun openGmail(email: String) {
         try {
             val intent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse("mailto:$email") // Email URI scheme
+                data = "mailto:$email".toUri() // Email URI scheme
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(email)) // Attach the email address
             }
 
-            // Check if there's an email client installed
             if (intent.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(intent)
             } else {
-                Snackbar.make(requireView(), "No email client installed", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(),
+                    getString(R.string.no_email_client_installed), Snackbar.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
             Log.e("ContactUsFragment", "Error opening email client: ${e.message}")
-            Snackbar.make(requireView(), "Error opening email client", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(),
+                getString(R.string.error_opening_email_client), Snackbar.LENGTH_SHORT).show()
         }
     }
     private fun openInstagram(instagramHandle: String) {
         try {
             val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://www.instagram.com/$instagramHandle") // Instagram URL scheme
+                data = "https://www.instagram.com/$instagramHandle".toUri()
             }
 
-            // Check if Instagram is installed
             if (intent.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(intent)
             } else {
-                Snackbar.make(requireView(), "Instagram is not installed", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(),
+                    getString(R.string.instagram_is_not_installed), Snackbar.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
             Log.e("ContactUsFragment", "Error opening Instagram: ${e.message}")
-            Snackbar.make(requireView(), "Error opening Instagram", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(),
+                getString(R.string.error_opening_instagram), Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -95,15 +96,12 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>() {
             openGmail(binding.email.text.toString())
         }
         binding.instaLayout.setOnClickListener {
-            val instaHandle = binding.instaId.getString().removePrefix("• Instagram: ") // Extract the Instagram handle
+            val instaHandle = binding.instaId.getString().removePrefix("• Instagram: ")
             openInstagram(instaHandle)
         }
-
     }
 
-
     private fun setObserve(){
-
         profileViewModel.getContactUsRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -111,26 +109,34 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>() {
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload
-                            var phoneNumber = data.phone
-                            var email = data.email
+                            val data = it.data.payload
+                            val phoneNumber = data.phone
+                            val email = data.email
                             this.phoneNumber = phoneNumber
-                            binding.email.text = "• Email: "+ data.email
-                            binding.instaId.text = "• Instagram: "+ data.domain
-                            binding.phoneId.text = "• Phone Number: "+ data.phone
-                            val instaHandle = data.domain
+
+                            val emailText = "• ${getString(R.string.email_heading)} "+ data.email
+                            binding.email.text = emailText
+
+                            val instaIdText = "• ${getString(R.string.instagram_heading)} "+ data.domain
+                            binding.instaId.text = instaIdText
+
+                            val phoneIdText = "• ${getString(R.string.phone_number_heading)} "+ data.phone
+                            binding.phoneId.text = phoneIdText
 
                             binding.whatsAppLayoyt.setOnClickListener {
                                 openWhatsApp(phoneNumber)
                             }
+
                             binding.gmaillayout.setOnClickListener {
                                 openGmail(email)
                             }
+
                             binding.instaLayout.setOnClickListener {
+                                val instaHandle = data.domain
                                 openInstagram(instaHandle)
                             }
-
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -148,10 +154,6 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
     }
-
-
 }

@@ -6,8 +6,6 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
 import com.app.adhyatmah.data.preferences.PRODUCT_ID
@@ -31,10 +29,8 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private var passedCategoryHandle: String = ""
     private var selectedCategoryHandle: String = ""
-
     private lateinit var categoryAdapter: AllCategoryListAdapter
     private lateinit var productAdapter: AdapterViewAllProduct
-
     private val categories = mutableListOf<AllCategoryListResponse.Collection>()
     private val products = mutableListOf<Product>()
 
@@ -49,6 +45,7 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
         clicks()
         homeViewModel.getAllCtData(page = 1, limit = 100)  // load all categories first
     }
+
     private val filterViewModel by activityViewModels<FilterViewModel>()
 
     private fun clicks() {
@@ -57,12 +54,10 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
                 showSortBottomSheet(selectedCategoryHandle)
             }
         }
-
-
     }
+
     private fun showSortBottomSheet(categoryHandle: String) {
         val sheet = ShortByBottomSheet.newInstance(categoryHandle)
-
         sheet.onSortRequestSent = { request ->
             homeViewModel.getViewAllData(
                 Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString(),
@@ -75,10 +70,8 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
             products.addAll(sortedList)
             productAdapter.updateData(products)
         }
-
         sheet.show(parentFragmentManager, "ShortByBottomSheet")
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -86,16 +79,14 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
         observeProductData()
         observeSortingData()
     }
+
     private fun setupCategoryList() {
         categoryAdapter = AllCategoryListAdapter(categories) { selectedCategory ->
-            selectedCategoryHandle = selectedCategory.handle   // ⭐ store for sorting
+            selectedCategoryHandle = selectedCategory.handle
             loadProducts(selectedCategory.handle)
         }
-
         binding.recyCategoryLeft.adapter = categoryAdapter
-
     }
-
 
     private fun setupProductList() {
         productAdapter = AdapterViewAllProduct(
@@ -128,36 +119,30 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
                     categories.clear()
                     categories.addAll(list)
                     categoryAdapter.updateItems(list)
-                    Log.i("TAG", "observeCategoryData: "+list)
+                    Log.i("TAG", "observeCategoryData: " + list)
+
                     if (list.isNotEmpty()) {
-
                         if (passedCategoryHandle.isNotEmpty()) {
-
-                            // find index of the passed handle
-                            val selectedIndex = list.indexOfFirst { it.handle == passedCategoryHandle }
+                            val selectedIndex =
+                                list.indexOfFirst { it.handle == passedCategoryHandle }
 
                             if (selectedIndex != -1) {
                                 selectedCategoryHandle = passedCategoryHandle
                                 categoryAdapter.setSelectedCategory(selectedIndex)
                                 loadProducts(selectedCategoryHandle)
                             } else {
-                                // fallback if handle not found
                                 selectedCategoryHandle = list[0].handle
                                 categoryAdapter.setSelectedCategory(0)
                                 loadProducts(selectedCategoryHandle)
                             }
-
                         } else {
-                            // default first category logic
                             selectedCategoryHandle = list[0].handle
                             categoryAdapter.setSelectedCategory(0)
                             loadProducts(list[0].handle)
                         }
                     }
-
-
-
                 }
+
                 Status.LOADING -> startShimmer()
                 Status.ERROR -> stopShimmer()
             }
@@ -174,11 +159,13 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
                     products.addAll(list)
                     productAdapter.updateData(products)
                 }
+
                 Status.LOADING -> startShimmer()
                 Status.ERROR -> stopShimmer()
             }
         }
     }
+
     private fun observeSortingData() {
         filterViewModel.getShortCollectionList().observe(viewLifecycleOwner) {
             when (it.status) {
@@ -191,6 +178,7 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
                         productAdapter.updateData(products)
                     }
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {}
             }

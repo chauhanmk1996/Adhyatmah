@@ -7,6 +7,7 @@ import com.app.adhyatmah.databinding.FragmentSizeImageBinding
 import com.app.adhyatmah.utils.base.BaseFragment
 
 class SizeImageFragment : BaseFragment<FragmentSizeImageBinding>() {
+
     override fun setLayout(): Int {
         return R.layout.fragment_size_image
     }
@@ -17,6 +18,4 @@ class SizeImageFragment : BaseFragment<FragmentSizeImageBinding>() {
             findNavController().navigateUp()
         }
     }
-
-
 }

@@ -208,7 +208,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             when (it.status) {
                 Status.SUCCESS -> {
 
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload.addresses
@@ -298,7 +298,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     ProcessDialog.dismissDialog(true)
                     Snackbar.make(
                         requireView(),
-                        res.message ?: "Something went wrong",
+                        res.message ?: getString(R.string.something_went_wrong),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -344,7 +344,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 } else {
                                     Toast.makeText(
                                         requireActivity(),
-                                        "No Service Available!",
+                                        getString(R.string.no_service_available),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
@@ -372,7 +372,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     Log.e("PanditJiFragment", "Error: ${res.message}")
                     Snackbar.make(
                         requireView(),
-                        res.message ?: "Something went wrong",
+                        res.message ?: getString(R.string.something_went_wrong),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -457,7 +457,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         ProcessDialog.dismissDialog(true)
                         Toast.makeText(
                             requireActivity(),
-                            res.data.message ?: "Unauthorized",
+                            res.data.message,
                             Toast.LENGTH_SHORT
                         ).show()
                         Log.e("TAG", "Unauthorized access $res")
@@ -471,7 +471,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     ProcessDialog.dismissDialog(true)
                     Snackbar.make(
                         requireView(),
-                        res.message ?: "Something went wrong",
+                        res.message ?:getString(R.string.something_went_wrong),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -482,7 +482,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             when (it.status) {
                 Status.SUCCESS -> {
                     isBannerLoaded = true
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload.banners.subBanners
@@ -508,18 +508,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         }
                     }
                     stopShimmer()
-                    //   ProcessDialog.dismissDialog(true)
                 }
 
                 Status.LOADING -> {
                     startShimmerLayout()
-                    //    ProcessDialog.showDialog(requireActivity(), true)
                 }
 
                 Status.ERROR -> {
                     stopShimmer()
                     Log.e("TAG", "Error: ${it.message}")
-                    //  ProcessDialog.dismissDialog(true)
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
@@ -531,7 +528,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     it.data?.payload
                     Toast.makeText(
                         requireActivity(),
-                        "Successfully Added to Wishlist",
+                        getString(R.string.successfully_added_to_wishlist),
                         Toast.LENGTH_SHORT
                     ).show()
                     ProcessDialog.dismissDialog(true)
@@ -546,7 +543,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     ProcessDialog.dismissDialog(true)
                     Snackbar.make(
                         requireView(),
-                        it.message ?: "Unknown error",
+                        it.message ?: getString(R.string.unknown_error),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -558,7 +555,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 Status.SUCCESS -> {
                     it.data?.payload
 
-                    val message = it.data?.message ?: "Something went wrong"
+                    val message = it.data?.message ?: getString(R.string.something_went_wrong)
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     ProcessDialog.dismissDialog(true)
                 }
@@ -572,7 +569,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     stopShimmer()
                     Snackbar.make(
                         requireView(),
-                        it.message ?: "Unknown error",
+                        it.message ?: getString(R.string.unknown_error),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -586,11 +583,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
                             homeViewModel.homeCollectionApi(token)
-                            //stopShimmer()
-                            //ProcessDialog.dismissDialog(true)
                         }
 
                         401 -> {
@@ -598,22 +592,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         }
                     }
                     stopShimmer()
-                    //ProcessDialog.dismissDialog(true)
                 }
 
                 Status.LOADING -> {
                     startShimmerLayout()
-                    //  ProcessDialog.showDialog(requireActivity(), true)
                 }
 
                 Status.ERROR -> {
                     Log.e("TAG", "Error: ${it.message}")
                     stopShimmer()
-                    //ProcessDialog.dismissDialog(true)
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
 
         homeViewModel.getCurrencyLiveData().observe(viewLifecycleOwner) {
@@ -622,11 +612,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload.currency
+                            val data = it.data.payload.currency
                             Log.d("TAG", "setObserver: $data")
-                            // setSpinnerOptions(data)
                             stopShimmer()
-                            //   ProcessDialog.dismissDialog(true)
                         }
 
                         401 -> {
@@ -634,12 +622,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         }
                     }
                     stopShimmer()
-                    // ProcessDialog.dismissDialog(true)
                 }
 
                 Status.LOADING -> {
                     startShimmerLayout()
-                    //  ProcessDialog.showDialog(requireActivity(), true)
                 }
 
                 Status.ERROR -> {
@@ -771,7 +757,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         if (isGranted) {
             getCurrentLocation()
         } else {
-            Toast.makeText(requireContext(), "Location permission denied!", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(),
+                getString(R.string.location_permission_denied), Toast.LENGTH_SHORT)
                 .show()
             if (!isLocationPermissionGranted()) {
                 openAppSettings()
@@ -821,12 +808,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 )
 
             } else {
-                binding.tvLocation.text = "Unable to fetch address"
+                binding.tvLocation.text = getString(R.string.unable_to_fetch_address)
             }
 
         } catch (e: Exception) {
             e.printStackTrace()
-            binding.tvLocation.text = "Address fetch failed!"
+            binding.tvLocation.text = getString(R.string.address_fetch_failed)
         }
     }
 

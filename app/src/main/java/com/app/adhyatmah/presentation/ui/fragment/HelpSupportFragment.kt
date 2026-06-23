@@ -14,7 +14,6 @@ import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.google.android.material.snackbar.Snackbar
 
-
 class HelpSupportFragment : BaseFragment<FragmentHelpSupportBinding>() {
     val viewModel by activityViewModels <PaymentViewModel>()
 
@@ -29,7 +28,6 @@ class HelpSupportFragment : BaseFragment<FragmentHelpSupportBinding>() {
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
         }
-
     }
 
     fun setAdapter(data: List<Payload>) {
@@ -45,7 +43,7 @@ class HelpSupportFragment : BaseFragment<FragmentHelpSupportBinding>() {
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload
+                            val data = it.data.payload
                             setAdapter(data)
                         }
                         401 -> {
@@ -65,8 +63,6 @@ class HelpSupportFragment : BaseFragment<FragmentHelpSupportBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
     }
-
 }

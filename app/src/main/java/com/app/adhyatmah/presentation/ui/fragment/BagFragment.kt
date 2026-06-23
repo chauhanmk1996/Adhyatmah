@@ -61,12 +61,12 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
             binding.removeCoupon.visibility = View.GONE
             binding.cancelText.text = value
             binding.couponTv.setText(value)
-            binding.applyTv.text = "Remove"
+            binding.applyTv.text = getString(R.string.remove)
             binding.cancelCouponBtn.setOnClickListener {
                 bagViewModel.hitRemoveCouponAPI(request)
             }
         } else {
-            binding.applyTv.text = "Apply"
+            binding.applyTv.text = getString(R.string.apply)
             binding.removeCoupon.visibility = View.GONE
             binding.applyTv.setOnClickListener {
                 applyCoupons(type)
@@ -158,7 +158,7 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
             }
         }
 
-        binding.applyTv.text = "Remove"
+        binding.applyTv.text = getString(R.string.remove)
 
         binding.cancelCouponBtn.setOnClickListener {
             removeCoupon()
@@ -269,7 +269,7 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                                         val coupon = it.data.payload.cart.discountCodes?.get(0)
                                         isApply = true
                                         binding.couponTv.setText(coupon)
-                                        binding.applyTv.text = "Remove"
+                                        binding.applyTv.text = getString(R.string.remove)
                                         binding.removeCoupon.visibility = View.GONE
                                         binding.cancelText.text = coupon
                                         binding.cancelCouponBtn.setOnClickListener {

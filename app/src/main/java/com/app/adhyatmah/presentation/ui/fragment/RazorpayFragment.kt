@@ -12,22 +12,20 @@ import com.razorpay.PaymentResultListener
 import org.json.JSONObject
 
 class RazorpayFragment : BaseFragment<FragmentRazorpayBinding>(),PaymentResultListener {
+
     override fun setLayout(): Int {
         return R.layout.fragment_razorpay
     }
 
     override fun initView(savedInstanceState: Bundle?) {
         Checkout.preload(requireContext())
-
         startPayment(requireActivity())
     }
-
 
     fun startPayment(activity: Activity) {
         val checkout = Checkout()
 
         checkout.setKeyID("rzp_test_399ynICiSYdYTF") // Replace with your Razorpay public key
-      //  checkout.open(activity, options)
 
         try {
             val options = JSONObject()
@@ -54,14 +52,12 @@ class RazorpayFragment : BaseFragment<FragmentRazorpayBinding>(),PaymentResultLi
 
     override fun onPaymentSuccess(paymentId: String?) {
         Log.d("TAG", "onPaymentSuccess: $paymentId")
-        Toast.makeText(requireContext(), "Payment Successful. Payment ID: $paymentId", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), getString(R.string.payment_successful), Toast.LENGTH_LONG).show()
 
     }
 
     override fun onPaymentError(code: Int, response: String?) {
         Log.d("TAG", "onPayment Failed: $code   and $response")
-        Toast.makeText(requireContext(), "Payment Failed: $response", Toast.LENGTH_LONG).show()
-
-
+        Toast.makeText(requireContext(), getString(R.string.payment_failed), Toast.LENGTH_LONG).show()
     }
 }

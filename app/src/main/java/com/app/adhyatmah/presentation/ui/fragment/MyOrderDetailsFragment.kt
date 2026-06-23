@@ -28,17 +28,14 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import kotlin.getValue
 
-
 class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
 
     private val profileViewModel by activityViewModels<ProfileViewModel>()
-
     private var myOrdersDetailsAdapter: MyOrderDetailsAdapter? = null
-    val orderList = mutableListOf<com.app.adhyatmah.domain.model.customer_all_order_response.customer_order_details.Item>()
-
-    //    var byOderId = "5734457376802"
+    val orderList =
+        mutableListOf<com.app.adhyatmah.domain.model.customer_all_order_response.customer_order_details.Item>()
     var byOderId = ""
-    var name =""
+    var name = ""
 
     override fun setLayout(): Int {
         return R.layout.fragment_my_order_details
@@ -46,7 +43,6 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun initView(savedInstanceState: Bundle?) {
-
         byOderId = arguments?.getString("orderId").toString()
         name = arguments?.getString("name").toString()
         binding.backImg.setOnClickListener {
@@ -62,29 +58,26 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
 
         }
 
-
         myOrdersDetailsAdapter = MyOrderDetailsAdapter(orderList)
         binding.recyMyOrderDetails.layoutManager = LinearLayoutManager(requireContext())
         binding.recyMyOrderDetails.adapter = myOrdersDetailsAdapter
         binding.copy.setOnClickListener {
-            copyToClipboard(byOderId) // Copy the order ID
-            binding.copy.text = "Copied" // Change text to "Copied"
+            copyToClipboard(byOderId)
+            binding.copy.text = getString(R.string.copied)
         }
 
     }
+
     private fun copyToClipboard(text: String) {
-        val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard =
+            requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("Order ID", text)
         clipboard.setPrimaryClip(clip)
-
-        // Optional: Show a message that the text has been copied
-      //  Snackbar.make(requireView(), "Order ID copied to clipboard", Snackbar.LENGTH_SHORT).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
-    private fun setObserver(){
-
+    private fun setObserver() {
         profileViewModel.getOrdersDetailsRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -92,49 +85,35 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
+                            val data = it.data.payload.order
 
-                            var data = it.data.payload.order
-//                          var discount = it.data.payload.order.discount_codes[0]
-//                          binding.ordrIds.text = "ORDER ID- "+data.id.toString()
-//                            binding.ordrIds.text = data.name
-//                            binding.title.text = data.line_items[0].title
-//                            binding.descre.text = data.line_items[0].variant_title
-                            if(data.status=="canceled"){
+                            if (data.status == "canceled") {
                                 binding.cancled.visibility = View.VISIBLE
                                 binding.cancelBtn.visibility = View.GONE
-                            }else{
+                            } else {
                                 binding.cancled.visibility = View.GONE
                                 binding.cancelBtn.visibility = View.VISIBLE
 
                             }
                             binding.orderId.text = data.orderNo
-                            binding.priceTotal.text =data.currency+" "+data.total
-                            binding.priceTv.text =data.currency+" "+data.subTotal
-                            binding.taxAmount.text =data.currency+" "+data.tax
+                            binding.priceTotal.text = data.currency + " " + data.total
+                            binding.priceTv.text = data.currency + " " + data.subTotal
+                            binding.taxAmount.text = data.currency + " " + data.tax
                             binding.orderTime.text = getTimeAgo(data.createdAt.toString())
 
-
-                          binding.priceCoupons.text = data.currency+" "+data.discount.toString()
-                          binding.platformFees.text = data.currency+" "+data.platform_fee
-                          binding.shippingCharges.text = data.currency+" "+data.shipping_fee
-//                            binding.cash.text = if (data.tags.isNullOrEmpty()) "COD" else data.tags
+                            binding.priceCoupons.text =
+                                data.currency + " " + data.discount.toString()
+                            binding.platformFees.text = data.currency + " " + data.platform_fee
+                            binding.shippingCharges.text = data.currency + " " + data.shipping_fee
                             binding.cash.text = data.items?.getOrNull(0)?.deliveryType
                             binding.status.text = data.status
-                            binding.address.text = data.user?.firstName+" "+data.user?.lastName+"\n"+data.user?.address+"\n"+data.user?.city+"\n"+data.user?.state+"\n"+data.user?.country
-//                            Toast.makeText(requireActivity(),it.data.toString(), Toast.LENGTH_SHORT).show()
-//
-                            /*Glide.with(requireContext())
-                                .load(data.line_items[0].product_image.src)
-                                .into(binding.srcImg)
-*/
+                            binding.address.text =
+                                data.user?.firstName + " " + data.user?.lastName + "\n" + data.user?.address + "\n" + data.user?.city + "\n" + data.user?.state + "\n" + data.user?.country
 
-                            var cateSetContainer = it.data.payload.order.items
+                            val cateSetContainer = it.data.payload.order.items
                             myOrdersDetailsAdapter?.updateOrder(cateSetContainer ?: emptyList())
-
-
-                            Log.d("tt","sdsfdsfdsss, $data")
-
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -152,31 +131,34 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
 
         profileViewModel.cancelOrderRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-
-                            var data = it.data.payload
-
-                            var bundle = Bundle()
-                            bundle.putString("type","1")
-                            findNavController().navigate(R.id.action_myOrderDetailsFragment_to_myOrderFragment,bundle)
-                              //requireActivity().finish()
-                            Log.d("tt","sdsfdsfdsss, $data")
-
+                            val data = it.data.payload
+                            val bundle = Bundle()
+                            bundle.putString("type", "1")
+                            findNavController().navigate(
+                                R.id.action_myOrderDetailsFragment_to_myOrderFragment,
+                                bundle
+                            )
+                            Log.d("tt", "sdsfdsfdsss, $data")
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
-                        422->{
-                           Toast.makeText(requireContext(),it.data.message.toString(),Toast.LENGTH_SHORT).show()
+
+                        422 -> {
+                            Toast.makeText(
+                                requireContext(),
+                                it.data.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                     }
@@ -190,13 +172,9 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
                 Status.ERROR -> {
                     Log.e("TAG", "Error: ${it.message}")
                     ProcessDialog.dismissDialog(true)
-                   // Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -215,7 +193,4 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
             else -> time.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"))
         }
     }
-
-
-
 }

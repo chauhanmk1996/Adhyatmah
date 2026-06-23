@@ -27,7 +27,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>() {
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private lateinit var categoryListAdapter: AllCategoryListAdapter
     private val productList = mutableListOf<AllCategoryListResponse.Collection>()
-
     private var isLoading = false
     private var isLastPage = false
     private var currentPage = 1
@@ -52,6 +51,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>() {
                 }
             }
         })
+
         binding.searchView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -90,9 +90,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>() {
     }
 
     private fun loadNextPage() {
-        /* isLoading = true
-         currentPage++
-         fetchCategories()*/
         if (isLoading || isLastPage) return
         isLoading = true
         currentPage++
@@ -125,13 +122,10 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>() {
                     val statusCode = it.data?.code
                     if (statusCode == 200) {
                         val collections = it.data.payload.collections
-
-                        // Mark end of list if fewer items than requested
                         if (collections.size < limitPerPage) {
                             isLastPage = true
                         }
 
-                        // Append to existing list
                         categoryListAdapter.updateItems(collections)
                     } else if (statusCode == 401) {
                         Log.e("CategoryFragment", "Unauthorized access")

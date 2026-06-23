@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 class  TermConditionFragment : BaseFragment<FragmentTermConditionBinding>() {
     private val viewModel by activityViewModels<FilterViewModel>()
     var type =""
+
     override fun setLayout(): Int {
         return R.layout.fragment_term_condition
     }
@@ -38,16 +39,16 @@ class  TermConditionFragment : BaseFragment<FragmentTermConditionBinding>() {
         binding.backBtn.setOnClickListener {
             findNavController().navigateUp()
         }
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().navigateUp() // or navigate to LoginFragment
+                findNavController().navigateUp()
             }
         })
 
     }
 
     private fun setObserver() {
-
         viewModel.getPrivacyList().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -56,8 +57,8 @@ class  TermConditionFragment : BaseFragment<FragmentTermConditionBinding>() {
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload
-                            var term = data.termsOfService.body
-                            var privacy = data.privacyPolicy.body
+                            val term = data.termsOfService.body
+                            val privacy = data.privacyPolicy.body
 
                             when (type) {
                                 "1", "2" -> {
@@ -87,10 +88,6 @@ class  TermConditionFragment : BaseFragment<FragmentTermConditionBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
     }
-
-
 }

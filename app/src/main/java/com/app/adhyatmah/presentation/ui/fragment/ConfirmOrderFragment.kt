@@ -36,10 +36,7 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
 
     private val bagViewModel by activityViewModels<BagViewModel>()
     private val paymentViewModel by activityViewModels<PaymentViewModel>()
-
     private lateinit var confirmOrderAdapter: BagAdapter
-    //var addressId = ""
-    //var address = ""
     var cartId = ""
     var paymentMethod = ""
     var token = ""
@@ -67,11 +64,9 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
         bagViewModel.getCartList(token)
     }
 
-
     private fun setupRecyclerView() {
         confirmOrderAdapter =
             BagAdapter(mutableListOf(), object : BagAdapter.OnQuantityChangeListener {
-
                 override fun onQuantityChanged(
                     productId: String,
                     newQuantity: Int,
@@ -102,7 +97,6 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
         }
         bagViewModel.getPlusQtyList(request)
     }
-
 
     fun clickConfirm(addressId: String?, carId: String?, token: String?) {
         binding.continueBtn.setOnClickListener {
@@ -173,7 +167,8 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
                                     binding.bagLayout.visibility = View.GONE
                                 } else {
                                     binding.bagLayout.visibility = View.VISIBLE
-                                    val totalAmount ="${cost?.totalAmount?.currencyCode} ${cost?.totalAmount?.amount}"
+                                    val totalAmount =
+                                        "${cost?.totalAmount?.currencyCode} ${cost?.totalAmount?.amount}"
                                     binding.rsTv.text = totalAmount
                                     confirmOrderAdapter.updateBagItems(edges)
                                 }
@@ -237,7 +232,8 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
                     val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT)
+                                .show()
                             val orderId = it.data.payload.order.id.toString()
                             val bundle = Bundle()
                             bundle.putString("order_id", orderId)

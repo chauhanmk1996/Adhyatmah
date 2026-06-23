@@ -24,18 +24,17 @@ import kotlin.getValue
 
 
 class SearchListFragment : BaseFragment<FragmentSearchListBinding>() {
-    private val homeViewModel by activityViewModels<HomeViewModel>()
 
+    private val homeViewModel by activityViewModels<HomeViewModel>()
     private lateinit var searchListAdapter: SearchListAdapter
     val searchList = mutableListOf<Result>()
-
     var productId = ""
-    private var selectedType: String = "PRODUCT" // Default
-
+    private var selectedType: String = "PRODUCT"
 
     override fun setLayout(): Int {
         return R.layout.fragment_search_list
     }
+
     private fun showLoading() {
         binding.loadingLayout.visibility = View.VISIBLE
     }
@@ -45,16 +44,9 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding>() {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-
-        /*val items = listOf("Product","Brand", "Category")
-        val adapter = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_dropdown_item, items)
-        binding.mySpinner.adapter = adapter
-        */
-
         setObserver()
         setAdapter()
         homeViewModel.getSearchTypeListData()
-//      searchProducts("dress")
 
         binding.backImg.setOnClickListener {
             findNavController().navigateUp()
@@ -66,20 +58,20 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding>() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString().trim()
 
-                if(s.isNullOrEmpty()){
+                if (s.isNullOrEmpty()) {
                     binding.noResult.visibility = View.VISIBLE
                     binding.recSearch.visibility = View.GONE
-                }else{
-                    if(query.length >= 2)
-                    {
+                } else {
+                    if (query.length >= 2) {
                         searchProducts(query)
                     }
                 }
             }
+
             override fun afterTextChanged(s: android.text.Editable?) {}
         })
 
-}
+    }
 
     private fun searchProducts(query: String) {
         binding.noResult.visibility = View.GONE
@@ -101,56 +93,61 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding>() {
         binding.mySpinner.adapter = adapter
 
         binding.mySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                selectedType = options[position] // Save selected type
-
-                Log.d("TAG","SpinnerItem: $selectedType")
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+                selectedType = options[position]
+                Log.d("TAG", "SpinnerItem: $selectedType")
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // Optional
             }
         }
     }
+
     private fun setAdapter() {
+        searchListAdapter =
+            SearchListAdapter(searchList, object : SearchListAdapter.OnItemClickListener {
+                override fun onItemClick(productId: Result) {
+                    val bundle = Bundle()
+                    bundle.putString(TYPE, "4")
+                    bundle.putString(SEARCH_PRODUCT_ID, productId.id)
+                    findNavController().navigate(
+                        R.id.action_searchListFragment_to_productDetailsFragment,
+                        bundle
+                    )
+                }
 
-        searchListAdapter = SearchListAdapter(searchList, object : SearchListAdapter.OnItemClickListener{
-            override fun onItemClick(productId:Result) {
-                val bundle = Bundle()
-                bundle.putString(TYPE,"4")
-                bundle.putString(SEARCH_PRODUCT_ID,productId.id)
-                findNavController().navigate(R.id.action_searchListFragment_to_productDetailsFragment,bundle)
-            }
-
-        })
+            })
         binding.recSearch.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recSearch.adapter = searchListAdapter
-
     }
-    private fun setObserver() {
 
+    private fun setObserver() {
         homeViewModel.getSearchListRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     hideLoading()
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload.results
-                            Log.d("TAG", "setObsdderver:$data ")
                             val searchContainer = it.data.payload.results
-                            if(searchContainer.isNullOrEmpty()){
+
+                            if (searchContainer.isEmpty()) {
                                 binding.noResult.visibility = View.VISIBLE
                                 binding.recSearch.visibility = View.GONE
-                            }else{
+                            } else {
                                 binding.noResult.visibility = View.GONE
                                 binding.recSearch.visibility = View.VISIBLE
                                 searchListAdapter.updateItems(searchContainer)
-
                             }
-
-                            Log.d("Tag","SearchInitView : $data")
+                            Log.d("Tag", "SearchInitView : $data")
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -160,7 +157,6 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding>() {
 
                 Status.LOADING -> {
                     showLoading()
-//                    ProcessDialog.showDialog(requireActivity(), true)
                 }
 
                 Status.ERROR -> {
@@ -170,21 +166,19 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
 
         homeViewModel.getSearchTypeListResponse().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
                     val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-
                             val typesList = it.data.payload.types
                             Log.d("Tag", "SearchTypeInitView : $typesList")
                             setSpinnerOptions(typesList)
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -202,9 +196,6 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
     }
-
 }

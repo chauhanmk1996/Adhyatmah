@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.app.adhyatmah.R
 import com.app.adhyatmah.databinding.FragmentTrackOrderBinding
-import com.app.adhyatmah.presentation.ui.adapter.TrackOrderAdapter
 import com.app.adhyatmah.utils.base.BaseFragment
 import androidx.navigation.fragment.findNavController
 import com.app.adhyatmah.domain.model.TrackItem
@@ -20,13 +19,11 @@ import com.app.adhyatmah.utils.common_utils.Status
 import com.google.android.material.snackbar.Snackbar
 import kotlin.getValue
 
-
 class TrackOrderFragment : BaseFragment<FragmentTrackOrderBinding>() {
 
     private val profileViewModel by activityViewModels<ProfileViewModel>()
 
     var url = ""
-    lateinit var trackOrderAdapter: TrackOrderAdapter
     val trackingList = mutableListOf<TrackItem>()
 
     override fun setLayout(): Int {
@@ -40,22 +37,30 @@ class TrackOrderFragment : BaseFragment<FragmentTrackOrderBinding>() {
         profileViewModel.shippingUrlData()
         setObserver()
 
-
-        trackingList.addAll(listOf(TrackItem("Package arrived at a Facility, Pathankot,\nPunjab, IN", "16 July, 2024 | 6:23 pm"),
-            TrackItem("Package has left a Facility, Amritsar,\nPunjab, IN","15 July, 2024 | 4:23 pm"),
-            TrackItem("Package has left a Facility, Amritsar,\nPunjab, IN","15 July, 2024 | 4:23 pm"),
-            TrackItem("Package has left a Facility, Amritsar,\nPunjab, IN","15 July, 2024 | 4:23 pm"),
-            TrackItem("Order Placed.","13 July, 2024 | 2:12 pm")))
-//        trackOrderAdapter= TrackOrderAdapter(trackingList)
-//        binding.trackingDetailsRecycler.layoutManager = LinearLayoutManager(requireContext())
-//        binding.trackingDetailsRecycler.adapter = trackOrderAdapter
-
+        trackingList.addAll(
+            listOf(
+                TrackItem(
+                    "Package arrived at a Facility, Pathankot,\nPunjab, IN",
+                    "16 July, 2024 | 6:23 pm"
+                ),
+                TrackItem(
+                    "Package has left a Facility, Amritsar,\nPunjab, IN",
+                    "15 July, 2024 | 4:23 pm"
+                ),
+                TrackItem(
+                    "Package has left a Facility, Amritsar,\nPunjab, IN",
+                    "15 July, 2024 | 4:23 pm"
+                ),
+                TrackItem(
+                    "Package has left a Facility, Amritsar,\nPunjab, IN",
+                    "15 July, 2024 | 4:23 pm"
+                ),
+                TrackItem("Order Placed.", "13 July, 2024 | 2:12 pm")
+            )
+        )
     }
 
-
-
     private fun setObserver() {
-
         profileViewModel.shippingUrlRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -63,12 +68,11 @@ class TrackOrderFragment : BaseFragment<FragmentTrackOrderBinding>() {
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload.shoppingUrls
+                            val data = it.data.payload.shoppingUrls
                             url = data[0].url
                             openWebUrl(url)
-                            Log.d("tt","sdsfdsffdsss, $data")
-
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -86,37 +90,20 @@ class TrackOrderFragment : BaseFragment<FragmentTrackOrderBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
     }
 
-
-    private fun openWebUrl(urls : String) {
+    private fun openWebUrl(urls: String) {
         val webView = binding.webView
-
         val settings = webView.settings
         settings.javaScriptEnabled = true
         settings.domStorageEnabled = true
         settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         webView.webChromeClient = WebChromeClient()
-
         webView.webViewClient = object : WebViewClient() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-
-                if (url != null && url.contains("/payment/callback")) {
-                    /*val uri = Uri.parse(url)
-                    reference = uri.getQueryParameter("reference").toString()
-
-                    verifyPayment()
-
-*/
-
-                    return true
-                }
-
-                return false // Allow all other URLs to load
+                return url != null && url.contains("/payment/callback") // Allow all other URLs to load
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -128,7 +115,7 @@ class TrackOrderFragment : BaseFragment<FragmentTrackOrderBinding>() {
                 view: WebView?,
                 errorCode: Int,
                 description: String?,
-                failingUrl: String?
+                failingUrl: String?,
             ) {
                 super.onReceivedError(view, errorCode, description, failingUrl)
                 Toast.makeText(
@@ -138,11 +125,6 @@ class TrackOrderFragment : BaseFragment<FragmentTrackOrderBinding>() {
                 ).show()
             }
         }
-
         webView.loadUrl(urls)
     }
-
-
-
-
 }

@@ -121,10 +121,6 @@ class MyOrderFragment : BaseFragment<FragmentMyOrderBinding>() {
                             } else {
                                 binding.textNoOrder.visibility = View.VISIBLE
                                 binding.recyclerView.visibility = View.GONE
-                                Log.w(
-                                    "MyOrderFragment",
-                                    "Orders list is null. Showing empty state."
-                                )
                             }
                         }
 

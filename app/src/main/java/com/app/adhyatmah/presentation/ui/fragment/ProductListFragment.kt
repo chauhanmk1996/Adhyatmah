@@ -66,8 +66,6 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
 
         Log.d("Tafdfd", "fdkjhj: $collectionHandle")
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
-
-
         setObserver()
 
         binding.ivBack.setOnClickListener {
@@ -77,21 +75,17 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         filterAction()
         fromWhere(type, fromFilter)
 
-
         try {
-
             if (type == "1") {
                 binding.shortLayout.setOnClickListener {
                     Log.d("TAG", "filterAction: $productId $categoryHandle")
                     showSortBottomSheet(categoryHandle)
                 }
-
             } else if (type == "2") {
                 binding.shortLayout.setOnClickListener {
                     Log.d("TAG", "filterAction: $productId $collectionHandle")
                     showSortBottomSheet(collectionHandle)
                 }
-
             }
         } catch (e: Exception) {
             Log.e("TAG", "InitView: ${e.message}")
