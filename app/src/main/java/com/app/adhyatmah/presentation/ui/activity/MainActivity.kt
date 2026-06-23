@@ -158,81 +158,59 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     hideBottomNav()
                 }
 
-                R.id.brandFragment -> {
-                    hideBottomNav()
-                    clearBottomBarPadding()
-                }
-
-                R.id.editProfileFragment -> {
-                    hideBottomNav()
-                    clearBottomBarPadding()
-
-                }
-
                 R.id.paymentMethodFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
-
                 }
 
                 R.id.congratulationFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
-
                 }
 
                 R.id.confirmOrderFragment -> {
                     hideBottomNav()
                     clearBottomBarPadding()
-
                 }
 
                 R.id.productDetailsFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
-
                 }
 
                 R.id.productListFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
-
                 }
 
                 R.id.myOrderDetailsFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
-
                 }
 
                 R.id.trackOrderFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
-
                 }
 
                 R.id.sizeImageFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
-
                 }
 
                 R.id.blogDetailsFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
-
                 }
 
                 R.id.paymentGatewayFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
-
                 }
 
                 R.id.searchListFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
-
                 }
 
                 R.id.bookingFragment -> {
@@ -246,6 +224,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 }
 
                 R.id.chooseServiceFragment -> {
+                    bottomNav.visibility = View.GONE
+                    clearBottomBarPadding()
+                }
+
+                R.id.chooseAddOnFragment -> {
                     bottomNav.visibility = View.GONE
                     clearBottomBarPadding()
                 }

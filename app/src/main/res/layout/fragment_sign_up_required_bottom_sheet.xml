@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -8,27 +9,27 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/logoutTitle"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
             android:fontFamily="@font/muktamahee_regular"
-            android:text="@string/logout"
+            android:text="@string/sign_up_required"
             android:textColor="#000000"
             android:textSize="18dp"
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/logoutMessage"
+            android:id="@+id/tv_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/muktamahee_regular"
-            android:text="@string/are_you_sure_you_want_to_log_out_you_will_be_missed"
             android:textColor="#111111"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            tools:text="@string/sign_up_required_to_go_to_profile" />
 
         <View
             android:layout_width="match_parent"
@@ -44,27 +45,27 @@
             android:paddingVertical="7dp">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/btnCancel"
+                android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:padding="7dp"
                 android:text="@string/cancel"
-                android:textColor="#7C7C7C"
+                android:textColor="#FD3E75"
                 android:textSize="15dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/btnConfirm"
+                android:id="@+id/btn_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muktamahee_regular"
                 android:padding="7dp"
-                android:text="@string/yes_i_am_sure"
-                android:textColor="#FD3E75"
+                android:text="@string/sign_up"
+                android:textColor="#7C7C7C"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
     </LinearLayout>
-    
+
 </layout>

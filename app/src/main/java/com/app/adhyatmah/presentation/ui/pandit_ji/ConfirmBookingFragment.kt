@@ -55,8 +55,6 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
     override fun setLayout(): Int = R.layout.fragment_confirm_booking
 
     override fun initView(savedInstanceState: Bundle?) {
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,27 +79,6 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
                     }
                 }
             })
-
-        parentFragmentManager.setFragmentResultListener(
-            "selectedAddress",
-            viewLifecycleOwner
-        ) { _, bundle ->
-            val address = bundle.getString("address") ?: return@setFragmentResultListener
-
-            UserPreference.panditjiBookingRequest.address = address
-            binding.apply {
-                if (UserPreference.panditjiBookingRequest.address.isNullOrEmpty()) {
-                    btnSelectAddress.show()
-                    tvSelectedAddress.hide()
-                    tvChange.hide()
-                } else {
-                    btnSelectAddress.hide()
-                    tvSelectedAddress.show()
-                    tvChange.show()
-                    tvSelectedAddress.text = UserPreference.panditjiBookingRequest.address ?: ""
-                }
-            }
-        }
     }
 
     private fun setUpAddOnKitRecycler() {
@@ -153,18 +130,6 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
             val panditName = "${panditJiDetails.firstName ?: ""} ${panditJiDetails.lastName ?: ""}"
             tvPanditName.text = panditName
             tvPanditAddress.text = panditJiDetails.address ?: ""
-
-            //Address Details
-            if (UserPreference.panditjiBookingRequest.address.isNullOrEmpty()) {
-                btnSelectAddress.show()
-                tvSelectedAddress.hide()
-                tvChange.hide()
-            }else{
-                btnSelectAddress.hide()
-                tvSelectedAddress.show()
-                tvChange.show()
-                tvSelectedAddress.text = UserPreference.panditjiBookingRequest.address?:""
-            }
 
             //Puja Details
             val pujaType =
@@ -223,6 +188,21 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
             tvPlatformFee.text = platformFee
 
             addOnPriceUpdate()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //Address Details
+        if (UserPreference.savedAddress.isEmpty()) {
+            binding.btnSelectAddress.show()
+            binding.tvSelectedAddress.hide()
+            binding.tvChange.hide()
+        } else {
+            binding.btnSelectAddress.hide()
+            binding.tvSelectedAddress.show()
+            binding.tvChange.show()
+            binding.tvSelectedAddress.text = UserPreference.savedAddress
         }
     }
 
@@ -340,7 +320,7 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
 
         val bookPanditJiRequest = BookPanditJiRequest(
             vendorId = panditJiDetails.id ?: "",
-            address = bookingRequest.address ?: "",
+            address = UserPreference.savedAddress,
             serviceId = bookingRequest.serviceId ?: "",
             poojaType = bookingRequest.poojaType ?: "",
             `package` = "Standard",
@@ -363,7 +343,8 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
                     val statusCode = it.data?.code
                     when (statusCode) {
                         201 -> {
-                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT)
+                                .show()
                             confirmBookingViewModel.hitBookingPayment(
                                 BookingPaymentRequest(
                                     bookingId = it.data.payload.booking.id,
@@ -501,8 +482,6 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
         if (!isAdded) return
         if (isSuccess) {
             Toast.makeText(requireContext(), "Payment Successful", Toast.LENGTH_SHORT).show()
-
-
             findNavController().navigate(R.id.action_profileFragment_to_bookingFragment)
         } else {
             Toast.makeText(requireContext(), "Payment Cancelled", Toast.LENGTH_SHORT).show()

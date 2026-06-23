@@ -7,4 +7,6 @@ object UserPreference {
     var CART_COUNT = 0
     var MOBILE_NUMBER = "MOBILE_NUMBER"
     var panditJiDetails = PanditJiDetails()
+    var savedAddress = ""
+    var savedAddressId = ""
 }

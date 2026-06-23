@@ -3,8 +3,6 @@ package com.app.adhyatmah.presentation.ui.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -18,8 +16,8 @@ import com.app.adhyatmah.domain.model.profile.get_profile.Payload
 import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.adapter.ProfileAdapter
 import com.app.adhyatmah.presentation.ui.bottom_sheet.LogoutBottomSheetFragment
+import com.app.adhyatmah.presentation.ui.bottom_sheet.SignUpRequiredBottomSheetFragment
 import com.app.adhyatmah.utils.base.BaseFragment
-import com.app.adhyatmah.utils.common_utils.CommonUtils
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
@@ -35,7 +33,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         setProfileData()
-        // Initialize RecyclerView
         setupRecyclerView()
     }
 
@@ -44,7 +41,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         val img = Preferences.getStringPreference(requireContext(), PROFILE_IMG).toString()
         val profileData =
             Preferences.getCustomModelPreference<Payload>(requireContext(), IS_PROFILE_DATA)
-        Log.d("TAG", "indditView: $profileData $img")
         binding.userNameTv.text = if (profileData != null) {
             "${profileData.user?.firstName} ${profileData.user?.lastName}"
         } else {
@@ -55,35 +51,26 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         } else {
             "Test@yopmail.com"
         }
-        val imageUrl = img
-        Log.d("TAG", "setProfileDataImgUrl : $imageUrl")
 
-        if (imageUrl.isNullOrEmpty()) {
+        if (img.isEmpty()) {
             binding.img.setImageResource(R.drawable.placeholder_icon)
         } else {
             Glide.with(requireContext())
-                .load(imageUrl)
+                .load(img)
                 .error(R.drawable.placeholder_icon) // if loading fails
                 .into(binding.img)
         }
+
         binding.rightArrowImg.setOnClickListener {
-            // Toast.makeText(requireContext(),"Under development",Toast.LENGTH_SHORT).show()
             if (isLogin == "1") {
                 findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
             } else {
-                showLoginPrompt()
+                signupRequired(getString(R.string.sign_up_required_to_go_to_profile))
             }
-
         }
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun setupRecyclerView() {
-        // Sample data as a list of Pair<String, Int>
         val profileItems = mutableListOf(
             Pair(getString(R.string.wishlist), R.drawable.wishlist_icon),
             Pair(getString(R.string.my_orders), R.drawable.my_order_icon),
@@ -95,31 +82,47 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             Pair(getString(R.string.faq_support), R.drawable.help_suport_icon),
             Pair(getString(R.string.contact_us), R.drawable.contact_us_icon),
         )
+
         if (isLogin == "1") {
             profileItems.add(Pair(getString(R.string.delete_account), R.drawable.delete_account))
             profileItems.add(Pair(getString(R.string.logout), R.drawable.logout_icon))
         }
-        // Set up adapter
+
         val adapter = ProfileAdapter(profileItems) { itemTitle ->
-            // Handle item click
             when (itemTitle) {
                 getString(R.string.wishlist) -> {
-
-                    findNavController().navigate(R.id.action_profile_to_wishlist)
+                    if (isLogin == "1") {
+                        findNavController().navigate(R.id.action_profile_to_wishlist)
+                    }else {
+                        signupRequired(getString(R.string.please_sign_up_required_to_see_wishlist))
+                    }
                 }
 
                 getString(R.string.my_orders) -> {
+                    if (isLogin == "1") {
+                        findNavController().navigate(R.id.action_profileFragment_to_myOrderFragment)
+                    }else {
+                        signupRequired(getString(R.string.please_sign_up_required_to_see_my_order))
+                    }
+                }
 
-                    findNavController().navigate(R.id.action_profileFragment_to_myOrderFragment)
+                getString(R.string.my_booking) -> {
+                    if (isLogin == "1") {
+                        findNavController().navigate(R.id.action_profileFragment_to_bookingFragment)
+                    }else {
+                        signupRequired(getString(R.string.please_sign_up_required_to_see_my_booking))
+                    }
                 }
 
                 getString(R.string.manage_address) -> {
-
-                    findNavController().navigate(R.id.action_profileFragment_to_mangeAddressFragment)
+                    if (isLogin == "1") {
+                        findNavController().navigate(R.id.action_profileFragment_to_mangeAddressFragment)
+                    }else {
+                        signupRequired(getString(R.string.please_sign_up_required_to_see_manage_address))
+                    }
                 }
 
                 getString(R.string.select_language) -> {
-
                     findNavController().navigate(R.id.action_profileFragment_to_chooseLanguageFragment)
                 }
 
@@ -130,27 +133,18 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                         R.id.action_profileFragment_to_termConditionFragment2,
                         bundle
                     )
-
                 }
 
                 getString(R.string.privacy_policy) -> {
-                    // Handle Policy
                     findNavController().navigate(R.id.action_profileFragment_to_termConditionFragment2)
-
                 }
 
                 getString(R.string.faq_support) -> {
-
                     findNavController().navigate(R.id.action_profileFragment_to_helpSupportFragment)
-
                 }
 
                 getString(R.string.contact_us) -> {
                     findNavController().navigate(R.id.action_profileFragment_to_contactUsFragment)
-                }
-
-                getString(R.string.my_booking) -> {
-                    findNavController().navigate(R.id.action_profileFragment_to_bookingFragment)
                 }
 
                 getString(R.string.delete_account) -> {
@@ -162,52 +156,28 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     Log.d("TAG", "setupRecyclerView: logout account")
                     showSortBottomSheet("2")
                 }
-
             }
         }
 
-        // Set up RecyclerView
         binding.itemsBagRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext())
             this.adapter = adapter
         }
     }
 
-    /*private fun showSortBottomSheet(type:String) {
-        val bottomSheet = LogoutBottomSheetFragment()
-        bottomSheet.show(parentFragmentManager, "LogoutBottomSheetFragment")
-    }*/
     private fun showSortBottomSheet(type: String) {
         val actionType = if (type == "1") "delete" else "logout"
         val bottomSheet = LogoutBottomSheetFragment.newInstance(actionType)
         bottomSheet.show(parentFragmentManager, "LogoutBottomSheetFragment")
     }
 
-
-    private fun showLoginPrompt() {
-        var dialog: AlertDialog? = null
-        dialog = CommonUtils.showCustomAlertDialog(
-            requireActivity(),
-            getString(R.string.sign_up_required),
-            getString(R.string.sign_up_required_to_go_to_profile),
-            positiveButtonText = getString(R.string.sign_up),
-            negativeButtonText = getString(R.string.cancel),
-            positiveButtonAction = {
-                dialog?.dismiss()
+    private fun signupRequired(message:String) {
+        val bottomSheet =
+            SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                val bundle = Bundle()
                 requireActivity().startActivity(intent)
-            },
-            negativeButtonAction = {
-                dialog?.dismiss()
             }
-        )
+        bottomSheet.show(parentFragmentManager, "SignUpRequiredBottomSheetFragment")
     }
-
-    private fun showToast(message: String) {
-        android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_SHORT)
-            .show()
-    }
-
 }

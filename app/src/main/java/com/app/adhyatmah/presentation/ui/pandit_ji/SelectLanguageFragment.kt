@@ -18,8 +18,6 @@ class SelectLanguageFragment : BaseFragment<FragmentSelectLanguageBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         setupRecycler()
         setupListeners()
-        //setObserver()
-        //viewmodel.hitGetLanguagesApi()
     }
 
     private fun setupRecycler() {

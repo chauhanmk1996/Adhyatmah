@@ -86,7 +86,7 @@ class ChooseAddOnFragment : Fragment() {
         hasQuantity = pujaKitList.any { (it.quantity ?: 0) > 0 } ||
                 instantKitList.any { (it.quantity ?: 0) > 0 }
 
-        binding.tvSkipNext.text = if (hasQuantity) {
+        binding.btnSkipNext.text = if (hasQuantity) {
             getString(R.string.next)
         } else {
             getString(R.string.skip)
@@ -98,7 +98,7 @@ class ChooseAddOnFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        binding.tvSkipNext.setOnClickListener {
+        binding.btnSkipNext.setOnClickListener {
 
             if (hasQuantity) {
                 val selectedPujaKitList = ArrayList(pujaKitList.filter { (it.quantity ?: 0) > 0 })

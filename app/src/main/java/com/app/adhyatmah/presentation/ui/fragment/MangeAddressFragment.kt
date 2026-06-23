@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.R
@@ -16,6 +15,7 @@ import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
 import com.app.adhyatmah.data.preferences.ADDRESS_ID
 import com.app.adhyatmah.data.preferences.CART_ID
 import com.app.adhyatmah.data.preferences.TYPE
+import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.databinding.FragmentMangeAddressBinding
 import com.app.adhyatmah.domain.model.delete_address.request_Address.DeleteAddressRequest
 import com.app.adhyatmah.domain.model.profile.manage_address.Addresse
@@ -60,11 +60,8 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
             if (type == "mainLayoutClick") {
                 if (from == "bookPanditji" || from == "home") {
                     val address = data.address1 + ", " + data.city + ", " + data.province + ", " + data.country + " - " + data.zip
-                    val bundle = Bundle().apply {
-                        putString("zip", data.zip)
-                        putString("address", address)
-                    }
-                    parentFragmentManager.setFragmentResult("selectedAddress", bundle)
+                    UserPreference.savedAddressId = data.id?:""
+                    UserPreference.savedAddress = address
                     findNavController().popBackStack()
                 } else {
                     val bundle = Bundle().apply {
@@ -75,7 +72,6 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
                             address_data.name + " " + address_data.address1 + " " + address_data.address2
                         )
                     }
-                    Log.d("TAG", "setAdapter:$id \n card id $cardId ")
                     findNavController().navigate(
                         R.id.action_mangeAddressFragment_to_paymentMethodFragment,
                         bundle

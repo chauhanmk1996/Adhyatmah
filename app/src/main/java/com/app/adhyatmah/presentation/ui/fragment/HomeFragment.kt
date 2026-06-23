@@ -129,7 +129,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         homeViewModel.hitPanditListApi()
         homeViewModel.homeDataApi()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        fetchAddress()
 
         binding.clSearch.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_searchListFragment)
@@ -195,6 +194,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onResume() {
         super.onResume()
         setObserver()
+        if (UserPreference.savedAddress.isEmpty()){
+            fetchAddress()
+        }else{
+            binding.tvLocation.text = UserPreference.savedAddress
+        }
         homeViewModel.homeCollectionApi(token)
     }
 
@@ -206,30 +210,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload.addresses
-
-                            val allAddresses = it.data?.payload?.addresses
-
-                            val validAddresses = allAddresses?.filter { address ->
+                            val data = it.data.payload.addresses
+                            val allAddresses = it.data.payload.addresses
+                            val validAddresses = allAddresses.filter { address ->
                                 !address.name.isNullOrBlank() && !address.address1.isNullOrBlank()
                             }
 
-
                             if (data.isEmpty()) {
                                 checkLocationPermission()
-
                             } else {
-                                val location =
-                                    validAddresses?.get(0)?.city + ", " + validAddresses?.get(0)?.province + ", " + validAddresses?.get(
-                                        0
-                                    )?.country + " - " + validAddresses?.get(0)?.zip
+                                val location = validAddresses[0].city + ", " + validAddresses[0].province + ", " + validAddresses[0].country + " - " + validAddresses[0].zip
+                                UserPreference.savedAddress = location
                                 binding.tvLocation.text = location
                                 Preferences.setStringPreference(
                                     requireContext(),
                                     CURRENT_PINCODE,
-                                    validAddresses?.get(0)?.zip
+                                    validAddresses[0].zip
                                 )
-
                             }
                         }
 
@@ -247,10 +244,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 Status.ERROR -> {
                     Log.e("TAG", "Error: ${it.message}")
                     ProcessDialog.dismissDialog(true)
-//                    Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
 
         homeViewModel.getTrendingSectionLiveData().observe(viewLifecycleOwner) { res ->
@@ -704,7 +699,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             false,
             onViewAllClick = { position ->
                 val handle = filteredList[position].handle ?: ""
-                val title = filteredList[position].title ?: ""
+                filteredList[position].title ?: ""
                 (activity as MainActivity).switchToCategoryTab()
                 val bundle = Bundle()
                 bundle.putString("category_handle", handle)
@@ -812,7 +807,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     @SuppressLint("MissingPermission")
     private fun getCurrentLocation() {
-
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
                 val lat = location.latitude
@@ -830,7 +824,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
 
             if (!addresses.isNullOrEmpty()) {
-                val address = addresses[0].getAddressLine(0)
+                addresses[0].getAddressLine(0)
                 binding.tvLocation.text =
                     addresses[0].subAdminArea + ", " + addresses[0].adminArea + ", " + addresses[0].countryName + " - " + addresses[0].postalCode
                 Preferences.setStringPreference(

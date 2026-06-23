@@ -22,7 +22,6 @@
                 android:gravity="center"
                 android:text="@string/no_add_to_cart_data_found"
                 android:textSize="20dp"
-                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -95,6 +94,74 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/my_bag_title" />
 
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_address_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/muktamahee_semibold"
+                    android:text="@string/address_details"
+                    android:textColor="#272727"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/items_bag_recycler" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_address_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rec_white_bg_box"
+                    app:layout_constraintTop_toBottomOf="@id/tv_address_details">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_select_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginVertical="12dp"
+                        android:backgroundTint="@color/theme"
+                        android:text="@string/select_address"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:visibility="gone"
+                        app:cornerRadius="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_selected_address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_regular"
+                        android:padding="12dp"
+                        android:textColor="@color/black_272727"
+                        android:textSize="15dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_change"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Mayank" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:fontFamily="@font/inter_bold"
+                        android:padding="8dp"
+                        android:text="@string/change"
+                        android:textColor="@color/theme"
+                        android:textSize="15dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/apply_coupon_tv"
                     android:layout_width="match_parent"
@@ -105,7 +172,7 @@
                     android:textColor="@color/black"
                     android:textSize="16dp"
                     app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/items_bag_recycler" />
+                    app:layout_constraintTop_toBottomOf="@id/cl_address_details" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/coupon_code_layout"

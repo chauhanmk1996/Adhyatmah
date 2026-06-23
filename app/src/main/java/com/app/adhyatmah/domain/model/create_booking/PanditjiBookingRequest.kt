@@ -20,7 +20,6 @@ data class PanditjiBookingRequest(
     var serviceId: String? = null,
 
     var bookingId: String? = null,
-    var address: String? = null,
     var selectedLanguage: String? = null,
     var selectedPujaKit: ArrayList<PujaKit>? = null,
     var selectedInstantKit: ArrayList<PujaKit>? = null,

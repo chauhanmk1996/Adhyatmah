@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
+import com.app.adhyatmah.data.preferences.ADDRESS_ID
 import com.app.adhyatmah.data.preferences.CART_ID
+import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.data.preferences.UserPreference.CART_COUNT
 import com.app.adhyatmah.databinding.FragmentBagBinding
-import com.app.adhyatmah.domain.model.add_to_bag.add_to_bag_response.Edge
 import com.app.adhyatmah.domain.model.bag_response.apply_coupons.apply_coupons_req.ApplyCouponsRequest
 import com.app.adhyatmah.domain.model.bag_response.increase_qty_request.IncreaseQtyRequest
 import com.app.adhyatmah.domain.model.bag_response.increase_qty_request.IncreaseQtyRequest.Variant
@@ -30,18 +31,15 @@ import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.app.adhyatmah.utils.getString
+import com.app.adhyatmah.utils.hide
+import com.app.adhyatmah.utils.show
 import com.google.android.material.snackbar.Snackbar
 
 class BagFragment : BaseFragment<FragmentBagBinding>() {
 
     private val bagViewModel by activityViewModels<BagViewModel>()
-    val cartList = mutableListOf<Edge>()
-
     private lateinit var bagAdapter: BagAdapter
-    private var isApply :Boolean = false
-
-    private var count = 1  // Default value
-
+    private var isApply: Boolean = false
     var token = ""
     var cartId = ""
     var isItemPlus = false
@@ -51,69 +49,68 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+        token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
+        cartId = Preferences.getStringPreference(requireContext(), CART_ID).toString()
+        val type = arguments?.getString("TYPE")
+        val value = arguments?.getString("VALUE")
 
-        token = Preferences.getStringPreference(requireContext(),ACCESS_TOKEN).toString()
-        cartId = Preferences.getStringPreference(requireContext(),CART_ID).toString()
-        Log.d("TAG", "inasdasitView: $cartId")
-
-
-      var type = arguments?.getString("TYPE")
-        var value = arguments?.getString("VALUE")
-        Log.d("TAG", "removeCoupon: $type $value")
-        if(type=="1"){
-            var request = RemoveCouponRequest()
-//            request.discountCode  = value
+        if (type == "1") {
+            val request = RemoveCouponRequest()
             request.cartId = cartId
             binding.removeCoupon.visibility = View.GONE
             binding.cancelText.text = value
             binding.couponTv.setText(value)
-            binding.applyTv.setText("Remove")
+            binding.applyTv.text = "Remove"
             binding.cancelCouponBtn.setOnClickListener {
                 bagViewModel.hitRemoveCouponAPI(request)
             }
-
-        }else{
-            binding.applyTv.setText("Apply")
+        } else {
+            binding.applyTv.text = "Apply"
             binding.removeCoupon.visibility = View.GONE
             binding.applyTv.setOnClickListener {
                 applyCoupons(type)
             }
-
         }
 
         initializeView(type)
         setObserver()
         setupRecyclerView()
 
-        if(token.isNullOrEmpty()){
+        if (token.isEmpty()) {
             showLoginPrompt()
-        }
-        /*else if (cartId.isNullOrEmpty()){
-            binding.noBaglayout.visibility = View.VISIBLE
-            binding.bagLayout.visibility = View.GONE
-        }*/
-        else{
+        } else {
             binding.bagLayout.visibility = View.VISIBLE
             binding.noBaglayout.visibility = View.GONE
             bagViewModel.getCartList(token)
         }
-
-
     }
 
+    override fun onResume() {
+        super.onResume()
+        //Address Details
+        if (UserPreference.savedAddress.isEmpty()) {
+            binding.btnSelectAddress.show()
+            binding.tvSelectedAddress.hide()
+            binding.tvChange.hide()
+        } else {
+            binding.btnSelectAddress.hide()
+            binding.tvSelectedAddress.show()
+            binding.tvChange.show()
+            binding.tvSelectedAddress.text = UserPreference.savedAddress
+        }
+    }
 
     private fun initializeView(type: String?) {
-
         binding.apply {
-
             checkoutBtn.setOnClickListener {
-                var bundle = Bundle()
-                bundle.putString(CART_ID,cartId)
-                findNavController().navigate(R.id.action_bagFragment_to_mangeAddressFragment,bundle)
-//                Toast.makeText(requireContext(), "under development", Toast.LENGTH_SHORT).show()
+                val bundle = Bundle().apply {
+                    putString(CART_ID, cartId)
+                    putString(ADDRESS_ID, UserPreference.savedAddressId ?: "")
+                }
+                findNavController().navigate(R.id.paymentMethodFragment, bundle)
             }
+
             viewAllCouponsTv.setOnClickListener {
-//                Toast.makeText(requireContext(), "under development", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_bagFragment_to_applyCouponsFragment)
             }
 
@@ -121,50 +118,57 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                 applyCoupons(type)
             }
 
+            binding.btnSelectAddress.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("from", "bookPanditji")
+                }
+                findNavController().navigate(R.id.mangeAddressFragment, bundle)
+            }
+
+            binding.tvChange.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("from", "bookPanditji")
+                }
+                findNavController().navigate(R.id.mangeAddressFragment, bundle)
+            }
         }
     }
 
+    private fun applyCoupons(type: String?) {
+        val couponCode = binding.couponTv.getString()
+        if (couponCode.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.please_enter_a_coupon_code),
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
 
-
-   private fun applyCoupons(type: String?) {
-       val couponCode = binding.couponTv.getString()
-
-       if (couponCode.isEmpty()) {
-           Toast.makeText(requireContext(), getString(R.string.please_enter_a_coupon_code), Toast.LENGTH_SHORT).show()
-           return
-       }
-
-       val request = ApplyCouponsRequest(
-           cartId,
-           couponCode
-       )
-        if(type=="1"){
-            removeCoupon(couponCode)
-        }else{
-            if (isApply){
-                removeCoupon(couponCode)
-            }else{
+        val request = ApplyCouponsRequest(cartId, couponCode)
+        if (type == "1") {
+            removeCoupon()
+        } else {
+            if (isApply) {
+                removeCoupon()
+            } else {
                 bagViewModel.applyCouponsData(request)
 
             }
         }
-       // Apply the coupon
 
-       // Change UI after applying the coupon
-       binding.applyTv.text = "Remove" // Change button text to "Remove Coupon"
-       binding.cancelCouponBtn.setOnClickListener {
-           // Remove the coupon when clicked
-           removeCoupon(couponCode)
-       }
-       binding.couponTv.setText(couponCode) // Show the applied coupon code
-   }
+        binding.applyTv.text = "Remove"
 
-
+        binding.cancelCouponBtn.setOnClickListener {
+            removeCoupon()
+        }
+        binding.couponTv.setText(couponCode)
+    }
 
     private fun showLoginPrompt() {
         var dialog: AlertDialog? = null
-        dialog=  CommonUtils.showCustomAlertDialog(
-            requireActivity() ,
+        dialog = CommonUtils.showCustomAlertDialog(
+            requireActivity(),
             getString(R.string.sign_up_required),
             getString(R.string.please_sign_up_to_add_items_to_your_wishlist),
             positiveButtonText = getString(R.string.sign_up),
@@ -177,13 +181,13 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                 bundle.putString("previousScreen", "logout")
                 bundle.putString("selectedImage", "0")
                 intent.putExtras(bundle)
-                requireActivity().startActivity(intent)            },
+                requireActivity().startActivity(intent)
+            },
             negativeButtonAction = {
                 dialog?.dismiss()
             }
         )
     }
-
 
     private fun setupRecyclerView() {
         bagAdapter = BagAdapter(mutableListOf(), object : BagAdapter.OnQuantityChangeListener {
@@ -197,147 +201,134 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                 binding.itemsBagRecycler.visibility = View.INVISIBLE
                 binding.emptyTextView.visibility = View.VISIBLE // Add this TextView in XML
             }
-
         })
-
 
         binding.itemsBagRecycler.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = bagAdapter
-
         }
     }
+
     private fun hitAddAddressAPI(productVariantId: String, quantity: Int) {
         val request = IncreaseQtyRequest().apply {
-            accessToken = token // avoid hardcoding in production
+            accessToken = token
             variant = Variant().apply {
                 id = productVariantId
                 this.quantity = quantity
-
             }
         }
         bagViewModel.getPlusQtyList(request)
     }
-    private fun removeCoupon(coupon: String) {
+
+    private fun removeCoupon() {
         val request = RemoveCouponRequest()
-//        request.discountCode = coupon
         request.cartId = cartId
-
-        // Call API to remove coupon
         bagViewModel.hitRemoveCouponAPI(request)
-
-        // Update UI after removing the coupon
-        binding.applyTv.text = getString(R.string.apply) // Change button text back to "Apply Coupon"
-        binding.couponTv.setText("") // Clear the coupon code text
-        binding.removeCoupon.visibility = View.GONE // Hide the remove coupon UI component
+        binding.applyTv.text = getString(R.string.apply)
+        binding.couponTv.setText("")
+        binding.removeCoupon.visibility = View.GONE
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setObserver(){
-
+    private fun setObserver() {
         bagViewModel.getCartListData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
 
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
                             val payload = it.data.payload
                             CART_COUNT = payload.cart?.lines?.edges?.size ?: 0
                             (requireActivity() as MainActivity).updateBagBadge(CART_COUNT)
-                            cartId = Preferences.setStringPreference(requireContext(),CART_ID, it.data.payload.cart?.id).toString()
+                            cartId = Preferences.setStringPreference(
+                                requireContext(),
+                                CART_ID,
+                                it.data.payload.cart?.id
+                            ).toString()
 
-                            if(it.data.payload==null||payload.cart == null || payload.cart.lines == null || payload.cart.lines.edges.isNullOrEmpty()){
+                            if (payload.cart == null || payload.cart.lines == null || payload.cart.lines.edges.isNullOrEmpty()) {
                                 Log.d("TAG", "setObserver1: payload is null")
                                 binding.noBaglayout.visibility = View.VISIBLE
                                 binding.bagLayout.visibility = View.GONE
                                 binding.checkoutBtn.visibility = View.GONE
-                            }
-                            else{
+                            } else {
                                 Log.d("TAG", "setObserver1: payload is not null")
-                                var data = it.data.payload.cart.cost
-                                var totalAmount = it.data.payload.discountInfo?.savingsSummary
-                                var total = totalAmount?.currencyCode+" "+totalAmount?.finalTotal
-                                var subtotal =totalAmount?.currencyCode+" "+totalAmount?.originalTotal
-                                var edges = it.data.payload.cart.lines.edges
-                                var tax = data?.totalTaxAmount?.currencyCode+" "+data?.totalTaxAmount?.amount
-                                var shippingFee = totalAmount?.currencyCode+" "+it.data.payload.cart.shipping_fee
-                                var platformFee = totalAmount?.currencyCode+" "+it.data.payload.cart.platform_fee
-/*
-                                if (disc.isNullOrEmpty()){
-                                    binding.discountPriceTv.text = ""
-                                }
-                                else{
-                             //   binding.discountPriceTv.text = disc[0].
-                             //   binding.discountPriceTv.text =
-                                }*/
+                                val data = it.data.payload.cart.cost
+                                val totalAmount = it.data.payload.discountInfo?.savingsSummary
+                                val total =
+                                    totalAmount?.currencyCode + " " + totalAmount?.finalTotal
+                                val subtotal =
+                                    totalAmount?.currencyCode + " " + totalAmount?.originalTotal
+                                val edges = it.data.payload.cart.lines.edges
+                                val tax =
+                                    data?.totalTaxAmount?.currencyCode + " " + data?.totalTaxAmount?.amount
+                                val shippingFee =
+                                    totalAmount?.currencyCode + " " + it.data.payload.cart.shipping_fee
+                                val platformFee =
+                                    totalAmount?.currencyCode + " " + it.data.payload.cart.platform_fee
                                 val disInfo = it.data.payload.discountInfo
-                                var isDiscount = disInfo?.hasDiscounts
+                                val isDiscount = disInfo?.hasDiscounts
 
                                 if (disInfo != null) {
-                                    var discount = "${data?.totalAmount?.currencyCode} ${String.format("%.2f", disInfo.totalDiscount?.toDouble())}"
-                                    binding.discountPriceTv.text = "- "+discount
-                                    if(isDiscount == true){
-//                                        var coupon =  it.data.payload.cart.discountCodes?.get(0)?.code
-                                        var coupon =  it.data.payload.cart.discountCodes?.get(0)
+                                    val discount = "${data?.totalAmount?.currencyCode} ${
+                                        String.format(
+                                            "%.2f",
+                                            disInfo.totalDiscount
+                                        )
+                                    }"
+                                    binding.discountPriceTv.text = "- $discount"
+                                    if (isDiscount == true) {
+                                        val coupon = it.data.payload.cart.discountCodes?.get(0)
                                         isApply = true
                                         binding.couponTv.setText(coupon)
                                         binding.applyTv.text = "Remove"
                                         binding.removeCoupon.visibility = View.GONE
-                                        binding.cancelText.setText(coupon)
+                                        binding.cancelText.text = coupon
                                         binding.cancelCouponBtn.setOnClickListener {
-                                            removeCoupon(discount)
+                                            removeCoupon()
                                         }
-                                        binding.couponTv.isClickable=false
+                                        binding.couponTv.isClickable = false
                                         binding.couponTv.isEnabled = false
 
-                                    }else{
+                                    } else {
                                         isApply = false
                                         binding.couponTv.isEnabled = true
-                                        binding.couponTv.isClickable=true
+                                        binding.couponTv.isClickable = true
                                         binding.applyTv.text = getString(R.string.apply)
                                         binding.removeCoupon.visibility = View.GONE
                                         binding.couponTv.setText("")
                                         binding.applyTv.setOnClickListener {
-                                            var type = arguments?.getString("TYPE")
+                                            val type = arguments?.getString("TYPE")
                                             applyCoupons(type)
                                         }
-
                                     }
-
                                 } else {
                                     binding.discountPriceTv.text =
                                         getString(R.string.no_discount_applied)
                                 }
 
-
-                                if(edges.isNullOrEmpty()&& data==null){
+                                if (edges.isEmpty() && data == null) {
                                     binding.noBaglayout.visibility = View.VISIBLE
                                     binding.bagLayout.visibility = View.GONE
                                     binding.checkoutBtn.visibility = View.GONE
-                                }else{
+                                } else {
                                     binding.noBaglayout.visibility = View.GONE
                                     binding.bagLayout.visibility = View.VISIBLE
                                     binding.checkoutBtn.visibility = View.VISIBLE
                                     binding.discountTv.text = tax
-                                    binding.shippinpPriceTv.text = shippingFee.toString()
-                                    binding.platformPriceTv.text = platformFee.toString()
-                                    binding.totalAmountPrice.text = total//data.totalAmount.currencyCode+" "+data.totalAmount.amount
-                                    binding.priceTv.text =subtotal //data.totalAmount.currencyCode+" "+data.totalAmount.amount
+                                    binding.shippinpPriceTv.text = shippingFee
+                                    binding.platformPriceTv.text = platformFee
+                                    binding.totalAmountPrice.text = total
+                                    binding.priceTv.text = subtotal
                                     val cartListContainer = it.data.payload.cart.lines.edges
                                     bagAdapter.updateBagItems(cartListContainer)
                                 }
-
                             }
-
-//                          setAdapter(data)
-                            // setup adapter here
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
-                        }
-                        404->{
-                            //    Toast.makeText(requireContext(),)
                         }
                     }
                     ProcessDialog.dismissDialog(true)
@@ -353,29 +344,19 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
 
         bagViewModel.getPlusQtyData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload.cart
-
+                            val data = it.data.payload.cart
                             bagViewModel.getCartList(token)
-                            /*if (isItemPlus){
-                                CART_COUNT = CART_COUNT+1
-                                (requireActivity() as MainActivity).updateBagBadge(CART_COUNT)
-                            }else{
-                                if (CART_COUNT>0) CART_COUNT = CART_COUNT-1
-                                (requireActivity() as MainActivity).updateBagBadge(CART_COUNT)
-                            }*/
-//                            Toast.makeText(requireActivity(),"${it.data.message}",Toast.LENGTH_SHORT).show()
-                            Log.d("tt","sds, $data")
+                            Log.d("tt", "sds, $data")
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -393,7 +374,6 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
 
         bagViewModel.applyCouponsRes().observe(viewLifecycleOwner) {
@@ -403,32 +383,30 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload
-//                            val discountCode = data.discountCodes?.get(0)?.code
-//                            val isApplicable = data.discountCodes?.get(0)?.applicable
-
                             val discountCode = data.discountCodes?.get(0)
                             val isApplicable = data.discountCodes?.isNotEmpty()
 
                             if (isApplicable == true) {
                                 isApply = true
-                                bagViewModel.getCartList(token) // Refresh the cart
-                                // Update UI to show applied coupon
+                                bagViewModel.getCartList(token)
                                 binding.applyTv.text = getString(R.string.remove)
                                 binding.couponTv.setText(discountCode)
                                 binding.removeCoupon.visibility = View.GONE
                                 binding.cancelText.text = discountCode
-                                Toast.makeText(requireActivity(), "${it.data.message}", Toast.LENGTH_SHORT).show()
-
-                                // Optional: handle remove logic in one place
+                                Toast.makeText(
+                                    requireActivity(),
+                                    it.data.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 binding.cancelCouponBtn.setOnClickListener {
-                                    removeCoupon(discountCode ?: "")
+                                    removeCoupon()
                                 }
-
                             } else {
-                                // If coupon is not applicable
                                 isApply = false
-                                Toast.makeText(requireActivity(),
-                                    getString(R.string.coupon_is_not_valid), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    requireActivity(),
+                                    getString(R.string.coupon_is_not_valid), Toast.LENGTH_SHORT
+                                ).show()
                                 binding.removeCoupon.visibility = View.GONE
                                 binding.couponTv.setText("")
                                 binding.applyTv.text = getString(R.string.apply)
@@ -460,23 +438,26 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                     val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-                            // Update UI for successful coupon removal
                             bagViewModel.getCartList(token)
-                            isApply =false
-                            binding.applyTv.text = getString(R.string.apply) // Change button back to "Apply Coupon"
-                            binding.couponTv.setText("") // Clear the coupon text
-                            binding.removeCoupon.visibility = View.GONE // Hide remove coupon UI
-                            Toast.makeText(requireActivity(), "${it.data.message}", Toast.LENGTH_SHORT).show()
+                            isApply = false
+                            binding.applyTv.text = getString(R.string.apply)
+                            binding.couponTv.setText("")
+                            binding.removeCoupon.visibility = View.GONE
+                            Toast.makeText(requireActivity(), it.data.message, Toast.LENGTH_SHORT)
+                                .show()
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
                     }
                     ProcessDialog.dismissDialog(true)
                 }
+
                 Status.LOADING -> {
                     ProcessDialog.showDialog(requireActivity(), true)
                 }
+
                 Status.ERROR -> {
                     ProcessDialog.dismissDialog(true)
                     Log.e("TAG", "Error: ${it.message}")
@@ -484,6 +465,5 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                 }
             }
         }
-
     }
 }

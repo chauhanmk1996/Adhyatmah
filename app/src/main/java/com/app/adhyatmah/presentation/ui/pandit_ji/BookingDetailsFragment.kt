@@ -64,7 +64,8 @@ class BookingDetailsFragment : Fragment() {
             val name = "${panditJiDetails.firstName ?: ""} ${panditJiDetails.lastName ?: ""}"
             tvName.text = name
 
-            val experience = "${panditJiDetails.city ?: ""} | ${panditJiDetails.seoContent?.details?.experience ?: ""}"
+            val experience =
+                "${panditJiDetails.city ?: ""} | ${panditJiDetails.seoContent?.details?.experience ?: ""}"
             tvExperience.text = experience
 
             val about = "${panditJiDetails.about ?: ""}  ★ 4.8"
@@ -112,12 +113,17 @@ class BookingDetailsFragment : Fragment() {
                                 list.forEach { service ->
                                     if (service.poojaType == panditJiDetails.poojaSelectFromHomeName) {
                                         UserPreference.panditjiBookingRequest.serviceId = service.id
-                                        UserPreference.panditjiBookingRequest.paymentAmount = service.price.toString()
-                                        UserPreference.panditjiBookingRequest.advance = service.advance
+                                        UserPreference.panditjiBookingRequest.paymentAmount =
+                                            service.price.toString()
+                                        UserPreference.panditjiBookingRequest.advance =
+                                            service.advance
                                         UserPreference.panditjiBookingRequest.gst = service.gst
-                                        UserPreference.panditjiBookingRequest.duration = service.duration
-                                        UserPreference.panditjiBookingRequest.poojaType = service.poojaType
-                                        UserPreference.panditjiBookingRequest.pujaDescription = service.description
+                                        UserPreference.panditjiBookingRequest.duration =
+                                            service.duration
+                                        UserPreference.panditjiBookingRequest.poojaType =
+                                            service.poojaType
+                                        UserPreference.panditjiBookingRequest.pujaDescription =
+                                            service.description
                                     }
                                 }
                             }
@@ -154,7 +160,7 @@ class BookingDetailsFragment : Fragment() {
         binding.tvServicesOffered.setOnClickListener {
             if (panditJiDetails.poojaSelectFromHomeName.isNullOrEmpty()) {
                 findNavController().navigate(R.id.chooseServiceFragment)
-            }else{
+            } else {
                 findNavController().navigate(R.id.chooseAddOnFragment)
             }
         }
