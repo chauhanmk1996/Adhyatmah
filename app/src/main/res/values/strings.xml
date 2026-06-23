@@ -395,4 +395,19 @@
     <string name="pay_amount">Pay Amount</string>
     <string name="please_check_your_internet">Please check your internet</string>
     <string name="remove_from_wishlist">Remove from wishlist</string>
+    <string name="size_heading">Size:</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="do_you_really_want_to_remove_this_item_from_your_cart">Do you really want to remove this item from your cart?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="n_a">N/A</string>
+    <string name="quantity">Quantity</string>
+    <string name="unknown_order_name">Unknown Order Name</string>
+    <string name="lets_go">Lets Go</string>
+    <string name="just_now">Just now</string>
+    <string name="minutes_ago">minutes ago</string>
+    <string name="hours_ago">hours ago</string>
+    <string name="days_ago">days ago</string>
+    <string name="invalid_item_please_try_again">Invalid item. Please try again.</string>
+
 </resources>

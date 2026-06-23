@@ -10,18 +10,27 @@ import com.app.adhyatmah.databinding.SizesListLayoutBinding
 
 class SizesAdapter(
     private val sizesList: MutableList<DataString>,
-    private val onColorClick: (List<DataString>) -> Unit
-): RecyclerView.Adapter<SizesAdapter.SizesViewHolder>()  {
+    private val onColorClick: (List<DataString>) -> Unit,
+) : RecyclerView.Adapter<SizesAdapter.SizesViewHolder>() {
     private val selectedSize = mutableListOf<DataString>()
 
-    inner class SizesViewHolder(private val binding: SizesListLayoutBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class SizesViewHolder(private val binding: SizesListLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(colorItem: DataString) {
             binding.colorsTv.text = colorItem.title
-            binding.colorsTv.setBackgroundResource(if (colorItem.isSelect){ R.drawable.rectangle_black } else R.drawable.rectangle_filter)
+
+            binding.colorsTv.setBackgroundResource(
+                if (colorItem.isSelect) {
+                    R.drawable.rectangle_black
+                } else R.drawable.rectangle_filter
+            )
             val context = binding.root.context
 
             binding.colorsTv.setTextColor(
-                if (colorItem.isSelect) ContextCompat.getColor(context,R.color.white)else ContextCompat.getColor(context,R.color.black)
+                if (colorItem.isSelect) ContextCompat.getColor(
+                    context,
+                    R.color.white
+                ) else ContextCompat.getColor(context, R.color.black)
             )
 
             binding.root.setOnClickListener {
@@ -31,12 +40,11 @@ class SizesAdapter(
                 } else {
                     selectedSize.removeAll { it.title == colorItem.title }
                 }
-              notifyDataSetChanged()
+                notifyDataSetChanged()
                 onColorClick(selectedSize)
             }
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SizesViewHolder {
         val binding = SizesListLayoutBinding.inflate(
@@ -48,11 +56,8 @@ class SizesAdapter(
     }
 
     override fun onBindViewHolder(holder: SizesViewHolder, position: Int) {
-
         holder.bind(sizesList[position])
-
     }
 
     override fun getItemCount(): Int = sizesList.size
-
 }

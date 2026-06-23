@@ -1,15 +1,12 @@
 package com.app.adhyatmah.presentation.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,7 +38,6 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
         return R.layout.fragment_my_order_details
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun initView(savedInstanceState: Bundle?) {
         byOderId = arguments?.getString("orderId").toString()
         name = arguments?.getString("name").toString()
@@ -71,22 +67,18 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
     private fun copyToClipboard(text: String) {
         val clipboard =
             requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("Order ID", text)
+        val clip = ClipData.newPlainText(getString(R.string.order_id), text)
         clipboard.setPrimaryClip(clip)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("SetTextI18n")
     private fun setObserver() {
         profileViewModel.getOrdersDetailsRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload.order
-
                             if (data.status == "canceled") {
                                 binding.cancled.visibility = View.VISIBLE
                                 binding.cancelBtn.visibility = View.GONE
@@ -96,20 +88,24 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
 
                             }
                             binding.orderId.text = data.orderNo
-                            binding.priceTotal.text = data.currency + " " + data.total
-                            binding.priceTv.text = data.currency + " " + data.subTotal
-                            binding.taxAmount.text = data.currency + " " + data.tax
+                            val priceTotalText = data.currency + " " + data.total
+                            binding.priceTotal.text = priceTotalText
+                            val priceTvText = data.currency + " " + data.subTotal
+                            binding.priceTv.text = priceTvText
+                            val taxAmountText = data.currency + " " + data.tax
+                            binding.taxAmount.text = taxAmountText
                             binding.orderTime.text = getTimeAgo(data.createdAt.toString())
-
-                            binding.priceCoupons.text =
-                                data.currency + " " + data.discount.toString()
-                            binding.platformFees.text = data.currency + " " + data.platform_fee
-                            binding.shippingCharges.text = data.currency + " " + data.shipping_fee
+                            val priceCouponsText = data.currency + " " + data.discount.toString()
+                            binding.priceCoupons.text = priceCouponsText
+                            val platformFeesText = data.currency + " " + data.platform_fee
+                            binding.platformFees.text = platformFeesText
+                            val shippingChargesText = data.currency + " " + data.shipping_fee
+                            binding.shippingCharges.text = shippingChargesText
                             binding.cash.text = data.items?.getOrNull(0)?.deliveryType
                             binding.status.text = data.status
-                            binding.address.text =
+                            val addressText =
                                 data.user?.firstName + " " + data.user?.lastName + "\n" + data.user?.address + "\n" + data.user?.city + "\n" + data.user?.state + "\n" + data.user?.country
-
+                            binding.address.text = addressText
                             val cateSetContainer = it.data.payload.order.items
                             myOrdersDetailsAdapter?.updateOrder(cateSetContainer ?: emptyList())
                         }
@@ -136,17 +132,15 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
         profileViewModel.cancelOrderRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-                            val data = it.data.payload
                             val bundle = Bundle()
                             bundle.putString("type", "1")
                             findNavController().navigate(
                                 R.id.action_myOrderDetailsFragment_to_myOrderFragment,
                                 bundle
                             )
-                            Log.d("tt", "sdsfdsfdsss, $data")
                         }
 
                         401 -> {
@@ -177,7 +171,6 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getTimeAgo(createdAt: String): String {
         val formatter = DateTimeFormatter.ISO_DATE_TIME
         val time = LocalDateTime.parse(createdAt, formatter)
@@ -186,10 +179,10 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
         val duration = Duration.between(time, now)
 
         return when {
-            duration.toMinutes() < 1 -> "Just now"
-            duration.toMinutes() < 60 -> "${duration.toMinutes()} minutes ago"
-            duration.toHours() < 24 -> "${duration.toHours()} hours ago"
-            duration.toDays() < 7 -> "${duration.toDays()} days ago"
+            duration.toMinutes() < 1 -> getString(R.string.just_now)
+            duration.toMinutes() < 60 -> "${duration.toMinutes()} ${getString(R.string.minutes_ago)}"
+            duration.toHours() < 24 -> "${duration.toHours()} ${getString(R.string.hours_ago)}"
+            duration.toDays() < 7 -> "${duration.toDays()} ${getString(R.string.days_ago)}"
             else -> time.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"))
         }
     }

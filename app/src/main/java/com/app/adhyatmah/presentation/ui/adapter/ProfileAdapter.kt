@@ -25,9 +25,11 @@ class ProfileAdapter(
                 "Select Language" -> {
                     binding.wishlistTv.setTextColor(defaultColor)
                 }
+
                 "Logout", "Delete account" -> {
                     binding.wishlistTv.setTextColor(redColor)
                 }
+
                 else -> {
                     binding.wishlistTv.setTextColor(defaultColor)
                 }
@@ -59,5 +61,4 @@ class ProfileAdapter(
     }
 
     override fun getItemCount(): Int = profileItems.size
-
 }

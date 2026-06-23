@@ -6,9 +6,11 @@ import com.app.adhyatmah.databinding.ViewPagerHomeBannerBinding
 import com.bumptech.glide.Glide
 import com.app.adhyatmah.domain.model.home_banner_response.HomeBanner
 
-class ViewPagerAdapter(private var viewPagerList: List<HomeBanner>,private val onSelected: (Int) -> Unit) :
+class ViewPagerAdapter(
+    private var viewPagerList: List<HomeBanner>,
+    private val onSelected: (Int) -> Unit,
+) :
     BasePagerAdapter<ViewPagerHomeBannerBinding>() {
-
 
     override fun getLayoutId(): Int = R.layout.view_pager_home_banner
 

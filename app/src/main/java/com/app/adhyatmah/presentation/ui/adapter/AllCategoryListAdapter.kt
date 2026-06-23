@@ -1,7 +1,6 @@
 package com.app.adhyatmah.presentation.ui.adapter
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,16 +20,13 @@ class AllCategoryListAdapter(
     fun updateItems(newItems: List<AllCategoryListResponse.Collection>) {
         originalList.clear()
         originalList.addAll(newItems)
-
         items.clear()
         items.addAll(newItems)
-
         selectedPosition = 0
-        Log.i("TAG", "updateItems: "+newItems)
         notifyDataSetChanged()
     }
 
-    inner class CategoryViewHolder(val binding: ItemLeftCategoryBinding)
+    class CategoryViewHolder(val binding: ItemLeftCategoryBinding)
         : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -62,13 +58,10 @@ class AllCategoryListAdapter(
 
         holder.binding.root.setOnClickListener {
             if (position != RecyclerView.NO_POSITION) {
-
                 val previous = selectedPosition
                 selectedPosition = position
-
                 notifyItemChanged(previous)
                 notifyItemChanged(selectedPosition)
-
                 onItemClick(item)
             }
         }
@@ -94,4 +87,3 @@ class AllCategoryListAdapter(
         notifyDataSetChanged()
     }
 }
-

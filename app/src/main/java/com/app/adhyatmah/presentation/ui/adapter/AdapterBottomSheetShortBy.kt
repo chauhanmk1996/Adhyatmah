@@ -30,19 +30,18 @@ class AdapterBottomSheetShortBy(
         holder.binding.text.text = list.title
 
         if (selectedPosition == position) {
-            holder.binding.layout.background =
-                holder.itemView.context.getDrawable(R.drawable.rectangle_black_no_corner)
-            holder.binding.text.setTextColor(holder.itemView.context.getColor(R.color.white))
 
+            holder.binding.layout.setBackgroundResource(R.drawable.rectangle_black_no_corner)
+            holder.binding.text.setTextColor(holder.itemView.context.getColor(R.color.white))
         } else {
             holder.binding.layout.background = null
             holder.binding.text.setTextColor(holder.itemView.context.getColor(R.color.black_222222))
-
         }
+
         holder.binding.layout.setOnClickListener {
-            val previsousClick = selectedPosition
+            val previousClick = selectedPosition
             selectedPosition = position
-            notifyItemChanged(previsousClick)
+            notifyItemChanged(previousClick)
             notifyItemChanged(selectedPosition)
             function(list)
         }

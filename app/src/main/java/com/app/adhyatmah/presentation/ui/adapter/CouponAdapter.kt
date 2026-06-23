@@ -8,13 +8,11 @@ import com.app.adhyatmah.domain.model.bag_response.apply_coupons.get_all_apply_c
 
 class CouponAdapter(
     private var coupons: MutableList<Coupon>,
-    private val onApplyCouponsChangeListener: OnApplyCouponsChangeListener
-
-
+    private val onApplyCouponsChangeListener: OnApplyCouponsChangeListener,
 ) : RecyclerView.Adapter<CouponAdapter.ViewHolder>() {
 
-    inner class ViewHolder(
-        val binding: ApplycouponsLayoutListBinding
+    class ViewHolder(
+        val binding: ApplycouponsLayoutListBinding,
     ) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,21 +25,11 @@ class CouponAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val coupon = coupons[position]
         with(holder.binding) {
-            // Set text fields from static data
             offTv.text = coupon.code
             minPurchaseTv.text = coupon.title
-
-            /*val applyButton = root.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(
-                R.id.apply_button_layout
-            )
-
-            applyButton.setOnClickListener {
-
-            }*/
-
         }
-        holder.binding.applyText.setOnClickListener {
 
+        holder.binding.applyText.setOnClickListener {
             onApplyCouponsChangeListener.onApplyCouponsChanged(coupon.code)
         }
     }
@@ -50,7 +38,6 @@ class CouponAdapter(
         return coupons.size
     }
 
-    // Update the adapter with new coupons
     fun updateCoupons(newCoupons: List<Coupon>) {
         coupons.clear()
         coupons.addAll(newCoupons)
@@ -59,7 +46,5 @@ class CouponAdapter(
 
     interface OnApplyCouponsChangeListener {
         fun onApplyCouponsChanged(coupons: String)
-
     }
-
 }

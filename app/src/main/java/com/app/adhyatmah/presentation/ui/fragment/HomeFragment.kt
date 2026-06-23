@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -55,7 +54,6 @@ import com.app.adhyatmah.presentation.ui.bottom_sheet.SignUpRequiredBottomSheetF
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.HomePanditJiAdapter
 import com.app.adhyatmah.presentation.ui.viewmodel.HomeViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
-import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.app.adhyatmah.utils.hide
@@ -195,9 +193,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onResume() {
         super.onResume()
         setObserver()
-        if (UserPreference.savedAddress.isEmpty()){
+        if (UserPreference.savedAddress.isEmpty()) {
             fetchAddress()
-        }else{
+        } else {
             binding.tvLocation.text = UserPreference.savedAddress
         }
         homeViewModel.homeCollectionApi(token)
@@ -220,7 +218,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             if (data.isEmpty()) {
                                 checkLocationPermission()
                             } else {
-                                val location = validAddresses[0].city + ", " + validAddresses[0].province + ", " + validAddresses[0].country + " - " + validAddresses[0].zip
+                                val location =
+                                    validAddresses[0].city + ", " + validAddresses[0].province + ", " + validAddresses[0].country + " - " + validAddresses[0].zip
                                 UserPreference.savedAddress = location
                                 binding.tvLocation.text = location
                                 Preferences.setStringPreference(
@@ -256,41 +255,45 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 Status.SUCCESS -> {
                     ProcessDialog.dismissDialog(true)
                     val code = res.data?.code
-                    if (code == 200) {
-                        val list = res.data.payload?.collections ?: emptyList()
-                        trendingSectionList.clear()
-                        trendingSectionList.addAll(list)
-                        trendingSectionAdapter =
-                            TrendingSectionAdapter(trendingSectionList) { pos ->
-                                val trendingSection = trendingSectionList[pos]
-                                val handle = trendingSection.handle
-                                val title = trendingSection.title
-                                val bundle = Bundle()
-                                bundle.putString(TYPE, "2")
-                                bundle.putString(MENU_TITLE, handle)
-                                bundle.putString("TITLE", title)
+                    when (code) {
+                        200 -> {
+                            val list = res.data.payload?.collections ?: emptyList()
+                            trendingSectionList.clear()
+                            trendingSectionList.addAll(list)
+                            trendingSectionAdapter =
+                                TrendingSectionAdapter(trendingSectionList) { pos ->
+                                    val trendingSection = trendingSectionList[pos]
+                                    val handle = trendingSection.handle
+                                    val title = trendingSection.title
+                                    val bundle = Bundle()
+                                    bundle.putString(TYPE, "2")
+                                    bundle.putString(MENU_TITLE, handle)
+                                    bundle.putString("TITLE", title)
 
-                                if (handle.isNullOrEmpty()) {
-                                    binding.drawerLayout.closeDrawer(GravityCompat.START)
-                                } else {
-                                    findNavController().navigate(
-                                        R.id.action_homeFragment_to_productListFragment,
-                                        bundle
-                                    )
+                                    if (handle.isNullOrEmpty()) {
+                                        binding.drawerLayout.closeDrawer(GravityCompat.START)
+                                    } else {
+                                        findNavController().navigate(
+                                            R.id.action_homeFragment_to_productListFragment,
+                                            bundle
+                                        )
+                                    }
                                 }
-                            }
-                        binding.rvTrendingSections.adapter = trendingSectionAdapter
-                    } else if (code == 401) {
-                        ProcessDialog.dismissDialog(true)
-                        Toast.makeText(
-                            requireActivity(),
-                            res.data.message ?: "Unauthorized",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.e("TAG", "Unauthorized access $res")
-                    } else {
-                        // handle other codes gracefully
-                        ProcessDialog.dismissDialog(true)
+                            binding.rvTrendingSections.adapter = trendingSectionAdapter
+                        }
+                        401 -> {
+                            ProcessDialog.dismissDialog(true)
+                            Toast.makeText(
+                                requireActivity(),
+                                res.data.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.e("TAG", "Unauthorized access $res")
+                        }
+                        else -> {
+                            // handle other codes gracefully
+                            ProcessDialog.dismissDialog(true)
+                        }
                     }
                 }
 
@@ -312,58 +315,62 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 Status.SUCCESS -> {
                     ProcessDialog.dismissDialog(true)
                     val code = res.data?.code
-                    if (code == 200) {
-                        val vendors = res.data.payload.vendors
-                        panditJiList.clear()
-                        panditJiList.addAll(vendors)
-                        panditJiAdapter = HomePanditJiAdapter(panditJiList) { pos ->
-                            if (Preferences.getStringPreference(
-                                    requireContext(),
-                                    IS_LOGIN
-                                ) == "1"
-                            ) {
-                                val panditJi = panditJiList[pos]
-                                UserPreference.panditJiDetails = PanditJiDetails(
-                                    id = panditJi.id,
-                                    image = panditJi.image?.url ?: "",
-                                    firstName = panditJi.firstName ?: "",
-                                    lastName = panditJi.lastName ?: "",
-                                    city = panditJi.city ?: "",
-                                    experience = panditJi.experience ?: "",
-                                    about = panditJi.about ?: "",
-                                    seoContent = panditJi.seoContent,
-                                    gotra = panditJi.gotra ?: "",
-                                    verified = panditJi.verified ?: false,
-                                    trusted = panditJi.trusted ?: false,
-                                    address = panditJi.address ?: "",
-                                    panditLanguage = panditJi.language
-                                )
+                    when (code) {
+                        200 -> {
+                            val vendors = res.data.payload.vendors
+                            panditJiList.clear()
+                            panditJiList.addAll(vendors)
+                            panditJiAdapter = HomePanditJiAdapter(panditJiList) { pos ->
+                                if (Preferences.getStringPreference(
+                                        requireContext(),
+                                        IS_LOGIN
+                                    ) == "1"
+                                ) {
+                                    val panditJi = panditJiList[pos]
+                                    UserPreference.panditJiDetails = PanditJiDetails(
+                                        id = panditJi.id,
+                                        image = panditJi.image?.url ?: "",
+                                        firstName = panditJi.firstName ?: "",
+                                        lastName = panditJi.lastName ?: "",
+                                        city = panditJi.city ?: "",
+                                        experience = panditJi.experience ?: "",
+                                        about = panditJi.about ?: "",
+                                        seoContent = panditJi.seoContent,
+                                        gotra = panditJi.gotra ?: "",
+                                        verified = panditJi.verified ?: false,
+                                        trusted = panditJi.trusted ?: false,
+                                        address = panditJi.address ?: "",
+                                        panditLanguage = panditJi.language
+                                    )
 
-                                if ((panditJi.services?.size ?: 0) > 0) {
-                                    findNavController().navigate(R.id.bookingDetailsFragment)
+                                    if ((panditJi.services?.size ?: 0) > 0) {
+                                        findNavController().navigate(R.id.bookingDetailsFragment)
+                                    } else {
+                                        Toast.makeText(
+                                            requireActivity(),
+                                            getString(R.string.no_service_available),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 } else {
-                                    Toast.makeText(
-                                        requireActivity(),
-                                        getString(R.string.no_service_available),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    signupRequired(getString(R.string.please_sign_up_required_to_see_wishlist))
                                 }
-                            } else {
-                                signupRequired(getString(R.string.please_sign_up_required_to_see_wishlist))
                             }
+                            binding.rvPanditJi.adapter = panditJiAdapter
                         }
-                        binding.rvPanditJi.adapter = panditJiAdapter
-                    } else if (code == 401) {
-                        ProcessDialog.dismissDialog(true)
-                        Toast.makeText(
-                            requireActivity(),
-                            res.data.message ?: "Unauthorized",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.e("TAG", "Unauthorized access $res")
-                    } else {
-                        // handle other codes gracefully
-                        ProcessDialog.dismissDialog(true)
+                        401 -> {
+                            ProcessDialog.dismissDialog(true)
+                            Toast.makeText(
+                                requireActivity(),
+                                res.data.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.e("TAG", "Unauthorized access $res")
+                        }
+                        else -> {
+                            // handle other codes gracefully
+                            ProcessDialog.dismissDialog(true)
+                        }
                     }
                 }
 
@@ -386,84 +393,89 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 Status.SUCCESS -> {
                     ProcessDialog.dismissDialog(true)
                     val code = res.data?.code
-                    if (code == 200) {
-                        val payload = res.data.payload
-                        payload?.services?.let { list ->
-                            popularPoojaList.clear()
-                            popularPoojaList.addAll(list)
-                            popularPujasAdapter =
-                                PopularPujasAdapter(popularPoojaList) { selectedPuja ->
-                                    (requireActivity() as? MainActivity)?.panditJiFromPopularPuja = false
-                                    (requireActivity() as? MainActivity)?.switchToPanditJiTab(
-                                        "Service",
-                                        selectedPuja.name ?: ""
-                                    )
+                    when (code) {
+                        200 -> {
+                            val payload = res.data.payload
+                            payload?.services?.let { list ->
+                                popularPoojaList.clear()
+                                popularPoojaList.addAll(list)
+                                popularPujasAdapter =
+                                    PopularPujasAdapter(popularPoojaList) { selectedPuja ->
+                                        (requireActivity() as? MainActivity)?.panditJiFromPopularPuja =
+                                            false
+                                        (requireActivity() as? MainActivity)?.switchToPanditJiTab(
+                                            "Service",
+                                            selectedPuja.name ?: ""
+                                        )
+                                    }
+                                binding.rvPopularPujas.adapter = popularPujasAdapter
+                            }
+
+                            payload?.longBanner?.let { longBanner ->
+                                longBanner.url?.let { url ->
+                                    Glide.with(requireContext())
+                                        .load(url)
+                                        .placeholder(R.drawable.pamdit_ji)
+                                        .error(R.drawable.pamdit_ji)
+                                        .into(binding.ivLongBanner)
                                 }
-                            binding.rvPopularPujas.adapter = popularPujasAdapter
-                        }
-
-                        payload?.longBanner?.let { longBanner ->
-                            longBanner.url?.let { url ->
-                                Glide.with(requireContext())
-                                    .load(url)
-                                    .placeholder(R.drawable.pamdit_ji)
-                                    .error(R.drawable.pamdit_ji)
-                                    .into(binding.ivLongBanner)
+                                binding.tvTitle.text = longBanner.title ?: ""
+                                binding.tvSubTitle.text = longBanner.subtitle ?: ""
                             }
-                            binding.tvTitle.text = longBanner.title ?: ""
-                            binding.tvSubTitle.text = longBanner.subtitle ?: ""
-                        }
 
-                        payload?.whyChooseUs?.let { list ->
-                            whyChooseUsList.clear()
-                            whyChooseUsList.addAll(list)
-                            whyChooseUsAdapter = WhyChooseUsAdapter(whyChooseUsList) {
+                            payload?.whyChooseUs?.let { list ->
+                                whyChooseUsList.clear()
+                                whyChooseUsList.addAll(list)
+                                whyChooseUsAdapter = WhyChooseUsAdapter(whyChooseUsList) {
+                                }
+                                binding.rvWhyChooseUs.adapter = whyChooseUsAdapter
                             }
-                            binding.rvWhyChooseUs.adapter = whyChooseUsAdapter
-                        }
 
-                        payload?.testimonialsData?.let { testimonialsData ->
-                            val totalRateReview =
-                                "${testimonialsData.rating} (${testimonialsData.totalReviews} reviews)"
-                            binding.tvRatingReview.text = totalRateReview
+                            payload?.testimonialsData?.let { testimonialsData ->
+                                val totalRateReview =
+                                    "${testimonialsData.rating} (${testimonialsData.totalReviews} reviews)"
+                                binding.tvRatingReview.text = totalRateReview
 
-                            testimonialsData.testimonials?.let { list ->
-                                rateReviewList.clear()
-                                rateReviewList.addAll(list)
+                                testimonialsData.testimonials?.let { list ->
+                                    rateReviewList.clear()
+                                    rateReviewList.addAll(list)
 
-                                ratingReviewAdapter = RatingReviewAdapter(rateReviewList)
-                                binding.viewPagerRatingReview.adapter = ratingReviewAdapter
-                                binding.indicatorRatingReview.setIndicators(rateReviewList.size)
+                                    ratingReviewAdapter = RatingReviewAdapter(rateReviewList)
+                                    binding.viewPagerRatingReview.adapter = ratingReviewAdapter
+                                    binding.indicatorRatingReview.setIndicators(rateReviewList.size)
 
-                                binding.viewPagerRatingReview.addOnPageChangeListener(object :
-                                    OnPageChangeListener {
-                                    override fun onPageScrolled(
-                                        position: Int,
-                                        positionOffset: Float,
-                                        positionOffsetPixels: Int,
-                                    ) {
-                                        binding.indicatorRatingReview.setCurrentPosition(position)
-                                    }
+                                    binding.viewPagerRatingReview.addOnPageChangeListener(object :
+                                        OnPageChangeListener {
+                                        override fun onPageScrolled(
+                                            position: Int,
+                                            positionOffset: Float,
+                                            positionOffsetPixels: Int,
+                                        ) {
+                                            binding.indicatorRatingReview.setCurrentPosition(position)
+                                        }
 
-                                    override fun onPageSelected(p0: Int) {
-                                    }
+                                        override fun onPageSelected(p0: Int) {
+                                        }
 
-                                    override fun onPageScrollStateChanged(state: Int) {
-                                    }
-                                })
+                                        override fun onPageScrollStateChanged(state: Int) {
+                                        }
+                                    })
+                                }
                             }
                         }
-                    } else if (code == 401) {
-                        ProcessDialog.dismissDialog(true)
-                        Toast.makeText(
-                            requireActivity(),
-                            res.data.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.e("TAG", "Unauthorized access $res")
-                    } else {
-                        // handle other codes gracefully
-                        ProcessDialog.dismissDialog(true)
+                        401 -> {
+                            ProcessDialog.dismissDialog(true)
+                            Toast.makeText(
+                                requireActivity(),
+                                res.data.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.e("TAG", "Unauthorized access $res")
+                        }
+                        else -> {
+                            // handle other codes gracefully
+                            ProcessDialog.dismissDialog(true)
+                        }
                     }
                 }
 
@@ -471,7 +483,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     ProcessDialog.dismissDialog(true)
                     Snackbar.make(
                         requireView(),
-                        res.message ?:getString(R.string.something_went_wrong),
+                        res.message ?: getString(R.string.something_went_wrong),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -583,7 +595,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT)
+                                .show()
                             homeViewModel.homeCollectionApi(token)
                         }
 
@@ -718,12 +731,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     R.id.action_homeFragment_to_productDetailsFragment,
                     bundle
                 )
+            },
+            singUpOpen = {
+                signupRequired(getString(R.string.please_sign_up_required_to_see_wishlist))
             }
         )
         binding.rvFeaturedProducts.adapter = productsAdapter
     }
 
-    private fun signupRequired(message:String) {
+    private fun signupRequired(message: String) {
         val bottomSheet =
             SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
@@ -757,8 +773,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         if (isGranted) {
             getCurrentLocation()
         } else {
-            Toast.makeText(requireContext(),
-                getString(R.string.location_permission_denied), Toast.LENGTH_SHORT)
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.location_permission_denied), Toast.LENGTH_SHORT
+            )
                 .show()
             if (!isLocationPermissionGranted()) {
                 openAppSettings()

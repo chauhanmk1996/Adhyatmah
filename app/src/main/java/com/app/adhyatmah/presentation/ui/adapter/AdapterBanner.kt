@@ -9,6 +9,7 @@ import com.app.adhyatmah.domain.model.home_banner_response.SubBanner
 
 class AdapterBanner(var data: List<SubBanner>, private val onSelected: (Int) -> Unit) :
     RecyclerView.Adapter<AdapterBanner.ViewPagger>() {
+        
     class ViewPagger(var binding: HomeBannerRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root)
 

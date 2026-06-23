@@ -7,32 +7,29 @@ import com.bumptech.glide.Glide
 import com.app.adhyatmah.databinding.ViewPagerBinding
 import com.app.adhyatmah.domain.model.product_detail_response.Image
 
-
-class ViewPagerProductDetailAdapter (
+class ViewPagerProductDetailAdapter(
     var viewPagerList: List<Image>,
 ) : RecyclerView.Adapter<ViewPagerProductDetailAdapter.ViewModel>() {
-    inner class ViewModel(var binding: ViewPagerBinding): RecyclerView.ViewHolder(binding.root) {
 
+    class ViewModel(var binding: ViewPagerBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewModel {
+        val binding = ViewPagerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewModel(binding)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerProductDetailAdapter.ViewModel {
-        var binding = ViewPagerBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return  ViewModel(binding)
-    }
+    override fun onBindViewHolder(holder: ViewModel, position: Int) {
+        val list = viewPagerList[position]
 
-    override fun onBindViewHolder(holder: ViewPagerProductDetailAdapter.ViewModel, position: Int) {
-        var list = viewPagerList[position]
-//        var ll = vViewPage[position]
-        // holder.binding.name.text = list.name
         Glide.with(holder.itemView.context)
             .load(list.url)
             .into(holder.binding.onboardingImage)
-
-
     }
 
     override fun getItemCount(): Int {
-        return viewPagerList.size /*agentList.size
-    */}
-
+        return viewPagerList.size
+    }
 }

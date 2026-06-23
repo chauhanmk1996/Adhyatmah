@@ -1,41 +1,38 @@
 package com.app.adhyatmah.presentation.ui.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adhyatmah.R
 import com.app.adhyatmah.databinding.ProductDetailColorRecyclerBinding
 
-class ProductDetailColorAdapter(var colorSize: MutableList<String>) :RecyclerView.Adapter<ProductDetailColorAdapter.Viewholder>() {
+class ProductDetailColorAdapter(var colorSize: MutableList<String>) :
+    RecyclerView.Adapter<ProductDetailColorAdapter.ViewHolder>() {
 
     private var enabledSet: Set<String> = emptySet()
     private var selectedPosition = 0
     var onItemClick: ((String) -> Unit)? = null
 
-
-    inner class Viewholder(var binding: ProductDetailColorRecyclerBinding):RecyclerView.ViewHolder(binding.root)
-
-
+    class ViewHolder(var binding: ProductDetailColorRecyclerBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     fun updateColorList(newList: List<String>, distinct: List<String>) {
         colorSize.clear()
         colorSize.addAll(newList)
-//        selectedPosition = 0
         enabledSet = distinct.toSet()
         notifyDataSetChanged()
     }
 
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ProductDetailColorAdapter.Viewholder {
-        val binding = ProductDetailColorRecyclerBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return  Viewholder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ProductDetailColorRecyclerBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ProductDetailColorAdapter.Viewholder, @SuppressLint("RecyclerView") position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val list = colorSize[position]
         holder.binding.text.text = list
 
@@ -49,26 +46,21 @@ class ProductDetailColorAdapter(var colorSize: MutableList<String>) :RecyclerVie
             holder.binding.text.setBackgroundResource(R.drawable.rectangle_default_bg)
         }
 
-
-
-
-        if(selectedPosition==position && isEnabled){
+        if (selectedPosition == position && isEnabled) {
             holder.binding.text.setBackgroundResource(R.drawable.rectangle_000000_radius_12)
             holder.binding.text.setTextColor(holder.itemView.context.getColor(R.color.white))
 
-        }else{
+        } else {
             holder.binding.text.setTextColor(holder.itemView.context.getColor(R.color.grey_7C7C7C))
-            holder.binding.text.setBackgroundResource(R.drawable.rectangle_default_bg) // with your actual default drawable
-
+            holder.binding.text.setBackgroundResource(R.drawable.rectangle_default_bg)
         }
 
         holder.binding.text.setOnClickListener {
-            var previsousClick = selectedPosition
+            val previousClick = selectedPosition
             selectedPosition = position
-            notifyItemChanged(previsousClick)
+            notifyItemChanged(previousClick)
             notifyItemChanged(selectedPosition)
             onItemClick?.invoke(list)
-
         }
     }
 

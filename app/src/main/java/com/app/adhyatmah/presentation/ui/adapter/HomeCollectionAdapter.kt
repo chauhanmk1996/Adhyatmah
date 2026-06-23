@@ -11,6 +11,7 @@ class HomeCollectionAdapter(
     private val onViewAllClick: (Int) -> Unit,
     private val onWishlistClick: (collectionIndex: Int, productIndex: Int, isLiked: Boolean) -> Unit,
     private val onSubAdapterClick: (collectionIndex: Int, productIndex: Int, isLiked: Boolean) -> Unit,
+    private val singUpOpen: () -> Unit,
 ) : BaseRecyclerAdapter<ListItemHomeCollectionBinding>() {
 
     override fun getLayoutId(): Int = R.layout.list_item_home_collection
@@ -25,7 +26,7 @@ class HomeCollectionAdapter(
 
             tvCollectionName.text = collection.title ?: ""
             tvCollectionDesc.text = if (collection.description.isNullOrBlank()) {
-                "We have your occasion covered"
+                binding.root.context.getString(R.string.we_have_your_occasion_covered)
             } else {
                 collection.description
             }
@@ -38,9 +39,10 @@ class HomeCollectionAdapter(
                 val homeProductsAdapter = HomeProductsAdapter(
                     list,
                     onViewAllClick1,
+                    position,
                     onWishlistClick,
                     onSubAdapterClick,
-                    position
+                    singUpOpen
                 )
                 rvProduct.adapter = homeProductsAdapter
             }

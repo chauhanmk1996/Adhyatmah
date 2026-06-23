@@ -16,7 +16,7 @@ android {
     }
     defaultConfig {
         applicationId = "com.app.adhyatmah"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 18
         versionName = "1.18"

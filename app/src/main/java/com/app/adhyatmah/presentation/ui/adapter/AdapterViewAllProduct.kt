@@ -1,6 +1,5 @@
 package com.app.adhyatmah.presentation.ui.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.app.adhyatmah.R
 import com.app.adhyatmah.databinding.ListItemProductGridBinding
 import com.app.adhyatmah.domain.model.view_all_product.response.Product
+import com.app.adhyatmah.utils.common_utils.CommonUtils
 
 class AdapterViewAllProduct(
     var subList: List<Product>,
@@ -16,11 +16,12 @@ class AdapterViewAllProduct(
     var onWishlistClick: (Int, Boolean) -> Unit,
     var onSubAdapterClick: (Int, Boolean, Product) -> Any,
 ) : RecyclerView.Adapter<AdapterViewAllProduct.ViewPager>() {
+
     class ViewPager(
         var binding: ListItemProductGridBinding,
     ) : RecyclerView.ViewHolder(binding.root)
 
-    private var selectedItems = subList.map { it.wishlist == true }.toMutableList()
+    private var selectedItems = subList.map { it.wishlist }.toMutableList()
 
     fun getItemAt(position: Int): Product {
         return subList[position]
@@ -28,7 +29,7 @@ class AdapterViewAllProduct(
 
     fun updateData(newList: List<Product>) {
         subList = newList
-        selectedItems = subList.map { it.wishlist == true }.toMutableList()
+        selectedItems = subList.map { it.wishlist }.toMutableList()
         notifyDataSetChanged()
     }
 
@@ -43,22 +44,14 @@ class AdapterViewAllProduct(
 
         if (layoutParams != null) {
             if (showImage) {
-                // Grid size
-                com.app.adhyatmah.utils.common_utils.CommonUtils
                 layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-                layoutParams.height =
-                    com.app.adhyatmah.utils.common_utils.CommonUtils.dpToPx(parent.context, 200)
-
+                layoutParams.height = CommonUtils.dpToPx(parent.context, 200)
             } else {
-                // Horizontal list size
-                layoutParams.width =
-                    com.app.adhyatmah.utils.common_utils.CommonUtils.dpToPx(parent.context, 115)
-                layoutParams.height =
-                    com.app.adhyatmah.utils.common_utils.CommonUtils.dpToPx(parent.context, 140)
+                layoutParams.width = CommonUtils.dpToPx(parent.context, 115)
+                layoutParams.height = CommonUtils.dpToPx(parent.context, 140)
             }
             binding.root.layoutParams = layoutParams
         }
-
         return ViewPager(binding)
     }
 
@@ -66,7 +59,6 @@ class AdapterViewAllProduct(
         return subList.size
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewPager, position: Int) {
         val subListData = subList[position].featuredImage
         val product = subList[position]
@@ -79,9 +71,9 @@ class AdapterViewAllProduct(
             .load(subListData.url)
             .into(holder.binding.img)
         holder.binding.label.text = price.title
-        holder.binding.featuredProducts.text =
+        val featuredProducts =
             price.variants[0].price.currencyCode + " " + price.variants[0].price.amount
-
+        holder.binding.featuredProducts.text = featuredProducts
 
         holder.binding.wishList.setImageResource(
             if (isSelected) R.drawable.like else R.drawable.un_like

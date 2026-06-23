@@ -6,7 +6,9 @@ import com.app.adhyatmah.databinding.ListItemTrendingSectionBinding
 import com.app.adhyatmah.domain.model.TrendingSection
 import com.bumptech.glide.Glide
 
-class TrendingSectionAdapter(private var trendingSectionList: ArrayList<TrendingSection>,private val onSelected: (Int) -> Unit,
+class TrendingSectionAdapter(
+    private var trendingSectionList: ArrayList<TrendingSection>,
+    private val onSelected: (Int) -> Unit,
 ) : BaseRecyclerAdapter<ListItemTrendingSectionBinding>() {
 
     override fun getLayoutId(): Int = R.layout.list_item_trending_section
@@ -21,7 +23,7 @@ class TrendingSectionAdapter(private var trendingSectionList: ArrayList<Trending
             val trendingSection = trendingSectionList[position]
 
             tvName.text = trendingSection.title ?: ""
-            trendingSection.image?.url?.let { url->
+            trendingSection.image?.url?.let { url ->
                 Glide.with(context).load(url).into(binding.ivPic)
             }
 
