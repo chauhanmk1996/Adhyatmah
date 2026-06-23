@@ -21,98 +21,61 @@ import kotlin.getValue
 class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
 
     private val authViewModel: AuthViewModel by viewModels()
-    private var getLandingPageList: MutableList<GetLandingPageResponse> = mutableListOf()
-
-
     private lateinit var adapter: OnboardingAdapter
     private var currentPage = 0
-
 
     override fun getLayoutId(): Int {
         return R.layout.activity_on_boarding
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-
         window.statusBarColor = Color.TRANSPARENT
-
         authViewModel.getLandingPagesData()
         setObserver()
-
-
     }
-    fun setAdapter(landingPage : List<GetLandingPageResponse.LandingPage>){
-/*
-        val onboardingItems = listOf(
-            OnboardingItem(R.mipmap.onboarding, "Fashion that speaks for itself", "Fashion that speaks for itself"),
-            OnboardingItem(R.mipmap.onboarding, "Stay Organized", "Manage your time efficiently."),
-            OnboardingItem(R.mipmap.onboarding, "Get Started", "Let's go!")
-        )
-*/
-        adapter= OnboardingAdapter(landingPage)
+
+    fun setAdapter(landingPage: List<GetLandingPageResponse.LandingPage>) {
+        adapter = OnboardingAdapter(landingPage)
         binding.onboardingViewPager.adapter = adapter
         binding.onboardingViewPager.offscreenPageLimit = 1
         binding.onboardingViewPager.clipToPadding = false
         binding.onboardingViewPager.clipChildren = false
-
         binding.onboardingViewPager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-
-
-//      adapter = OnboardingAdapter(getLandingPageList)
         binding.onboardingViewPager.adapter = adapter
-
         binding.dotsIndicator.setViewPager2(binding.onboardingViewPager)
 
-        binding.onboardingViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.onboardingViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 currentPage = position
 
             }
         })
 
-
         binding.btnNext.setOnClickListener {
             val totalPages = adapter.itemCount
             if (currentPage < totalPages - 1) {
                 binding.onboardingViewPager.currentItem = currentPage + 1
             } else {
-                // Finish onboarding
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
         }
-
-
-
-/*
-        binding.btnNext.setOnClickListener {
-            if (currentPage < getLandingPageList.size - 1) {
-                binding.onboardingViewPager.currentItem = currentPage + 1
-            } else {
-                // Finish onboarding
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
-        }
-*/
     }
 
-    private fun setObserver(){
+    private fun setObserver() {
         authViewModel.getLandingPageData().observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
-
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload
-
                             setAdapter(it.data.payload.landingPages)
-
-
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -127,12 +90,8 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
                 Status.ERROR -> {
                     Log.e("TAG", "Error: ${it.message}")
                     ProcessDialog.dismissDialog(true)
-//                    Snackbar.make(this, "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
     }
-
 }

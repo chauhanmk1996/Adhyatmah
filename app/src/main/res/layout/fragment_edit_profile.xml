@@ -9,8 +9,6 @@
         android:background="@color/black_opacity_10"
         android:fitsSystemWindows="true">
 
-
-        <!-- Scrollable Content Above Button -->
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
@@ -27,7 +25,6 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="100dp">
 
-                <!-- Back Image and Title -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,9 +46,9 @@
                         android:textColor="#272727"
                         android:textSize="20sp"
                         android:textStyle="bold" />
+
                 </RelativeLayout>
 
-                <!-- Profile Image -->
                 <FrameLayout
                     android:id="@+id/main_card_layout"
                     android:layout_width="171dp"
@@ -74,9 +71,9 @@
                         android:layout_gravity="bottom|end"
                         android:layout_margin="8dp"
                         android:background="@drawable/camera_icon" />
+
                 </FrameLayout>
 
-                <!-- First Name -->
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -99,7 +96,6 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp" />
 
-                <!-- Last Name -->
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -122,7 +118,6 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp" />
 
-                <!-- Email -->
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -131,7 +126,6 @@
                     android:text="@string/email"
                     android:textColor="#000000"
                     android:textSize="16sp" />
-
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/email_section_et"
@@ -149,7 +143,6 @@
                     android:paddingEnd="15dp"
                     android:textColor="@color/grey" />
 
-                <!-- Phone Number -->
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -173,6 +166,7 @@
                     android:paddingEnd="15dp" />
 
             </LinearLayout>
+
         </ScrollView>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -186,7 +180,7 @@
             android:text="@string/save_changes"
             android:textColor="@color/white"
             android:textSize="16sp" />
-    </RelativeLayout>
 
+    </RelativeLayout>
 
 </layout>

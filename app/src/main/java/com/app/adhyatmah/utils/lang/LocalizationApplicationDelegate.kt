@@ -14,16 +14,6 @@ class LocalizationApplicationDelegate {
     fun getApplicationContext(applicationContext: Context): Context =
         LocalizationUtility.applyLocalizationContext(applicationContext)
 
-    fun setDefaultLanguage(context: Context, language: String) {
-        val locale = Locale(language)
-        setDefaultLanguage(context, locale)
-    }
-
-    fun setDefaultLanguage(context: Context, language: String, country: String) {
-        val locale = Locale(language, country)
-        setDefaultLanguage(context, locale)
-    }
-
     fun setDefaultLanguage(context: Context, locale: Locale) {
         LanguageSetting.setDefaultLanguage(context, locale)
     }

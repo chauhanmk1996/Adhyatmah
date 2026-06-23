@@ -151,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
                         android:fontFamily="@font/inter_thin"
-                        android:hint="Search Pooja, Samagri, Pandit"
+                        android:hint="@string/search_pooja_samagri_pandit"
                         android:textColor="#000000"
                         android:textSize="13dp"
                         app:layout_constraintBottom_toBottomOf="parent"

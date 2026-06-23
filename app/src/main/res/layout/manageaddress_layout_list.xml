@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-    </data>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,106 +12,107 @@
             android:layout_width="match_parent"
             android:layout_height="168dp"
             android:layout_marginTop="24dp"
+            android:background="@drawable/rectangle_white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/rectangle_white">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sarang"
-                android:textSize="15dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/muktamahee_semibold"
                 android:textColor="@color/black_272727"
+                android:textSize="15dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp"
-                android:fontFamily="@font/muktamahee_semibold"/>
+                tools:text="Sarang" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/address_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="House Number 65, Model Town,\nJalandhar, 144003\n+91 8423675412"
-                android:textSize="15dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/jost"
                 android:textColor="@color/black_272727"
+                android:textSize="15dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/name_tv"
-                android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp"
-                android:fontFamily="@font/jost"/>
+                tools:text="House Number 65, Model Town,\nJalandhar, 144003\n+91 8423675412" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/pink_tick_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address_tv"
-                android:src="@drawable/tick_pink"
-                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="16dp"
-                android:visibility="gone"/>
+                android:layout_marginTop="16dp"
+                android:src="@drawable/tick_pink"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/address_tv" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/default_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Default"
-                android:textSize="14dp"
-                android:fontFamily="@font/jost"
-                app:layout_constraintStart_toEndOf="@id/pink_tick_btn"
-                app:layout_constraintTop_toBottomOf="@id/address_tv"
-                android:layout_marginTop="18dp"
                 android:layout_marginHorizontal="8dp"
-                android:visibility="gone"/>
+                android:layout_marginTop="18dp"
+                android:fontFamily="@font/jost"
+                android:text="@string/default_text"
+                android:textSize="14dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/pink_tick_btn"
+                app:layout_constraintTop_toBottomOf="@id/address_tv" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/grey_tick_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address_tv"
-                android:src="@drawable/tick_default"
-                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="16dp"
-                android:visibility="visible"/>
+                android:layout_marginTop="16dp"
+                android:src="@drawable/tick_default"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/address_tv" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/set_default_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set as Default"
-                android:textSize="14dp"
-                android:textColor="@color/black_272727"
-                android:fontFamily="@font/jost"
-                app:layout_constraintStart_toEndOf="@id/grey_tick_btn"
-                app:layout_constraintTop_toBottomOf="@id/address_tv"
-                android:layout_marginTop="18dp"
                 android:layout_marginHorizontal="8dp"
-                android:visibility="visible"/>
+                android:layout_marginTop="18dp"
+                android:fontFamily="@font/jost"
+                android:text="@string/set_as_default"
+                android:textColor="@color/black_272727"
+                android:textSize="14dp"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@id/grey_tick_btn"
+                app:layout_constraintTop_toBottomOf="@id/address_tv" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/delete_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address_tv"
-                android:src="@drawable/delete_btn"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp"/>
+                android:src="@drawable/delete_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/address_tv" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/edit_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/delete_btn"
-                app:layout_constraintTop_toBottomOf="@id/address_tv"
-                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="16dp"
-                android:src="@drawable/edit_btn"/>
+                android:layout_marginTop="16dp"
+                android:src="@drawable/edit_btn"
+                app:layout_constraintEnd_toStartOf="@id/delete_btn"
+                app:layout_constraintTop_toBottomOf="@id/address_tv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

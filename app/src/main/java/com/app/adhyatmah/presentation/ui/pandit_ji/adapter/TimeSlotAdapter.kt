@@ -19,7 +19,6 @@ class TimeSlotAdapter(
     private var timeSlotsList = listOf<String>()
     private var selectedDate: String? = null
 
-
     override fun bind(binding: ListItemTimeSlotBinding, position: Int) {
         val isSelected = position == selectedPosition
         val time = timeSlotsList[position]
@@ -34,7 +33,6 @@ class TimeSlotAdapter(
             )
         )
 
-        // Text color for selected/unselected
         binding.tvTime.setTextColor(
             ContextCompat.getColor(
                 binding.root.context,
@@ -42,7 +40,6 @@ class TimeSlotAdapter(
             )
         )
 
-        // ✅ Dim past slots
         binding.cvTime.alpha = if (isPast) 0.4f else 1.0f
         binding.root.isEnabled = !isPast
 
@@ -58,20 +55,16 @@ class TimeSlotAdapter(
     private fun isPastSlot(slotTime: String): Boolean {
         if (selectedDate == null) return false
 
-        // Check if selected date is today
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val todayStr = formatter.format(Date())
 
         if (selectedDate != todayStr) return false
 
-        // Parse slot time (e.g., "9:30 AM")
         return try {
             val slotFormatter = SimpleDateFormat("h:mm a", Locale.getDefault())
             val slotDate = slotFormatter.parse(slotTime)
-
             val calNow = Calendar.getInstance()
             val nowDate = slotFormatter.parse(slotFormatter.format(calNow.time))
-
             slotDate?.before(nowDate) == true
         } catch (e: Exception) {
             false
@@ -89,4 +82,3 @@ class TimeSlotAdapter(
         return timeSlotsList.size
     }
 }
-

@@ -40,7 +40,7 @@ class SelectLanguageFragment : BaseFragment<FragmentSelectLanguageBinding>() {
             if (UserPreference.panditjiBookingRequest.selectedLanguage?.isEmpty() == true) {
                 Toast.makeText(
                     requireContext(),
-                    "Please select at least one language",
+                    getString(R.string.please_select_at_least_one_language),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -48,30 +48,4 @@ class SelectLanguageFragment : BaseFragment<FragmentSelectLanguageBinding>() {
             }
         }
     }
-
-    /*private fun setObserver() {
-        viewmodel.getLanguagesLiveData().observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                Status.LOADING -> ProcessDialog.showDialog(requireActivity(), true)
-
-                Status.SUCCESS -> {
-                    ProcessDialog.dismissDialog(true)
-                    val apiList = res.data?.payload?.languages ?: emptyList()
-                    val finalList = apiList.ifEmpty { listOf("Hindi") }
-
-                    languageAdapter = LanguageAdapter(finalList, selectedLanguages)
-                    binding.rvLanguage.adapter = languageAdapter
-                }
-
-                Status.ERROR -> {
-                    ProcessDialog.dismissDialog(true)
-                    Snackbar.make(
-                        requireView(),
-                        res.message ?: "Something went wrong",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-    }*/
 }

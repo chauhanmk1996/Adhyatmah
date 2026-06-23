@@ -1,12 +1,12 @@
 package com.app.adhyatmah.utils.lang
 
 import android.content.Context
-import androidx.annotation.VisibleForTesting
 import androidx.preference.PreferenceManager
 import java.util.*
 import kotlin.let
 import kotlin.run
 import kotlin.text.split
+import androidx.core.content.edit
 
 object LanguageSetting {
 
@@ -52,41 +52,25 @@ object LanguageSetting {
         }
 
     fun getLanguageWithDefault(context: Context, default: Locale): Locale {
-        return getLanguage(context)?.let { locale ->
-            locale
-        } ?: run {
+        return getLanguage(context) ?: run {
             setLanguage(context, default)
             default
         }
     }
 
-
     private fun setPreference(context: Context, key: String, value: String) {
         val sharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context /* Activity context */)
-        sharedPreferences.edit().putString(key, value)
-            .apply()
-        /*context.getSharedPreferences(PREFERENCE_LANGUAGE, Context.MODE_PRIVATE)
-            .edit()
-            .putString(key, value)
-            .apply()*/
+        sharedPreferences.edit {
+            putString(key, value)
+        }
     }
 
     private fun getPreference(context: Context, key: String, default: String? = null): String? {
-        /*   context.getSharedPreferences(PREFERENCE_LANGUAGE, Context.MODE_PRIVATE)
-               .getString(key, default)*/
         val sharedPreferences =
-            PreferenceManager.getDefaultSharedPreferences(context /* Activity context */)
+            PreferenceManager.getDefaultSharedPreferences(context)
         val str = sharedPreferences!!.getString(KEY_CURRENT_LANGUAGE, "en")
         println(str)
         return str
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun clear(context: Context) {
-        /* context.getSharedPreferences(PREFERENCE_LANGUAGE, Context.MODE_PRIVATE)
-             .edit()
-             .clear()
-             .apply()*/
     }
 }

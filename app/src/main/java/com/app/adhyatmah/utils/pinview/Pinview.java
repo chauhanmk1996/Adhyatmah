@@ -37,32 +37,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusChangeListener, View.OnKeyListener {
-    private final float                DENSITY        = getContext().getResources().getDisplayMetrics().density;
+    private final float DENSITY = getContext().getResources().getDisplayMetrics().density;
     /**
      * Attributes
      */
-    private       int                  mPinLength     = 4;
-    private List<EditText> editTextList   = new ArrayList<>();
-    private       int                  mPinWidth      = 40;
-    private       int                  mTextSize      = 24;
-    private       int                  mPinHeight     = 40;
-    private       int                  mSplitWidth    = 20;
-    private       boolean              mCursorVisible = false;
-    private       boolean              mDelPressed    = false;
+    private int mPinLength = 4;
+    private List<EditText> editTextList = new ArrayList<>();
+    private int mPinWidth = 40;
+    private int mTextSize = 24;
+    private int mPinHeight = 40;
+    private int mSplitWidth = 20;
+    private boolean mCursorVisible = false;
+    private boolean mDelPressed = false;
     @DrawableRes
-    private       int                  mPinBackground = R.drawable.pv_invisible_image;
-    private       boolean              mPassword      = false;
-    private       String               mHint          = "";
-    private       InputType            inputType      = InputType.TEXT;
-    private       boolean              finalNumberPin;
+    private int mPinBackground = R.drawable.pv_invisible_image;
+    private boolean mPassword = false;
+    private String mHint = "";
+    private InputType inputType = InputType.TEXT;
+    private boolean finalNumberPin;
 
     {
         finalNumberPin = false;
     }
 
-    private       PinViewEventListener mListener;
-    private       boolean              fromSetValue   = false;
-    private       boolean              mForceKeyboard = false;
+    private PinViewEventListener mListener;
+    private boolean fromSetValue = false;
+    private boolean mForceKeyboard = false;
 
     public enum InputType {
         TEXT, NUMBER
@@ -80,7 +80,7 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
 
     View currentFocus = null;
 
-    InputFilter[]             filters = new InputFilter[1];
+    InputFilter[] filters = new InputFilter[1];
     LayoutParams params;
 
 
@@ -213,7 +213,6 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
             styleEditText.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    // When back space is pressed it goes to delete mode and when u click on an edit Text it should get out of the delete mode
                     mDelPressed = false;
                     return false;
                 }
@@ -264,7 +263,7 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
      * @return the current focused pin view. It can be used to open softkeyboard manually.
      */
     public View requestPinEntryFocus() {
-        int      currentTag      = Math.max(0, getIndexOfCurrentFocus());
+        int currentTag = Math.max(0, getIndexOfCurrentFocus());
         EditText currentEditText = editTextList.get(currentTag);
         if (currentEditText != null) {
             currentEditText.requestFocus();

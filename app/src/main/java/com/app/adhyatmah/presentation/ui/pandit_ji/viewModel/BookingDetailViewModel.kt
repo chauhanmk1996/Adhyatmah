@@ -12,13 +12,15 @@ import com.app.adhyatmah.utils.common_utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class BookingDetailViewModel@Inject constructor(application: Application):AndroidViewModel(application) {
+class BookingDetailViewModel @Inject constructor(application: Application) :
+    AndroidViewModel(application) {
     private val getServicesLiveData = SingleLiveEvent<Resources<GetServicesResponse>>()
     private val getPujaKitResponse = SingleLiveEvent<Resources<GetPujaKitResponse>>()
 
     fun getServices(): LiveData<Resources<GetServicesResponse>> {
         return getServicesLiveData
     }
+
     fun hitGetServices(panditId: String) {
         try {
             getServicesLiveData.postValue(Resources.loading(null))
@@ -30,7 +32,7 @@ class BookingDetailViewModel@Inject constructor(application: Application):Androi
                         )
                     )
                 } catch (ex: Exception) {
-                    getServicesLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
+                    getServicesLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
         } catch (ex: Exception) {
@@ -47,9 +49,20 @@ class BookingDetailViewModel@Inject constructor(application: Application):Androi
             getPujaKitResponse.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-                    getPujaKitResponse.postValue(Resources.success(ApiRepository().getAddOnKitApi(serviceId)))
+                    getPujaKitResponse.postValue(
+                        Resources.success(
+                            ApiRepository().getAddOnKitApi(
+                                serviceId
+                            )
+                        )
+                    )
                 } catch (ex: Exception) {
-                    getPujaKitResponse.postValue(Resources.error(ex.localizedMessage?:""?:"", null))
+                    getPujaKitResponse.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
                 }
             }
         } catch (ex: Exception) {

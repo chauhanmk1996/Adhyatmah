@@ -6,41 +6,41 @@
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/myPropertyMainShimmer"
         android:layout_width="match_parent"
-        android:elevation="10dp"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        android:background="@color/grey">
+        android:background="@color/grey"
+        android:elevation="10dp"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="16sp"
             android:layout_marginTop="12sp"
-            android:layout_height="match_parent"
             android:orientation="vertical">
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/topStyle"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:elevation="9dp"
                 android:layout_gravity="start"
+                android:layout_marginTop="20dp"
+                android:elevation="9dp"
+                android:visibility="visible"
                 app:cardBackgroundColor="@color/black"
                 app:cardCornerRadius="8dp"
-                android:layout_marginTop="20dp"
                 app:cardElevation="0dp"
-                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/idImage1" />
 
-
-               <LinearLayout
+            <LinearLayout
                 android:id="@+id/firstLayout"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:baselineAligned="false"
-                android:visibility="visible"
                 android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/idGridLayout"
@@ -63,19 +63,22 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                     <androidx.cardview.widget.CardView
                         android:id="@+id/idImage1_1"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
+                        android:visibility="gone"
                         app:cardBackgroundColor="@color/grey"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp"
-                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/idImage1" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/idGridLayout2"
                     android:layout_width="match_parent"
@@ -101,24 +104,26 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:visibility="gone"
                         app:cardBackgroundColor="@color/grey"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp"
-                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/idImage2" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-              </LinearLayout>
-               <LinearLayout
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/BottomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:visibility="visible"
                 android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/idGridLayout331"
@@ -141,7 +146,9 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/idGridLayout334"
                     android:layout_width="match_parent"
@@ -166,24 +173,26 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:visibility="gone"
                         app:cardBackgroundColor="@color/grey"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp"
-                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/idImage32" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
- <LinearLayout
+
+            <LinearLayout
                 android:id="@+id/BottomLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:visibility="visible"
                 android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/idGridLayout332"
@@ -206,7 +215,9 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/idGridLayout333"
                     android:layout_width="match_parent"
@@ -231,24 +242,26 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:visibility="gone"
                         app:cardBackgroundColor="@color/grey"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
- <LinearLayout
+
+            <LinearLayout
                 android:id="@+id/BottomLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:visibility="visible"
                 android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/idGridLayout431"
@@ -271,7 +284,9 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/idGridLayout432"
                     android:layout_width="match_parent"
@@ -292,21 +307,24 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:visibility="gone"
                         app:cardBackgroundColor="@color/grey"
                         app:cardCornerRadius="8dp"
-                        app:layout_constraintTop_toTopOf="parent"
                         app:cardElevation="0dp"
-                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
 
-
         </LinearLayout>
+
     </com.facebook.shimmer.ShimmerFrameLayout>
+
 </layout>

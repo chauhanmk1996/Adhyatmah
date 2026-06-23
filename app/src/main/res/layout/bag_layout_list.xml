@@ -1,122 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <data>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/model_pic_card"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="14dp"
+            app:cardCornerRadius="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </data>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/model_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/model_image2" />
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/itemView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/model_pic_card"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:cardCornerRadius="4dp"
-        android:layout_marginTop="14dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/model_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/model_image2"/>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/grey_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/model_pic_card"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Grey Pullover"
-        android:textSize="14dp"
-        android:fontFamily="@font/jost"
-        android:textColor="@color/grey_7C7C7C"
-        android:layout_marginTop="14dp"
-        android:layout_marginHorizontal="16dp"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/price_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/model_pic_card"
-        app:layout_constraintTop_toBottomOf="@id/grey_tv"
-        android:text="₹799"
-        android:fontFamily="@font/muktamahee_semibold"
-        android:textSize="15dp"
-        android:textColor="#272727"
-        android:layout_marginHorizontal="16dp"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/size_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/model_pic_card"
-        app:layout_constraintTop_toBottomOf="@id/price_tv"
-        android:text="Size: XS | Color: Grey"
-        android:fontFamily="@font/jost"
-        android:textSize="14dp"
-        android:textColor="@color/grey_7C7C7C"
-        android:layout_marginHorizontal="16dp"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="36dp"
-        android:orientation="horizontal"
-        android:padding="6dp"
-        android:gravity="center_vertical">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/minusId"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_margin="6dp"
-            android:padding="5dp"
-            android:src="@drawable/minus_sign"
-            android:background="@drawable/rectangel_f7f7f7_radius_16"/>
-
-
+        </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/count_tv"
-            android:layout_width="match_parent"
+            android:id="@+id/grey_tv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1"
-            android:layout_margin="5dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/jost"
+            android:textColor="@color/grey_7C7C7C"
             android:textSize="14dp"
-            android:textColor="@color/black_1D1D1D"
-            android:fontFamily="@font/font"
-            android:gravity="center"
-            />
+            app:layout_constraintStart_toEndOf="@id/model_pic_card"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Grey Pullover" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/plusId"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_margin="6dp"
-            android:padding="5dp"
-            android:background="@drawable/rectangel_f7f7f7_radius_16"
-            android:src="@drawable/plus" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/price_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:fontFamily="@font/muktamahee_semibold"
+            android:textColor="#272727"
+            android:textSize="15dp"
+            app:layout_constraintStart_toEndOf="@id/model_pic_card"
+            app:layout_constraintTop_toBottomOf="@id/grey_tv"
+            tools:text="₹799" />
 
-    </LinearLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/size_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:fontFamily="@font/jost"
+            android:textColor="@color/grey_7C7C7C"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@id/model_pic_card"
+            app:layout_constraintTop_toBottomOf="@id/price_tv"
+            tools:text="Size: XS | Color: Grey" />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        app:layout_constraintStart_toStartOf="@id/size_tv"
-        app:layout_constraintTop_toBottomOf="@+id/size_tv"
-        android:background="#E3E3E3"
-        android:layout_marginTop="15dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/minusId"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="6dp"
+                android:background="@drawable/rectangel_f7f7f7_radius_16"
+                android:padding="5dp"
+                android:src="@drawable/minus_sign" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/count_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/font"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/black_1D1D1D"
+                android:textSize="14dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/plusId"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="6dp"
+                android:background="@drawable/rectangel_f7f7f7_radius_16"
+                android:padding="5dp"
+                android:src="@drawable/plus" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="#E3E3E3"
+            app:layout_constraintStart_toStartOf="@id/size_tv"
+            app:layout_constraintTop_toBottomOf="@+id/size_tv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

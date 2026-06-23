@@ -19,7 +19,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:contentDescription="Header image"
                 android:scaleType="centerCrop"
                 android:src="@drawable/home_logo" />
 
@@ -65,7 +64,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/muktamahee_regular"
-                            android:text="Filters"
+                            android:text="@string/filters"
                             android:textColor="@color/black_222222"
                             android:textSize="11dp"
                             app:layout_constraintBottom_toBottomOf="@+id/backButton"
@@ -97,7 +96,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/muktamahee_regular"
-                            android:text="Sort"
+                            android:text="@string/sort"
                             android:textColor="@color/black_222222"
                             android:textSize="11dp"
                             app:layout_constraintBottom_toBottomOf="@+id/backButton"

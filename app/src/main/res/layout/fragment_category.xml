@@ -43,11 +43,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/muktamahee_regular"
-                        android:text="ACCRA AFRICA"
                         android:textColor="@color/black"
                         android:textFontWeight="400"
                         android:textSize="12dp"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:text="ACCRA AFRICA" />
 
                 </LinearLayout>
 

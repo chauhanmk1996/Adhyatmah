@@ -20,7 +20,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.bottomNavigationView.selectedItemId = itemId
     }
 
-
     override fun getLayoutId(): Int {
         return R.layout.activity_main
     }

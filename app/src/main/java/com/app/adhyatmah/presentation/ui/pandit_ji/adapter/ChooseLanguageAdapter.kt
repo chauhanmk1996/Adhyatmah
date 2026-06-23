@@ -1,21 +1,19 @@
 package com.app.adhyatmah.presentation.ui.pandit_ji.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adhyatmah.R
 import com.app.adhyatmah.databinding.ListItemMultilplePujaBinding
 import com.app.panditji.data.model.app_language.AppLanguage
-import java.util.Locale
 
 class ChooseLanguageAdapter(
     private val languages: List<AppLanguage>,
     private var selectedLanguageCode: String?,
-    private val onSelect: (AppLanguage) -> Unit
+    private val onSelect: (AppLanguage) -> Unit,
 ) : RecyclerView.Adapter<ChooseLanguageAdapter.LanguageViewHolder>() {
 
-    inner class LanguageViewHolder(val binding: ListItemMultilplePujaBinding) :
+    class LanguageViewHolder(val binding: ListItemMultilplePujaBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
@@ -44,10 +42,8 @@ class ChooseLanguageAdapter(
         )
 
         holder.binding.textView.setOnClickListener {
-
             selectedLanguageCode = language.code
             notifyDataSetChanged()
-            Log.i("TAG", "onBindViewHolder: "+language)
             onSelect(language)
         }
     }

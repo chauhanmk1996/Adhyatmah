@@ -35,10 +35,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         return R.layout.fragment_login
     }
 
-
-
     override fun initView(savedInstanceState: Bundle?) {
-
         onClick()
         setObserver()
 
@@ -52,128 +49,164 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 binding.passInput.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                 binding.togglePasswordVisibility.setImageResource(R.drawable.eye_off) // 👁️ eye-open icon
             } else {
-                binding.passInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.passInput.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 binding.togglePasswordVisibility.setImageResource(R.drawable.eye_on) // 🙈 eye-off icon
             }
             binding.passInput.setSelection(binding.passInput.text!!.length) // keep cursor at end
         }
-
-
     }
 
 
-    fun onClick(){
+    fun onClick() {
         binding.loginBtnWithOtp.setOnClickListener {
             findNavController().navigate(R.id.enterNumberFragment)
         }
+
         binding.loginPage.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
         }
+
         binding.loginBtn.setOnClickListener {
             val email = binding.phonenumberInput.getString()
             val password = binding.passInput.getString()
 
-            // Validate email
             if (email.isEmpty()) {
-//                binding.phonenumberInput.error = "Please enter your email"
-                Toast.makeText(requireActivity(), "Please enter your email", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.please_enter_your_email), Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             } else if (!isValidEmail(email)) {
-//                binding.phonenumberInput.error = "Invalid email format"
-                Toast.makeText(requireActivity(), "Invalid email format", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.invalid_email_format), Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
-            // Validate password
             if (password.isEmpty()) {
-//                binding.passInput.error = "Please enter your password"
-                Toast.makeText(requireActivity(), "Please enter your password", Toast.LENGTH_SHORT).show()
-
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.please_enter_your_password), Toast.LENGTH_SHORT
+                )
+                    .show()
                 return@setOnClickListener
             } else if (!isValidPassword(password)) {
-//                binding.passInput.error = "Password must be at least 6 characters"
-
-                Toast.makeText(requireActivity(), "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.password_must_be_at_least_6_characters),
+                    Toast.LENGTH_SHORT
+                ).show()
 
                 return@setOnClickListener
             }
 
-            // Proceed with login
             val fcmToken = Preferences.getStringPreference(requireContext(), FCM_TOKEN)
-            val request = LoginRequest(email, password, deviceType = "android", deviceToken = fcmToken)
+            val request =
+                LoginRequest(email, password, deviceType = "android", deviceToken = fcmToken)
             authViewModel.getLoginData(request)
-
         }
-
     }
 
-
     private fun setObserver() {
-
         authViewModel.getLoginData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     Log.e("TAG", "Login success: ${Gson().toJson(it)}")
-                    if (it.data?.status==1){
-                        if (it.data.code == 200){
-                            if (it.data.payload.isUser){
-                                var token = it.data.payload.accessToken
-                                // var customer_Id = it.data.payload.customer.id
+                    if (it.data?.status == 1) {
+                        if (it.data.code == 200) {
+                            if (it.data.payload.isUser) {
+                                val token = it.data.payload.accessToken
                                 Log.d("TAG", "setObserver: $token")
                                 Preferences.setStringPreference(requireContext(), IS_LOGIN, "1")
-                                Preferences.setStringPreference(requireContext(), ACCESS_TOKEN, token)
+                                Preferences.setStringPreference(
+                                    requireContext(),
+                                    ACCESS_TOKEN,
+                                    token
+                                )
                                 authViewModel.hitAPIProfileData(token)
-                                Toast.makeText(requireContext(), it.data.message?:"", Toast.LENGTH_SHORT).show()
-                                var data = it.data.payload
-                                /* startActivity(Intent(requireActivity(), MainActivity::class.java))
-                                 Toast.makeText(requireActivity(),"${it.data.message}",Toast.LENGTH_SHORT).show()
-                                 requireActivity().finish()*/
-                            }else{
-                                Toast.makeText(requireContext(), "Invalid credentials", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    it.data.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.invalid_credentials),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-                        }else{
-                            Toast.makeText(requireContext(), it.data.message?:"", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                it.data.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    }else{
-                        Toast.makeText(requireContext(), "${it.data?.message}"?:"", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "${it.data?.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     ProcessDialog.dismissDialog(true)
                 }
+
                 Status.LOADING -> {
                     ProcessDialog.showDialog(requireContext(), true)
                 }
+
                 Status.ERROR -> {
-                    Toast.makeText(requireContext(),it.data?.message?:"",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), it.data?.message ?: "", Toast.LENGTH_SHORT)
+                        .show()
                     ProcessDialog.dismissDialog(true)
                 }
             }
         }
-         authViewModel.getProfileData().observe(viewLifecycleOwner) {
-                when (it.status) {
+        authViewModel.getProfileData().observe(viewLifecycleOwner) {
+            when (it.status) {
                 Status.SUCCESS -> {
-                    val msg = it.data?.message ?: "Something went wrong"
+                    val msg = it.data?.message ?: getString(R.string.something_went_wrong)
 
-                    if (it.data?.status==1){
-                        if (it.data.code == 200){
-                            var data = it.data.payload
-                            var customId = it.data.payload?.user?.id ?: ""
+                    if (it.data?.status == 1) {
+                        if (it.data.code == 200) {
+                            val data = it.data.payload
+                            val customId = it.data.payload?.user?.id ?: ""
                             authViewModel.hitAPIProfileImageData(customId)
-                            Preferences.setCustomModelPreference(requireContext(), IS_PROFILE_DATA, data)
-                            Preferences.setStringPreference(requireContext(), EMAIL_ID, data?.user?.id)
-                            Preferences.setStringPreference(requireContext(), EMAIL_ID1, data?.user?.email)
+                            Preferences.setCustomModelPreference(
+                                requireContext(),
+                                IS_PROFILE_DATA,
+                                data
+                            )
+                            Preferences.setStringPreference(
+                                requireContext(),
+                                EMAIL_ID,
+                                data?.user?.id
+                            )
+                            Preferences.setStringPreference(
+                                requireContext(),
+                                EMAIL_ID1,
+                                data?.user?.email
+                            )
                             startActivity(Intent(requireActivity(), MainActivity::class.java))
                             requireActivity().finish()
-                        }else{
-                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
-                          }
-                    }else{
+                        } else {
+                            Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    } else {
                         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                     }
                     ProcessDialog.dismissDialog(true)
                 }
+
                 Status.LOADING -> {
                     ProcessDialog.showDialog(requireContext(), true)
                 }
+
                 Status.ERROR -> {
                     Log.e("TAG", "Login Failed: ${it.message}")
                     ProcessDialog.dismissDialog(true)
@@ -184,12 +217,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             when (it.status) {
                 Status.SUCCESS -> {
                     if (it.data?.code == 200) {
-                        Preferences.setStringPreference(requireContext(), PROFILE_IMG, it.data.payload.url)
-                        /*startActivity(Intent(requireActivity(), MainActivity::class.java))
-                        requireActivity().finish()
-*/
-                        // requireActivity().finish()
-                    }else if(it.data?.code==404){
+                        Preferences.setStringPreference(
+                            requireContext(),
+                            PROFILE_IMG,
+                            it.data.payload.url
+                        )
+                    } else if (it.data?.code == 404) {
                         startActivity(Intent(requireActivity(), MainActivity::class.java))
                         requireActivity().finish()
 
@@ -200,7 +233,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 Status.LOADING -> ProcessDialog.showDialog(requireActivity(), true)
 
                 Status.ERROR -> {
-//                    Toast.makeText(requireContext(), it.message ?: "Fetch error", Toast.LENGTH_SHORT).show()
                     ProcessDialog.dismissDialog(true)
                 }
             }
@@ -214,6 +246,4 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private fun isValidPassword(password: String): Boolean {
         return password.length >= 6
     }
-
-
 }

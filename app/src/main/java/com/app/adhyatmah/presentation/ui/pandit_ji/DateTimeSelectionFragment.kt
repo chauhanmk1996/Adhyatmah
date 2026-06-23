@@ -44,21 +44,18 @@ class DateTimeSelectionFragment : Fragment() {
     }
 
     private fun setupCalendar() {
-        // Disable past dates
         binding.calendarView.minDate = System.currentTimeMillis() - 1000
-
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        // Default date = today
         selectedDate = dateFormat.format(Date())
         refreshSlots(selectedDate!!)
 
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val calendar = Calendar.getInstance()
             calendar.set(year, month, dayOfMonth)
-
             if (calendar.timeInMillis < System.currentTimeMillis() - 86400000) {
-                Toast.makeText(requireContext(), "You can't select a past date", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(),
+                    getString(R.string.you_can_t_select_a_past_date), Toast.LENGTH_SHORT)
                     .show()
                 return@setOnDateChangeListener
             }
@@ -75,12 +72,14 @@ class DateTimeSelectionFragment : Fragment() {
 
         binding.btnNext.setOnClickListener {
             if (selectedDate == null) {
-                Toast.makeText(requireContext(), "Please select a date", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.please_select_a_date), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (selectedTime == null) {
-                Toast.makeText(requireContext(), "Please select a time slot", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(),
+                    getString(R.string.please_select_a_time_slot), Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
             }
@@ -119,8 +118,6 @@ class DateTimeSelectionFragment : Fragment() {
 
     private fun convertToIsoFormat(date: String, time: String): String {
         try {
-            // date -> "yyyy-MM-dd"
-            // time -> "10:30 AM"
             val inputFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault())
             val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
             outputFormat.timeZone = TimeZone.getTimeZone("UTC")

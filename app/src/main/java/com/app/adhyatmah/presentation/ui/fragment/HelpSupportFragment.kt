@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.app.adhyatmah.R
-import com.app.adhyatmah.data.local.FAQDataModel
 import com.app.adhyatmah.databinding.FragmentHelpSupportBinding
 import com.app.adhyatmah.domain.model.faq.Payload
 import com.app.adhyatmah.presentation.ui.adapter.AdapterFaq

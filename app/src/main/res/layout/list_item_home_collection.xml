@@ -26,12 +26,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:fontFamily="@font/inter_regular"
-            android:textColor="@color/black"
             android:layout_marginTop="4dp"
-            android:textSize="12dp"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:fontFamily="@font/inter_regular"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_collection_name"
@@ -67,4 +67,5 @@
             tools:listitem="@layout/list_item_home_product" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

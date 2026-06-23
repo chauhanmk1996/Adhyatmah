@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.adhyatmah.R
-import com.app.adhyatmah.data.local.IntroSlideData
 import com.app.adhyatmah.data.preferences.CANCELLED
 import com.app.adhyatmah.data.preferences.ON_GOING
 import com.app.adhyatmah.data.preferences.PENDING
@@ -17,7 +16,7 @@ import com.app.panditji.data.model.get_booking.GetBookingResponse
 import com.bumptech.glide.Glide
 
 class PreviousBookingAdapter(
-    private val context: Context?,
+    private val context: Context,
     var type: String,
     var setList: MutableList<GetBookingResponse.Payload.Booking>,
     var completeBooking: (GetBookingResponse.Payload.Booking) -> Unit,
@@ -26,67 +25,82 @@ class PreviousBookingAdapter(
 ) : RecyclerView.Adapter<PreviousBookingAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = RcvItemBookingBinding.inflate(
-            (context as Activity).layoutInflater, parent, false)
+            (context as Activity).layoutInflater, parent, false
+        )
         return ViewHolder(binding)
     }
-    inner class ViewHolder(var binding: RcvItemBookingBinding) : RecyclerView.ViewHolder(binding.root)
 
+    class ViewHolder(var binding: RcvItemBookingBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = setList[position]
 
         holder.binding.apply {
             tvBookingId.text = data.bookingID
-            btNameId.text = data.vendor.firstName + " " + data.vendor.lastName
-            tvAddressId1.text = data.address.streetAddress + ", " + data.address.city + ", " + data.address.state + ", " + data.address.country + ", " + data.address.zip
+
+            val name = data.vendor.firstName + " " + data.vendor.lastName
+            btNameId.text = name
+
+            val address = data.address.streetAddress + ", " + data.address.city + ", " + data.address.state + ", " + data.address.country + ", " + data.address.zip
+            tvAddressId1.text = address
+
             tvInr.text = CommonUtils.formatDate(data.dateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
             poojaName.text = data.poojaType
-            Glide.with(context!!).load(data.vendor.image)
+
+            Glide.with(context).load(data.vendor.image)
                 .placeholder(R.drawable.pamdit_ji)
                 .error(R.drawable.pamdit_ji)
                 .into(ivProf)
         }
         when (type) {
             PENDING -> {
-                holder.binding.btStatusId.text = "Pending"
-                holder.binding.btStatusId.backgroundTintList = context?.getColorStateList(R.color.red_e30000)
+                holder.binding.btStatusId.text = context.getString(R.string.pending)
+                holder.binding.btStatusId.backgroundTintList = context.getColorStateList(R.color.red_e30000)
                 holder.binding.btnCompleteId.visibility = View.GONE
                 holder.binding.btnLayoutIdId.visibility = View.VISIBLE
                 holder.binding.btnCancel.visibility = View.VISIBLE
             }
+
             ON_GOING -> {
-                holder.binding.btStatusId.backgroundTintList = context?.getColorStateList(R.color.theme)
-                holder.binding.btStatusId.text = "Ongoing"
+                holder.binding.btStatusId.backgroundTintList = context.getColorStateList(R.color.theme)
+                holder.binding.btStatusId.text =context.getString(R.string.ongoing)
                 holder.binding.btnCompleteId.visibility = View.VISIBLE
                 holder.binding.btnLayoutIdId.visibility = View.GONE
             }
+
             UP_COMING -> {
-                holder.binding.btStatusId.text = "Upcoming"
-                holder.binding.btStatusId.backgroundTintList = context?.getColorStateList(R.color.green_00da45)
+                holder.binding.btStatusId.text = context.getString(R.string.upcoming)
+                holder.binding.btStatusId.backgroundTintList = context.getColorStateList(R.color.green_00da45)
                 holder.binding.btnCompleteId.visibility = View.GONE
                 holder.binding.btnLayoutIdId.visibility = View.GONE
                 holder.binding.btnCancel.visibility = View.VISIBLE
             }
+
             CANCELLED -> {
-                holder.binding.btStatusId.text = "Cancelled"
-                holder.binding.btStatusId.backgroundTintList = context?.getColorStateList(R.color.red_e30000)
+                holder.binding.btStatusId.text = context.getString(R.string.cancelled)
+                holder.binding.btStatusId.backgroundTintList = context.getColorStateList(R.color.red_e30000)
                 holder.binding.btnCompleteId.visibility = View.GONE
                 holder.binding.btnLayoutIdId.visibility = View.GONE
                 holder.binding.btnCancel.visibility = View.GONE
             }
+
             else -> {
-                holder.binding.btStatusId.text = "Completed"
+                holder.binding.btStatusId.text = context.getString(R.string.completed)
                 holder.binding.btnCompleteId.visibility = View.GONE
                 holder.binding.btnLayoutIdId.visibility = View.GONE
             }
         }
-        holder.binding.cardUpcomingContainer.setOnClickListener{
+
+        holder.binding.cardUpcomingContainer.setOnClickListener {
             callBack(position)
         }
-        holder.binding.btnCompleteId.setOnClickListener{
+
+        holder.binding.btnCompleteId.setOnClickListener {
             completeBooking(data)
         }
-        holder.binding.btnCancel.setOnClickListener{
+
+        holder.binding.btnCancel.setOnClickListener {
             cancelBooking(data)
         }
     }
@@ -94,12 +108,4 @@ class PreviousBookingAdapter(
     override fun getItemCount(): Int {
         return setList.size
     }
-
-
 }
-
-
-
-
-
-

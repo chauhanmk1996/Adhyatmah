@@ -74,7 +74,7 @@
         android:label="BagFragment">
         <action
             android:id="@+id/action_bagFragment_to_applyCouponsFragment"
-            app:destination="@id/applyCouponsFragment"></action>
+            app:destination="@id/applyCouponsFragment" />
         <action
             android:id="@+id/action_bagFragment_to_paymentGatewayFragment"
             app:destination="@id/paymentMethodFragment" />

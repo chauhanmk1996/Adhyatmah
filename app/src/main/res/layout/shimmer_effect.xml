@@ -33,7 +33,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/idImage1" />
 
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/carouserView"
                 android:layout_width="match_parent"
@@ -91,6 +90,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/idImage1" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -127,6 +127,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/idImage2" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -173,6 +174,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -243,6 +245,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/idImage333" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -289,6 +292,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -359,9 +363,11 @@
                         app:layout_constraintTop_toBottomOf="@+id/idImage3332" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
 
-
         </LinearLayout>
+
     </com.facebook.shimmer.ShimmerFrameLayout>
+
 </layout>

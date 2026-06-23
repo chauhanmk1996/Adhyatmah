@@ -11,8 +11,8 @@ abstract class LocalizationApplication : Application() {
     private val localizationDelegate = LocalizationApplicationDelegate()
 
     override fun attachBaseContext(base: Context) {
-      val loc=  getDefaultLanguage()
-        var locale=loc
+        val loc = getDefaultLanguage()
+        var locale = loc
         val sharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(base/* Activity context */)
         val languageCode = sharedPreferences?.getString("settingTextLanguage", "en")
@@ -20,10 +20,9 @@ abstract class LocalizationApplication : Application() {
 
         if (!languageCode.isNullOrEmpty()) {
 
-            locale= Locale(languageCode)
-        } /*else if (languageCode == "am_et") {
-            locale= Locale("am_et")
-        }*/
+            locale = Locale(languageCode)
+        }
+
         localizationDelegate.setDefaultLanguage(base, locale)
 
         super.attachBaseContext(localizationDelegate.attachBaseContext(base))

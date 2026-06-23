@@ -37,7 +37,7 @@ class HomePanditJiAdapter(
             val name = "${panditJi.firstName ?: ""} ${panditJi.lastName ?: ""}"
             tvName.text = name
 
-            val experience = "${panditJi.experience ?: ""} Years Exp."
+            val experience = "${panditJi.experience ?: ""} ${context.getString(R.string.year_exp)}"
             tvExperience.text = experience
 
             cvPanditJi.setOnClickListener {

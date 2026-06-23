@@ -14,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-// BookingViewModel.kt
 @HiltViewModel
 class BookingViewModel @Inject constructor(
     application: Application,
@@ -24,18 +23,18 @@ class BookingViewModel @Inject constructor(
 
     fun getBookings(): LiveData<Resources<GetBookingResponse>> = bookingsLiveData
 
-    fun hitGetBookings(status: String, token: String) {
+    fun hitGetBookings(status: String) {
         bookingsLiveData.postValue(Resources.loading(null))
         viewModelScope.launch {
             try {
-                val response = ApiRepository().getBookingHistoryApi( status)
+                val response = ApiRepository().getBookingHistoryApi(status)
                 bookingsLiveData.postValue(Resources.success(response))
             } catch (e: Exception) {
                 bookingsLiveData.postValue(Resources.error(e.localizedMessage ?: "Error", null))
             }
         }
     }
-    
+
     private val updateBookingLiveData = SingleLiveEvent<Resources<GetBookingResponse>>()
 
     fun getUpdateBooking(): LiveData<Resources<GetBookingResponse>> = updateBookingLiveData
@@ -46,17 +45,18 @@ class BookingViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 Log.d("UpdateBooking", "API call started with request: $request")
-
                 val response = ApiRepository().updateBookingStatusApi(token, request)
-
                 Log.d("UpdateBooking", "API call success: $response")
-
                 updateBookingLiveData.postValue(Resources.success(response))
             } catch (e: Exception) {
                 Log.e("UpdateBooking", "API call failed", e) // ✅ prints stack trace in Logcat
-                updateBookingLiveData.postValue(Resources.error(e.localizedMessage ?: "Error", null))
+                updateBookingLiveData.postValue(
+                    Resources.error(
+                        e.localizedMessage ?: "Error",
+                        null
+                    )
+                )
             }
         }
     }
-
 }

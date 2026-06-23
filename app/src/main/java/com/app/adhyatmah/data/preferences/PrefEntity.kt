@@ -31,11 +31,3 @@ const val ON_GOING = "on_going"
 const val UP_COMING = "up_coming"
 const val PREVIOUS = "previous"
 const val CANCELLED = "cancelled"
-const val SAVED_ADDRESS = "savedAddress"
-
-
-
-
-
-
-

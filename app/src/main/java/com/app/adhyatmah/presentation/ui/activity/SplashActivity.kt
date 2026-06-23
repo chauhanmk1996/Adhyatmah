@@ -2,14 +2,11 @@ package com.app.adhyatmah.presentation.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.R
-import com.app.adhyatmah.data.preferences.FCM_TOKEN
 import com.app.adhyatmah.data.preferences.IS_LOGIN
 import com.app.adhyatmah.databinding.ActivitySplashBinding
 import com.app.adhyatmah.utils.base.BaseActivity
-import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,15 +27,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         splashScope.launch {
             delay(1200) // 2 seconds delay
             isLogin = Preferences.getStringPreference(this@SplashActivity, IS_LOGIN).toString()
-            /*FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val token = task.result
-                    Log.d("FCM_TOKEN", token)
-                    Preferences.setStringPreference(this@SplashActivity, FCM_TOKEN,token)
-                } else {
-                    Log.e("FCM_TOKEN", "Fetching FCM token failed", task.exception)
-                }
-            }*/
 
             if (isLogin == "1") {
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
@@ -47,8 +35,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             }
             finish()
         }
-
     }
+
     override fun onDestroy() {
         splashScope.cancel() // cancel coroutine to avoid memory leaks
         super.onDestroy()

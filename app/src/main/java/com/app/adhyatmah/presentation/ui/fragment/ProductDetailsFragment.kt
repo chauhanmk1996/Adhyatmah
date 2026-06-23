@@ -334,7 +334,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
     private fun showPinCodePrompt() {
         var dialog: AlertDialog? = null
-        dialog = CommonUtils.showPincodeDialog(
+        dialog = CommonUtils.showPinCodeDialog(
             requireActivity(),
             getString(R.string.alert),
             getString(R.string.product_is_not_available_for_your_current_location),

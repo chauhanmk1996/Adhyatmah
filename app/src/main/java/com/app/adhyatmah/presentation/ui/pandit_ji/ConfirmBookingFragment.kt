@@ -178,13 +178,13 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
             val servicePrice = "₹ ${serviceAmount.getDigit()}"
             tvServicePrice.text = servicePrice
 
-            val deliveryCharge = "Free"
+            val deliveryCharge = getString(R.string.free)
             tvDeliveryCharge.text = deliveryCharge
 
-            val handlingCharge = "Free"
+            val handlingCharge = getString(R.string.free)
             tvHandlingCharge.text = handlingCharge
 
-            val platformFee = "Free"
+            val platformFee = getString(R.string.free)
             tvPlatformFee.text = platformFee
 
             addOnPriceUpdate()
@@ -241,17 +241,19 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
 
     private fun showPaymentCancelConfirmationDialog() {
         val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("Wait! Don't leave yet.")
-            .setMessage("Payment in progress. Leaving now may cause transaction failure or duplicate charges. Please stay on this page.")
-            .setPositiveButton("Cancel") { _, _ ->
+            .setTitle(getString(R.string.wait_don_t_leave_yet))
+            .setMessage(getString(R.string.payment_in_progress_leaving_now_may_cause_transaction_failure_or_duplicate_charges_please_stay_on_this_page))
+            .setPositiveButton(getString(R.string.cancel)) { _, _ ->
                 binding.nvCart.show()
                 binding.btnBook.show()
                 binding.webView.hide()
                 binding.webView.stopLoading()
                 binding.webView.loadUrl("about:blank")
-                Toast.makeText(requireContext(), "Payment cancelled", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.payment_cancelled), Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Continue Payment") { dialog, _ ->
+
+            .setNegativeButton(getString(R.string.continue_payment)) { dialog, _ ->
                 dialog.dismiss()
             }
             .setCancelable(false)
@@ -481,10 +483,11 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
     private fun handlePaymentResult(isSuccess: Boolean) {
         if (!isAdded) return
         if (isSuccess) {
-            Toast.makeText(requireContext(), "Payment Successful", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),
+                getString(R.string.payment_successful), Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_profileFragment_to_bookingFragment)
         } else {
-            Toast.makeText(requireContext(), "Payment Cancelled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.payment_cancelled), Toast.LENGTH_SHORT).show()
             binding.nvCart.show()
             binding.btnBook.show()
             binding.webView.hide()

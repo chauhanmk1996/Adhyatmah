@@ -13,7 +13,6 @@ import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -29,7 +28,6 @@ import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.PanditJiAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.viewModel.PanditListViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
-import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.Status
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
@@ -136,12 +134,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                     position: Int,
                     id: Long,
                 ) {
-                    Log.d(
-                        "SpinnerDebug",
-                        "onItemSelected called: position=$position, value=${spinnerItems[position]}, ignoreNextSpinnerSelection=$ignoreNextSpinnerSelection"
-                    )
-
-                    // Skip if this is a programmatic selection
                     if (ignoreNextSpinnerSelection) {
                         ignoreNextSpinnerSelection = false
                         Log.d("SpinnerDebug", "Ignored programmatic selection")
@@ -168,10 +160,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                         openPoojaSelectionDialog()
                         ignoreNextSpinnerSelection = true
                         binding.mySpinner.setSelection(0, false)
-                        Log.d(
-                            "SpinnerDebug",
-                            "Reset spinner to placeholder after Service selection"
-                        )
                     } else {
                         binding.searchView.setText("")
                         searchJob?.cancel()
@@ -262,7 +250,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                 } else {
                     Toast.makeText(
                         requireActivity(),
-                        "No Service Available!",
+                        getString(R.string.no_service_available),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -275,7 +263,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         binding.noResult.visibility = if (panditJiList.isEmpty()) View.VISIBLE else View.GONE
     }
 
-    private fun signupRequired(message:String) {
+    private fun signupRequired(message: String) {
         val bottomSheet =
             SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
@@ -314,7 +302,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                 Status.ERROR -> {
                     Snackbar.make(
                         requireView(),
-                        res.message ?: "Something went wrong",
+                        res.message ?: getString(R.string.something_went_wrong),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }

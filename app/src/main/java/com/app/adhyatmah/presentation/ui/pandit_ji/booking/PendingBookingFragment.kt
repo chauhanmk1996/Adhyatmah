@@ -1,34 +1,24 @@
 package com.app.adhyatmah.presentation.ui.pandit_ji.booking
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.app.adhyatmah.R
-import com.app.adhyatmah.data.local.IntroSlideData
 import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
-import com.app.adhyatmah.data.preferences.ON_GOING
 import com.app.adhyatmah.data.preferences.PENDING
 import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.data.preferences.UP_COMING
 import com.app.adhyatmah.databinding.FragmentPendingBinding
 import com.app.adhyatmah.domain.model.update_booking_status.UpdateBookingStatusRequest
-import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.PreviousBookingAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.viewModel.BookingViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
-import com.app.adhyatmah.utils.common_utils.Resources
 import com.app.adhyatmah.utils.common_utils.Status
 import com.app.panditji.data.model.get_booking.GetBookingResponse
-
 
 class PendingBookingFragment : BaseFragment<FragmentPendingBinding>() {
 
@@ -44,6 +34,7 @@ class PendingBookingFragment : BaseFragment<FragmentPendingBinding>() {
         hitPendingBookingApi()
         observeBookings()
     }
+
     fun refresh() {
         hitPendingBookingApi()
     }
@@ -56,13 +47,14 @@ class PendingBookingFragment : BaseFragment<FragmentPendingBinding>() {
             {},
             {}
         ) {
-
         }
         binding.rcvUpComing.adapter = adapter
     }
 
     private fun hitPendingBookingApi() {
-        viewModel.hitGetBookings("pending", Preferences.getStringPreference(requireContext(), ACCESS_TOKEN) ?: "")
+        viewModel.hitGetBookings(
+            "pending"
+        )
     }
 
     private fun observeBookings() {
@@ -91,6 +83,7 @@ class PendingBookingFragment : BaseFragment<FragmentPendingBinding>() {
                 }
             }
         }
+
         viewModel.getUpdateBooking().observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
@@ -108,30 +101,27 @@ class PendingBookingFragment : BaseFragment<FragmentPendingBinding>() {
                 }
             }
         }
-
     }
+
     private fun loadRcvBooking(list: List<GetBookingResponse.Payload.Booking>) {
         previousBookingAdapter = PreviousBookingAdapter(
             requireActivity(),
             UP_COMING,
             list.toMutableList(),
             {},
-            { it ->
+            {
                 showCancelBookingPrompt(it)
             }
         ) {
-//            requireParentFragment().findNavController()
-//                .navigate(R.id.action_bookingFragment_to_upcomingBookingDetailsFragment)
-
             Log.d("TAG", "loadRcvBooking: $it")
-
         }
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
+
     private fun showCancelBookingPrompt(data: GetBookingResponse.Payload.Booking) {
         var dialog: AlertDialog? = null
-        dialog=  CommonUtils.showCustomAlertDialog(
-            requireActivity() ,
+        dialog = CommonUtils.showCustomAlertDialog(
+            requireActivity(),
             "Alert!",
             "There will be no refund if cancelled before 24 hours of the scheduled time. Do you want to proceed?",
             positiveButtonText = "Yes",

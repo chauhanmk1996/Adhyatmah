@@ -15,11 +15,8 @@ class LocalizationContext(base: Context) : ContextWrapper(base) {
 
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> configuration.setLocales(LocaleList(locale))
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 -> configuration.setLocale(locale)
-            else -> {
-                @Suppress("DEPRECATION")
-                configuration.locale = locale
-            }
+
+            else -> configuration.setLocale(locale)
         }
         val metrics: DisplayMetrics = super.getResources().displayMetrics
         @Suppress("DEPRECATION")

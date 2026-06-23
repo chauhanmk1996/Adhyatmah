@@ -35,11 +35,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muktamahee_regular"
-                android:text="ORDER ID- 12XXXXXXXX"
                 android:textColor="@color/black"
                 android:textFontWeight="700"
                 android:textSize="15dp"
-                tools:ignore="TextSizeCheck" />
+                tools:ignore="TextSizeCheck"
+                tools:text="ORDER ID- 12XXXXXXXX" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/title"
@@ -47,11 +47,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/muktamahee_regular"
-                android:text="Light Blue Genes"
                 android:textColor="@color/black"
                 android:textFontWeight="700"
                 android:textSize="15dp"
-                tools:ignore="TextSizeCheck" />
+                tools:ignore="TextSizeCheck"
+                tools:text="Light Blue Genes" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/descre"
@@ -59,18 +59,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/muktamahee_regular"
-                android:text="Free Size Cash ₹97"
                 android:textColor="#7A7A7A"
                 android:textFontWeight="400"
                 android:textSize="15dp"
-                tools:ignore="TextSizeCheck" />
+                tools:ignore="TextSizeCheck"
+                tools:text="Free Size Cash ₹97" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/muktamahee_regular"
-                android:text="All issue easy returns"
+                android:text="@string/all_issue_easy_returns"
                 android:textColor="#7A7A7A"
                 android:textFontWeight="400"
                 android:textSize="15dp"

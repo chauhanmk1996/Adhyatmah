@@ -21,21 +21,15 @@ import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.google.android.material.snackbar.Snackbar
 
-class ShortByBottomSheet() :BaseBottomSheetFragment<FragmentShortByBottomSheetBinding>() {
+class ShortByBottomSheet : BaseBottomSheetFragment<FragmentShortByBottomSheetBinding>() {
 
     var productId = ""
     private var list: MutableList<DataString> = mutableListOf()
     private val viewModel by activityViewModels<FilterViewModel>()
     private val homeViewModel by activityViewModels<HomeViewModel>()
-
     var token = ""
-
     private lateinit var adapter: AdapterBottomSheetShortBy
-    interface OnSortItemSelectedListener {
-        fun onSortItemSelected(item: List<Product>)
-    }
 
-    private var listener: OnSortItemSelectedListener? = null
     companion object {
         fun newInstance(productId: String): ShortByBottomSheet {
             return ShortByBottomSheet().apply {
@@ -48,26 +42,20 @@ class ShortByBottomSheet() :BaseBottomSheetFragment<FragmentShortByBottomSheetBi
 
     var onSortSelected: ((List<Product>) -> Unit)? = null
     var onSortRequestSent: ((ViewAllProductRequest) -> Unit)? = null
-    fun setOnSortItemSelectedListener(listener: OnSortItemSelectedListener) {
-        this.listener = listener
-    }
-    private fun setList() {
 
+    private fun setList() {
         list.clear()
         list.addAll(
             mutableListOf(
-                DataString("Popular",false),
-                DataString("Newest",false),
-                DataString("Customer review",false),
-                DataString("Price: lowest to high",false),
-                DataString("Price: highest to low",false)
+                DataString("Popular", false),
+                DataString("Newest", false),
+                DataString("Customer review", false),
+                DataString("Price: lowest to high", false),
+                DataString("Price: highest to low", false)
             )
         )
 
-
-        adapter = AdapterBottomSheetShortBy(list) {
-            selectedItem->
-            //dismiss()
+        adapter = AdapterBottomSheetShortBy(list) { selectedItem ->
             val result = Bundle().apply {
                 val sortKey = when (selectedItem.title) {
                     "Popular" -> "popular"
@@ -79,25 +67,18 @@ class ShortByBottomSheet() :BaseBottomSheetFragment<FragmentShortByBottomSheetBi
                 }
                 putString("selected_sort_title", sortKey)
 
-                var request = ViewAllProductRequest(
+                val request = ViewAllProductRequest(
                     productId,
                     sortKey
                 )
-                onSortRequestSent?.invoke(request)  // ✅ Call higher-order function
+                onSortRequestSent?.invoke(request)
                 dismiss()
-//                homeViewModel.getViewAllData(token,request)
-                /*var request = GetSortedCollectionRequest()
-                request.handle= productId
-                request.sortBy=   sortKey
-                viewModel.homeCollectionApi(request)
-         */   }
+            }
             parentFragmentManager.setFragmentResult("sort_result_key", result)
-           // dismiss()
-
-           // listener?.onSortItemSelected(selectedItem)
-
         }
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(),LinearLayoutManager.VERTICAL,false)
+
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = adapter
     }
 
@@ -106,7 +87,6 @@ class ShortByBottomSheet() :BaseBottomSheetFragment<FragmentShortByBottomSheetBi
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
         arguments?.getString(PRODUCT_ID)?.let {
             productId = it
@@ -121,23 +101,17 @@ class ShortByBottomSheet() :BaseBottomSheetFragment<FragmentShortByBottomSheetBi
 
     override fun getTheme(): Int = R.style.TransparentBottomSheetDialog
 
-    private fun setObserver(){
-
+    private fun setObserver() {
         homeViewModel.getViewAllLiveData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
-                    val statusCode = it.data?.status // assuming your wrapper contains code
+                    val statusCode = it.data?.status
                     when (statusCode) {
                         200 -> {
                             Log.i("TAG", "setObserver: getViewAllLiveData")
                             val data = it.data.payload.collection.products
-                            onSortSelected?.invoke(data)  // ✅ Call higher-order function
+                            onSortSelected?.invoke(data)
                             dismiss()
-//                            setAdapter(data)
-//                            adapter.updateData(data)
-                            // Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
-
                         }
 
                         401 -> {
@@ -164,20 +138,16 @@ class ShortByBottomSheet() :BaseBottomSheetFragment<FragmentShortByBottomSheetBi
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
 
         viewModel.getShortCollectionList().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            val data = it.data.payload.collection.products
-
                         }
+
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
                         }
@@ -196,10 +166,6 @@ class ShortByBottomSheet() :BaseBottomSheetFragment<FragmentShortByBottomSheetBi
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
     }
-
-
 }

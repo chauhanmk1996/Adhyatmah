@@ -2,17 +2,10 @@ package com.app.adhyatmah.presentation.ui.pandit_ji.booking
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.app.adhyatmah.R
-import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
 import com.app.adhyatmah.data.preferences.CANCELLED
-import com.app.adhyatmah.data.preferences.PENDING
-import com.app.adhyatmah.data.preferences.Preferences
-import com.app.adhyatmah.data.preferences.UP_COMING
 import com.app.adhyatmah.databinding.FragmentPendingBinding
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.PreviousBookingAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.viewModel.BookingViewModel
@@ -36,6 +29,7 @@ class CancelledBookingFragment : BaseFragment<FragmentPendingBinding>() {
         hitPendingBookingApi()
         observeBookings()
     }
+
     fun refresh() {
         hitPendingBookingApi()
     }
@@ -48,14 +42,15 @@ class CancelledBookingFragment : BaseFragment<FragmentPendingBinding>() {
             {},
             {}
         ) {
-            // Handle click navigation
             Log.d("TAG", "Item clicked: $it")
         }
         binding.rcvUpComing.adapter = adapter
     }
 
     private fun hitPendingBookingApi() {
-        viewModel.hitGetBookings("cancelled", Preferences.getStringPreference(requireContext(), ACCESS_TOKEN) ?: "")
+        viewModel.hitGetBookings(
+            "cancelled"
+        )
     }
 
     private fun observeBookings() {
@@ -85,6 +80,7 @@ class CancelledBookingFragment : BaseFragment<FragmentPendingBinding>() {
             }
         }
     }
+
     private fun loadRcvBooking(list: List<GetBookingResponse.Payload.Booking>) {
         previousBookingAdapter = PreviousBookingAdapter(
             requireActivity(),
@@ -93,11 +89,7 @@ class CancelledBookingFragment : BaseFragment<FragmentPendingBinding>() {
             {},
             {}
         ) {
-//            requireParentFragment().findNavController()
-//                .navigate(R.id.action_bookingFragment_to_upcomingBookingDetailsFragment)
-
             Log.d("TAG", "loadRcvBooking: $it")
-
         }
         binding.rcvUpComing.adapter = previousBookingAdapter
     }

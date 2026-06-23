@@ -29,6 +29,7 @@ class OngoingBookingFragment : BaseFragment<FragmentOngoingBookingBinding>() {
         hitOngoingBookingApi()
         observeBookings()
     }
+
     fun refresh() {
         hitOngoingBookingApi()
     }
@@ -41,13 +42,11 @@ class OngoingBookingFragment : BaseFragment<FragmentOngoingBookingBinding>() {
             ::updateBookingStatus,
             {}
         ) {
-            // Handle item click
             Log.d("TAG", "Item clicked: $it")
-            // requireParentFragment().findNavController()
-            //     .navigate(R.id.action_bookingFragment_to_upcomingBookingDetailsFragment)
         }
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
+
     private fun updateBookingStatus(data: GetBookingResponse.Payload.Booking) {
         Log.i("TAG", "updateBookingStatus: ")
         viewModel.hitUpdateBooking(
@@ -58,10 +57,10 @@ class OngoingBookingFragment : BaseFragment<FragmentOngoingBookingBinding>() {
             )
         )
     }
+
     private fun hitOngoingBookingApi() {
         viewModel.hitGetBookings(
-            "ongoing",
-            Preferences.getStringPreference(requireContext(), ACCESS_TOKEN) ?: ""
+            "ongoing"
         )
     }
 
@@ -92,6 +91,7 @@ class OngoingBookingFragment : BaseFragment<FragmentOngoingBookingBinding>() {
                 }
             }
         }
+
         viewModel.getUpdateBooking().observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {

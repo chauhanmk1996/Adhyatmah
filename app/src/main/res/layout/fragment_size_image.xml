@@ -8,7 +8,6 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.fragment.TermConditionFragment">
 
-        <!-- Guideline -->
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/oneThirdGuide"
             android:layout_width="match_parent"
@@ -16,7 +15,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.1" />
 
-        <!-- Back Button -->
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
@@ -26,34 +24,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/oneThirdGuide" />
 
-        <!-- Title -->
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text="Rontomsongh"
             android:textColor="@color/black_272727"
             android:textSize="24sp"
             app:fontFamily="@font/muktamahee_bold"
             app:layout_constraintBottom_toBottomOf="@id/backBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/backBtn" />
+            app:layout_constraintTop_toTopOf="@id/backBtn"
+            tools:text="Rontomsongh" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/muktamahee_regular"
-            android:text="ACCRA AFRICA"
             android:textColor="@color/black"
             android:textFontWeight="400"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"/>
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:text="ACCRA AFRICA" />
 
-        <!-- Scrollable Content -->
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="0dp"
@@ -77,7 +73,7 @@
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/muktamahee_semibold"
                     android:gravity="center_horizontal"
-                    android:text="SIZE CHART"
+                    android:text="@string/size_chart"
                     android:textColor="@color/black_272727"
                     android:textSize="20sp"
                     app:layout_constraintTop_toTopOf="parent" />

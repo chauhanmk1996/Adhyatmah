@@ -31,6 +31,7 @@ class UpcomingBookingsFragment : BaseFragment<FragmentUpcomingBookingsBinding>()
         hitUpcomingBookingApi()
         observeBookings()
     }
+
     fun refresh() {
         hitUpcomingBookingApi()
     }
@@ -43,18 +44,14 @@ class UpcomingBookingsFragment : BaseFragment<FragmentUpcomingBookingsBinding>()
             {},
             {}
         ) {
-            // Handle click navigation if needed
             Log.d("TAG", "Item clicked: $it")
-            // requireParentFragment().findNavController()
-            //     .navigate(R.id.action_bookingFragment_to_upcomingBookingDetailsFragment)
         }
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
 
     private fun hitUpcomingBookingApi() {
         viewModel.hitGetBookings(
-            "upcoming", // Change based on API param if needed
-            Preferences.getStringPreference(requireContext(), ACCESS_TOKEN) ?: ""
+            "upcoming"
         )
     }
 
@@ -85,6 +82,7 @@ class UpcomingBookingsFragment : BaseFragment<FragmentUpcomingBookingsBinding>()
                 }
             }
         }
+
         viewModel.getUpdateBooking().observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
@@ -102,7 +100,6 @@ class UpcomingBookingsFragment : BaseFragment<FragmentUpcomingBookingsBinding>()
                 }
             }
         }
-
     }
 
     private fun loadRcvBooking(list: List<GetBookingResponse.Payload.Booking>) {
@@ -111,17 +108,19 @@ class UpcomingBookingsFragment : BaseFragment<FragmentUpcomingBookingsBinding>()
             UP_COMING,
             list.toMutableList(),
             {},
-            { it ->
-                showCancelBookingPrompt(it)}
+            {
+                showCancelBookingPrompt(it)
+            }
         ) {
             Log.d("TAG", "loadRcvBooking: $it")
         }
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
+
     private fun showCancelBookingPrompt(data: GetBookingResponse.Payload.Booking) {
         var dialog: AlertDialog? = null
-        dialog=  CommonUtils.showCustomAlertDialog(
-            requireActivity() ,
+        dialog = CommonUtils.showCustomAlertDialog(
+            requireActivity(),
             "Alert!",
             "There will be no refund if cancelled before 24 hours of the scheduled time. Do you want to proceed?",
             positiveButtonText = "Yes",

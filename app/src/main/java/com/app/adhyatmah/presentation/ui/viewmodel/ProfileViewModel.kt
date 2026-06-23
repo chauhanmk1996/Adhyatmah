@@ -22,13 +22,13 @@ import com.app.adhyatmah.utils.common_utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ProfileViewModel @Inject constructor(application: Application): AndroidViewModel(application){
+class ProfileViewModel @Inject constructor(application: Application) :
+    AndroidViewModel(application) {
 
     private val contactUsLiveData = SingleLiveEvent<Resources<ContactUsResponse>>()
     private val createAddressLiveData = SingleLiveEvent<Resources<CreateAddressResponse>>()
     private val deleteAddressLiveData = SingleLiveEvent<Resources<DeleteAddressResponse>>()
     private val indianStateLiveData = SingleLiveEvent<Resources<ShippingUrlResponse>>()
-
     private val getAddressLiveData = SingleLiveEvent<Resources<CustomerAddressResponse>>()
 
     fun getContactUsData() {
@@ -36,130 +36,125 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
             contactUsLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     contactUsLiveData.postValue(
                         Resources.success(
                             ApiRepository().getContactUsApi()
                         )
-
                     )
                 } catch (ex: Exception) {
-                    contactUsLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    contactUsLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
-    fun getAddressData(token : ManageAddressRequest) {
+
+    fun getAddressData(token: ManageAddressRequest) {
         try {
             getAddressLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     getAddressLiveData.postValue(
                         Resources.success(
                             ApiRepository().getCustomerAddApi(token)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    getAddressLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    getAddressLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
 
-     fun getCreateAddressData(request: AddAddressRequest) {
+    fun getCreateAddressData(request: AddAddressRequest) {
         try {
             createAddressLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     createAddressLiveData.postValue(
                         Resources.success(
                             ApiRepository().getCreateAddressApi(request)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    createAddressLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    createAddressLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
-     fun getEditAddressData(request: AddAddressRequest) {
+
+    fun getEditAddressData(request: AddAddressRequest) {
         try {
             createAddressLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     createAddressLiveData.postValue(
                         Resources.success(
                             ApiRepository().editAddressAPI(request)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    createAddressLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    createAddressLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
-     fun hitDeleteAddressApi(request: DeleteAddressRequest) {
+
+    fun hitDeleteAddressApi(request: DeleteAddressRequest) {
         try {
             deleteAddressLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     deleteAddressLiveData.postValue(
                         Resources.success(
                             ApiRepository().deleteAddressAPI(request)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    deleteAddressLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    deleteAddressLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
-     fun hitIndianStateApi() {
+
+    fun hitIndianStateApi() {
         try {
             indianStateLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     indianStateLiveData.postValue(
                         Resources.success(
                             ApiRepository().getIndianStateApi()
                         )
-
                     )
                 } catch (ex: Exception) {
-                    indianStateLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    indianStateLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -168,41 +163,44 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
     fun getCreateAddressRes(): LiveData<Resources<CreateAddressResponse>> {
         return createAddressLiveData
     }
+
     fun getContactUsRes(): LiveData<Resources<ContactUsResponse>> {
         return contactUsLiveData
     }
+
     fun getCustomerAddressRes(): LiveData<Resources<CustomerAddressResponse>> {
         return getAddressLiveData
     }
+
     fun getDeleteAddressRes(): LiveData<Resources<DeleteAddressResponse>> {
         return deleteAddressLiveData
     }
+
     fun getIndianStateRes(): LiveData<Resources<ShippingUrlResponse>> {
         return indianStateLiveData
     }
 
-
-
     private val customerOrdersLiveData = SingleLiveEvent<Resources<CustomerAllOrdersResponse>>()
 
-    fun getCustomerOrdersData(token : ManageAddressRequest) {
+    fun getCustomerOrdersData(token: ManageAddressRequest) {
         try {
             customerOrdersLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     customerOrdersLiveData.postValue(
                         Resources.success(
                             ApiRepository().customerAllOrdersApi(token)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    customerOrdersLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    customerOrdersLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -212,27 +210,27 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
         return customerOrdersLiveData
     }
 
-
     private val myOrderDetailsLiveData = SingleLiveEvent<Resources<GetMyOrderDetailsResponse>>()
 
-    fun getOrderDetailsData(orderId : String) {
+    fun getOrderDetailsData(orderId: String) {
         try {
             myOrderDetailsLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     myOrderDetailsLiveData.postValue(
                         Resources.success(
                             ApiRepository().getOrderDetailsAPIs(orderId)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    myOrderDetailsLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    myOrderDetailsLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -242,27 +240,22 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
         return myOrderDetailsLiveData
     }
 
-
     private val cancelOrderLiveData = SingleLiveEvent<Resources<CancelOrderResponse>>()
 
-    fun cancelOrderData(request : CancelOrderRequest) {
+    fun cancelOrderData(request: CancelOrderRequest) {
         try {
             myOrderDetailsLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     cancelOrderLiveData.postValue(
                         Resources.success(
                             ApiRepository().cancelOrderAPIs(request)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    cancelOrderLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    cancelOrderLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -272,7 +265,6 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
         return cancelOrderLiveData
     }
 
-
     private val shippingUrlLiveData = SingleLiveEvent<Resources<ShippingUrlResponse>>()
 
     fun shippingUrlData() {
@@ -280,19 +272,15 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
             shippingUrlLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     shippingUrlLiveData.postValue(
                         Resources.success(
                             ApiRepository().shippingUrlAPI()
                         )
-
                     )
                 } catch (ex: Exception) {
-                    shippingUrlLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    shippingUrlLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -301,9 +289,4 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
     fun shippingUrlRes(): LiveData<Resources<ShippingUrlResponse>> {
         return shippingUrlLiveData
     }
-
-
-
-
-
 }

@@ -5,36 +5,34 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import androidx.core.content.edit
 
 object Preferences {
     fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(TAG, Context.MODE_PRIVATE)
     }
-    fun removeAllPreference(context: Context) {
-        val settings: SharedPreferences = getSharedPreferences(context)
-        val editor = settings.edit()
-        editor.clear()
-        editor.commit()
-    }
+
     fun removeAllPreferencesExcept(context: Context, excludeKeys: List<String>) {
         val settings = getSharedPreferences(context)
         val allEntries = settings.all
 
-        val editor = settings.edit()
-        for (entry in allEntries.entries) {
-            if (!excludeKeys.contains(entry.key)) {
-                editor.remove(entry.key) // Remove keys not in the exclusion list
+        settings.edit {
+            for (entry in allEntries.entries) {
+                if (!excludeKeys.contains(entry.key)) {
+                    remove(entry.key) // Remove keys not in the exclusion list
+                }
             }
-        }
-        editor.apply() // Apply changes
+        } // Apply changes
     }
+
     inline fun <reified T> setCustomModelPreference(context: Context?, key: String?, value: T?) {
         val settings = getSharedPreferences(context!!)
-        val editor = settings.edit()
-        val jsonString = Gson().toJson(value)
-        editor.putString(key, jsonString)
-        editor.apply()
+        settings.edit {
+            val jsonString = Gson().toJson(value)
+            putString(key, jsonString)
+        }
     }
+
     inline fun <reified T> getCustomModelPreference(context: Context?, key: String?): T? {
         val settings = getSharedPreferences(context!!)
         val jsonString = settings.getString(key, null)
@@ -47,55 +45,13 @@ object Preferences {
 
     fun setStringPreference(context: Context?, key: String?, value: String?) {
         val settings: SharedPreferences = getSharedPreferences(context!!)
-        val editor = settings.edit()
-        editor.putString(key, value)
-        editor.commit()
+        settings.edit(commit = true) {
+            putString(key, value)
+        }
     }
-
 
     fun getStringPreference(context: Context?, key: String?): String? {
         val pref: SharedPreferences = getSharedPreferences(context!!)
         return pref.getString(key, "")
     }
-
-    fun setStringListPreference(context: Context?, key: String?, value: MutableList<String>?) {
-        val settings: SharedPreferences = getSharedPreferences(context!!)
-        val editor = settings.edit()
-
-        // Convert the list of strings to a JSON string
-        val jsonString = Gson().toJson(value)
-        editor.putString(key, jsonString)
-
-        editor.apply()
-    }
-
-
-    fun getStringListPreference(context: Context?, key: String?): MutableList<String>? {
-        val pref: SharedPreferences = getSharedPreferences(context!!)
-        val jsonString = pref.getString(key, null)
-
-        // Convert the JSON string back to a list of strings
-        return Gson().fromJson(jsonString, object : TypeToken<MutableList<String>>() {}.type)
-    }
-
-    fun removeSingleValuePreference(context: Context?, key: String?) {
-        val settings = context?.let { getSharedPreferences(it) }
-        val editor = settings?.edit()
-        editor?.remove(key)  // Remove the specific key
-        editor?.apply()  // Apply changes asynchronously
-    }
-
-
-    fun removeValueFromStringListPreference(context: Context?, key: String?, valueToRemove: String) {
-        val list = getStringListPreference(context, key)
-
-        list?.let {
-            if (it.contains(valueToRemove)) {
-                it.remove(valueToRemove) // Remove the value
-                setStringListPreference(context, key, it) // Save updated list back
-            }
-        }
-    }
-
-
 }

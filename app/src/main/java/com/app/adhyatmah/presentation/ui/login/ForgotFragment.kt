@@ -17,7 +17,6 @@ import com.app.adhyatmah.utils.common_utils.Status
 import com.google.android.material.snackbar.Snackbar
 import kotlin.getValue
 
-
 class ForgotFragment : BaseFragment<FragmentForgotBinding>() {
 
     private val authViewModel by activityViewModels<AuthViewModel>()
@@ -27,18 +26,18 @@ class ForgotFragment : BaseFragment<FragmentForgotBinding>() {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigateUp() // or navigate to LoginFragment
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigateUp() // or navigate to LoginFragment
+                }
+            })
 
         setObserver()
 
         binding.loginBtn.setOnClickListener {
             forgetPass()
-
         }
 
         binding.backBtn.setOnClickListener {
@@ -46,12 +45,7 @@ class ForgotFragment : BaseFragment<FragmentForgotBinding>() {
         }
     }
 
-
-
     private fun setObserver() {
-
-
-
         authViewModel.getForgotPassData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -59,13 +53,12 @@ class ForgotFragment : BaseFragment<FragmentForgotBinding>() {
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload
                             binding.etForgotEmail.setText("")
-                            Toast.makeText(requireActivity(),it.data.message,Toast.LENGTH_SHORT).show()
-//                            findNavController().navigateUp()
+                            Toast.makeText(requireActivity(), it.data.message, Toast.LENGTH_SHORT)
+                                .show()
                         }
-                        401 -> {
 
+                        401 -> {
                             Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -82,28 +75,23 @@ class ForgotFragment : BaseFragment<FragmentForgotBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
-
     }
 
     private fun forgetPass() {
-
-
         val email = binding.etForgotEmail.text?.trim().toString()
         if (email.isEmpty()) {
-            Toast.makeText(requireActivity(), "Email is required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireActivity(),
+                getString(R.string.email_is_required), Toast.LENGTH_SHORT).show()
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(requireActivity(), "Enter a valid email address", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireActivity(),
+                getString(R.string.enter_a_valid_email_address), Toast.LENGTH_SHORT)
+                .show()
             return
         }
         val request = ForgotPassRequest(email)
         authViewModel.getForgotData(request)
-
     }
-
-
 }

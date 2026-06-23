@@ -97,7 +97,12 @@ class OtpFragment : BaseFragment<FragmentOtpBinding>() {
                 val timeLeft = "${getString(R.string.resend_confirmation_code)} $secLeftText"
                 binding.tvTimer.text = timeLeft
                 binding.tvResend.isEnabled = false
-                binding.tvResend.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
+                binding.tvResend.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.gray
+                    )
+                )
             }
 
             override fun onFinish() {
@@ -105,7 +110,12 @@ class OtpFragment : BaseFragment<FragmentOtpBinding>() {
                     isTimerRunning = false
                     binding.tvTimer.text = "00:00"
                     binding.tvResend.isEnabled = true
-                    binding.tvResend.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                    binding.tvResend.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.blue
+                        )
+                    )
                     binding.tvResend.setOnClickListener {
                         if (!isTimerRunning) {
                             val model = SendOtpModel(mobile = UserPreference.MOBILE_NUMBER)
@@ -119,7 +129,7 @@ class OtpFragment : BaseFragment<FragmentOtpBinding>() {
     }
 
     private fun reSendOtp(model: SendOtpModel) {
-        if (isResendInProgress) return  // Prevent multiple requests
+        if (isResendInProgress) return
         isTimerRunning = true
         isResendInProgress = true
         authViewModel.hitResendOtpData(model)
@@ -130,7 +140,7 @@ class OtpFragment : BaseFragment<FragmentOtpBinding>() {
                     isResendInProgress = false
                     Toast.makeText(requireActivity(), "${it.data?.message}", Toast.LENGTH_SHORT)
                         .show()
-                    startTimer()  // Restart timer after OTP is sent
+                    startTimer()
                     ProcessDialog.dismissDialog(true)
                 }
 

@@ -32,7 +32,8 @@ class PanditJiAdapter(
             val name = "${panditJi.firstName ?: ""} ${panditJi.lastName ?: ""}"
             tvName.text = name
 
-            val experience = "${panditJi.city ?: ""} | ${panditJi.seoContent?.details?.experience ?: ""}"
+            val experience =
+                "${panditJi.city ?: ""} | ${panditJi.seoContent?.details?.experience ?: ""}"
             tvExperience.text = experience
 
             val about = "${panditJi.about ?: ""}  ★ 4.8"

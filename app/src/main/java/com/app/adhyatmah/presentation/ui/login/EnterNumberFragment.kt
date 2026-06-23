@@ -30,6 +30,7 @@ class EnterNumberFragment : BaseFragment<FragmentEnterNumberBinding>() {
     override fun setLayout(): Int {
         return R.layout.fragment_enter_number
     }
+
     override fun initView(savedInstanceState: Bundle?) {
         initViews()
         setCountryPicker()
@@ -50,21 +51,22 @@ class EnterNumberFragment : BaseFragment<FragmentEnterNumberBinding>() {
         alreadyHaveAccount()
         binding.loginBtn.setOnClickListener {
             if (validation()) {
-                sendOtp();
+                sendOtp()
             }
         }
         binding.loginPage.setOnClickListener {
             findNavController().navigate(R.id.signUpFragment)
         }
-//        AppUtils.setupHideKeyboardOnTouch(binding.root, requireActivity())
     }
 
     private fun validation(): Boolean {
         if (binding.phonenumberInput.getString().isEmpty()) {
-            Toast.makeText(requireContext(), "Please enter the number!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),
+                getString(R.string.please_enter_the_number), Toast.LENGTH_SHORT).show()
             return false
         } else if (binding.phonenumberInput.getString().length < 10) {
-            Toast.makeText(requireContext(), "Please enter a valid number!", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(),
+                getString(R.string.please_enter_a_valid_number), Toast.LENGTH_SHORT)
                 .show()
             return false
         } else {
@@ -85,7 +87,7 @@ class EnterNumberFragment : BaseFragment<FragmentEnterNumberBinding>() {
                 ds.color = ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorPrimary
-                ) // your link color
+                )
                 ds.isUnderlineText = true
             }
         }
@@ -105,7 +107,7 @@ class EnterNumberFragment : BaseFragment<FragmentEnterNumberBinding>() {
     }
 
     private fun sendOtp() {
-        var request = LoginWithMobileRequest(mobile = binding.phonenumberInput.text.toString())
+        val request = LoginWithMobileRequest(mobile = binding.phonenumberInput.text.toString())
         authViewModel.hitLoginWithMobileData(request)
         authViewModel.getLoginWithMobileData().observe(viewLifecycleOwner) {
             when (it.status) {
@@ -126,11 +128,14 @@ class EnterNumberFragment : BaseFragment<FragmentEnterNumberBinding>() {
                     }
                     ProcessDialog.dismissDialog(true)
                 }
+
                 Status.LOADING -> {
                     ProcessDialog.showDialog(requireContext(), true)
                 }
+
                 Status.ERROR -> {
-                    Toast.makeText(requireContext(),it.data?.message?:"",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), it.data?.message ?: "", Toast.LENGTH_SHORT)
+                        .show()
                     ProcessDialog.dismissDialog(true)
                 }
             }

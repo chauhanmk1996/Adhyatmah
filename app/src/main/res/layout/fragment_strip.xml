@@ -1,234 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-    </data>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.fragment.StripFragment">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-
-
-            <ScrollView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
+                android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textView70"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/proceed_to_pay"
+                    android:textColor="@color/black"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.092"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.072" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textView71"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/card_details_secured"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.436"
+                    app:layout_constraintStart_toStartOf="@+id/textView70"
+                    app:layout_constraintTop_toBottomOf="@+id/textView70"
+                    app:layout_constraintVertical_bias="0.066" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textView70"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="proceed to pay"
-                        android:textColor="@color/black"
-                        android:textSize="10dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.092"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.072" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textView72"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/card_number"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/textView70"
+                    app:layout_constraintTop_toBottomOf="@+id/textView71"
+                    app:layout_constraintVertical_bias="0.098" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textView71"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="card details secured"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.436"
-                        app:layout_constraintStart_toStartOf="@+id/textView70"
-                        app:layout_constraintTop_toBottomOf="@+id/textView70"
-                        app:layout_constraintVertical_bias="0.066" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_card_number"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:background="@drawable/rectangle_while_stoke_black"
+                    android:digits="0123456789- "
+                    android:hint="1234 5678 9012 3456"
+                    android:inputType="number"
+                    android:maxLength="30"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/textView72"
+                    app:layout_constraintTop_toBottomOf="@+id/textView72"
+                    app:layout_constraintVertical_bias="0.0" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textView72"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="card number"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textView70"
-                        app:layout_constraintTop_toBottomOf="@+id/textView71"
-                        app:layout_constraintVertical_bias="0.098" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textView73"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/expiry"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/et_card_number"
+                    app:layout_constraintTop_toBottomOf="@+id/et_card_number"
+                    app:layout_constraintVertical_bias="0.0" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_card_number"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginEnd="40dp"
-                        android:layout_marginTop="10dp"
-                        android:inputType="number"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:digits="0123456789- "
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:maxLength="30"
-                        android:hint="1234 5678 9012 3456"
-                        android:background="@drawable/rectangle_while_stoke_black"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textView72"
-                        app:layout_constraintTop_toBottomOf="@+id/textView72"
-                        app:layout_constraintVertical_bias="0.0"
-                        android:layout_marginRight="40dp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_expiry"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rectangle_while_stoke_black"
+                    android:hint="MM/YY"
+                    android:inputType="numberDecimal"
+                    android:maxLength="5"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="0dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/et_cvv"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/textView73"
+                    app:layout_constraintTop_toBottomOf="@+id/textView73"
+                    app:layout_constraintVertical_bias="0.0" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textView80"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="cvv"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView73"
+                    app:layout_constraintEnd_toEndOf="@+id/et_card_number"
+                    app:layout_constraintHorizontal_bias="0.554"
+                    app:layout_constraintStart_toEndOf="@+id/textView73"
+                    app:layout_constraintTop_toTopOf="@+id/textView73"
+                    app:layout_constraintVertical_bias="0.0" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textView73"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="expiry"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/et_card_number"
-                        app:layout_constraintTop_toBottomOf="@+id/et_card_number"
-                        app:layout_constraintVertical_bias="0.0" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_cvv"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rectangle_while_stoke_black"
+                    android:digits="0123456789"
+                    android:hint="@string/cvv"
+                    android:inputType="numberPassword"
+                    android:maxLength="3"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="0dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_card_number"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/textView80"
+                    app:layout_constraintTop_toBottomOf="@+id/textView80"
+                    app:layout_constraintVertical_bias="0.0" />
 
+                <Button
+                    android:id="@+id/btn_pay"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/rectangle_background_white_strock_2"
+                    android:text="@string/click_here"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/et_cvv"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/et_expiry"
+                    app:layout_constraintTop_toBottomOf="@+id/et_expiry"
+                    app:layout_constraintVertical_bias="0.243" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_expiry"
-                        android:layout_width="150dp"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/rectangle_while_stoke_black"
-                        android:hint="MM/YY"
-                        android:inputType="numberDecimal"
-                        android:maxLength="5"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="0dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/et_cvv"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textView73"
-                        app:layout_constraintTop_toBottomOf="@+id/textView73"
-                        app:layout_constraintVertical_bias="0.0"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="0dp" />
+                <ProgressBar
+                    android:id="@+id/loading_pay_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.479"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_expiry"
+                    app:layout_constraintVertical_bias="0.249" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textView80"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="cvv"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView73"
-                        app:layout_constraintEnd_toEndOf="@+id/et_card_number"
-                        app:layout_constraintHorizontal_bias="0.554"
-                        app:layout_constraintStart_toEndOf="@+id/textView73"
-                        app:layout_constraintTop_toTopOf="@+id/textView73"
-                        app:layout_constraintVertical_bias="0.0" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/rectangle_background_white_strock_2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.279"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_pay"
+                    app:layout_constraintVertical_bias="0.478" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_cvv"
-                        android:layout_width="150dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/rectangle_while_stoke_black"
-                        android:digits="0123456789"
-                        android:hint="CVV"
-                        android:inputType="numberPassword"
-                        android:maxLength="3"
-                        android:layout_marginTop="10dp"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="0dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/et_card_number"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toStartOf="@+id/textView80"
-                        app:layout_constraintTop_toBottomOf="@+id/textView80"
-                        app:layout_constraintVertical_bias="0.0"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="0dp" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textView28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/secured_by_paystack"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="@+id/imageView2"
+                    app:layout_constraintVertical_bias="0.0" />
 
-                    <Button
-                        android:id="@+id/btn_pay"
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/rectangle_background_white_strock_2"
-                        android:text="Click Here "
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textAllCaps="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/et_cvv"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/et_expiry"
-                        app:layout_constraintTop_toBottomOf="@+id/et_expiry"
-                        app:layout_constraintVertical_bias="0.243" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <ProgressBar
-                        android:id="@+id/loading_pay_order"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:visibility="gone"
-                        android:elevation="5dp"
-                        app:layout_constraintHorizontal_bias="0.479"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/et_expiry"
-                        app:layout_constraintVertical_bias="0.249" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/rectangle_background_white_strock_2"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.279"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btn_pay"
-                        app:layout_constraintVertical_bias="0.478" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textView28"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="secured by paystack"
-                        android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/imageView2"
-                        app:layout_constraintTop_toTopOf="@+id/imageView2"
-                        app:layout_constraintVertical_bias="0.0"
-                        android:layout_marginLeft="10dp" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </ScrollView>
-
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

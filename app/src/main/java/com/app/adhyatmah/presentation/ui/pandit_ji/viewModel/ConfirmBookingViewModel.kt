@@ -17,7 +17,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ConfirmBookingViewModel@Inject constructor(application: Application):AndroidViewModel(application) {
+class ConfirmBookingViewModel @Inject constructor(application: Application) :
+    AndroidViewModel(application) {
 
     private val bookPanditJiLiveData = MutableLiveData<Resources<PanditJiBookingResponse>>()
 
@@ -25,7 +26,7 @@ class ConfirmBookingViewModel@Inject constructor(application: Application):Andro
         return bookPanditJiLiveData
     }
 
-    fun hitBookPanditJi(request : BookPanditJiRequest) {
+    fun hitBookPanditJi(request: BookPanditJiRequest) {
         try {
             bookPanditJiLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
@@ -36,7 +37,12 @@ class ConfirmBookingViewModel@Inject constructor(application: Application):Andro
                         )
                     )
                 } catch (ex: Exception) {
-                    bookPanditJiLiveData.postValue(Resources.error(ex.localizedMessage?:""?:"", null))
+                    bookPanditJiLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
                 }
             }
         } catch (ex: Exception) {
@@ -48,7 +54,8 @@ class ConfirmBookingViewModel@Inject constructor(application: Application):Andro
     fun getBookingPaymentLiveData(): LiveData<Resources<BookingPaymentResponse>> {
         return bookingPaymentLiveData
     }
-    fun hitBookingPayment(request : BookingPaymentRequest) {
+
+    fun hitBookingPayment(request: BookingPaymentRequest) {
         try {
             bookingPaymentLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
@@ -59,7 +66,11 @@ class ConfirmBookingViewModel@Inject constructor(application: Application):Andro
                         )
                     )
                 } catch (ex: Exception) {
-                    bookingPaymentLiveData.postValue(Resources.error(ex.localizedMessage?:""?:"", null))
+                    bookingPaymentLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "", null
+                        )
+                    )
                 }
             }
         } catch (ex: Exception) {

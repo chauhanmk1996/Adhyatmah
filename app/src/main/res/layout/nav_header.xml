@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,12 +22,12 @@
                 android:layout_marginTop="60dp"
                 android:background="@drawable/home_logo"
                 android:fontFamily="@font/muktamahee_semibold"
-                android:text="Rontomsongh"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Rontomsongh" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/hhh"
@@ -34,14 +35,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/muktamahee_regular"
-                android:text="ACCRA AFRICA"
                 android:textColor="@color/black"
                 android:textFontWeight="400"
                 android:textSize="12dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/headerName" />
+                app:layout_constraintTop_toBottomOf="@id/headerName"
+                tools:text="ACCRA AFRICA" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerDrawer"
@@ -62,7 +63,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

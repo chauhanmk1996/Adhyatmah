@@ -32,9 +32,9 @@
                 android:fontFamily="@font/inter_semi_bold"
                 android:textColor="@color/black"
                 android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Product" />
 
@@ -47,8 +47,8 @@
                 android:orientation="horizontal"
                 android:paddingHorizontal="3dp"
                 android:paddingVertical="6dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.LinearLayoutCompat

@@ -5,9 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.app.adhyatmah.R
-import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
 import com.app.adhyatmah.data.preferences.PREVIOUS
-import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.databinding.FragmentPreviousBookingBinding
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.PreviousBookingAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.viewModel.BookingViewModel
@@ -28,6 +26,7 @@ class PreviousBookingFragment : BaseFragment<FragmentPreviousBookingBinding>() {
         hitPreviousBookingApi()
         observeBookings()
     }
+
     fun refresh() {
         hitPreviousBookingApi()
     }
@@ -40,18 +39,14 @@ class PreviousBookingFragment : BaseFragment<FragmentPreviousBookingBinding>() {
             {},
             {}
         ) {
-            // Handle item click
             Log.d("TAG", "Item clicked: $it")
-            // requireParentFragment().findNavController()
-            //     .navigate(R.id.action_bookingFragment_to_upcomingBookingDetailsFragment)
         }
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
 
     private fun hitPreviousBookingApi() {
         viewModel.hitGetBookings(
-            "previous", // or "previous" if your backend uses that status
-            Preferences.getStringPreference(requireContext(), ACCESS_TOKEN) ?: ""
+            "previous"
         )
     }
 

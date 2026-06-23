@@ -29,7 +29,7 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class AuthViewModel @Inject constructor(application: Application) : AndroidViewModel(application){
+class AuthViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
 
     private val loginLiveData = SingleLiveEvent<Resources<GetSignUpResponse>>()
     private val loginWithMobileLiveData = SingleLiveEvent<Resources<GetLoginResponse>>()
@@ -38,7 +38,6 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
     private val getGetProfileImgLiveData = SingleLiveEvent<Resources<GetProfileImgResponse>>()
     private val getVerifyOtpLiveData = SingleLiveEvent<Resources<GetSignUpResponse>>()
     private val getResendOtpLiveData = SingleLiveEvent<Resources<ApiResponse>>()
-
     private val uploadProfileImgLiveData = SingleLiveEvent<Resources<GetProfileResponse>>()
 
     fun getLoginData(request: LoginRequest) {
@@ -46,7 +45,6 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
             loginLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     loginLiveData.postValue(
                         Resources.success(
                             ApiRepository().getLoginAPIs(
@@ -55,21 +53,19 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    loginLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    loginLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
+
     fun hitLoginWithMobileData(request: LoginWithMobileRequest) {
         try {
             loginWithMobileLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     loginWithMobileLiveData.postValue(
                         Resources.success(
                             ApiRepository().getLoginWIthMobileApi(
@@ -78,24 +74,28 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    loginWithMobileLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    loginWithMobileLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
+
     fun getVerifyOtpData(): LiveData<Resources<GetSignUpResponse>> {
         return getVerifyOtpLiveData
     }
+
     fun hitVerifyOtpData(request: RegistrationModel) {
         try {
             getVerifyOtpLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     getVerifyOtpLiveData.postValue(
                         Resources.success(
                             ApiRepository().getVerifyOtpApi(
@@ -104,24 +104,23 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    getVerifyOtpLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    getVerifyOtpLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
+
     fun getResendOtpData(): LiveData<Resources<ApiResponse>> {
         return getResendOtpLiveData
     }
+
     fun hitResendOtpData(request: SendOtpModel) {
         try {
             getResendOtpLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     getResendOtpLiveData.postValue(
                         Resources.success(
                             ApiRepository().getResendOtpApi(
@@ -130,15 +129,15 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    getResendOtpLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
+                    getResendOtpLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
+
     fun getLoginWithMobileData(): LiveData<Resources<GetLoginResponse>> {
         return loginWithMobileLiveData
     }
@@ -148,7 +147,6 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
             getProfileLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     getProfileLiveData.postValue(
                         Resources.success(
                             ApiRepository().getProfileAPI(
@@ -157,61 +155,40 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    getProfileLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    getProfileLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
-    fun hitAPIProfileImageData(customerId: String){
+
+    fun hitAPIProfileImageData(customerId: String) {
         try {
             getGetProfileImgLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     getGetProfileImgLiveData.postValue(
                         Resources.success(
-                            ApiRepository().getProfileImage(customerId
+                            ApiRepository().getProfileImage(
+                                customerId
                             )
                         )
                     )
                 } catch (ex: Exception) {
-                    getGetProfileImgLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
-                }
-            }
-
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-    }
-   /* fun hitEditProfileData(request: EditProfileRequest) {
-        try {
-            getEditLiveData.postValue(Resources.loading(null))
-            viewModelScope.launch {
-                try {
-
-                    getEditLiveData.postValue(
-                        Resources.success(
-                            ApiRepository().editProfileAPI(
-                                request
-                            )
+                    getGetProfileImgLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
                         )
                     )
-                } catch (ex: Exception) {
-                    getEditLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
-*/
+
     fun hitEditProfileData(request: EditProfileRequest) {
         getEditLiveData.postValue(Resources.loading(null))
         viewModelScope.launch {
@@ -232,12 +209,14 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                 }
                 getEditLiveData.postValue(Resources.error(errorMessage, null))
             } catch (ex: Exception) {
-                getEditLiveData.postValue(Resources.error(ex.localizedMessage?:"" ?: "Unknown error", null))
+                getEditLiveData.postValue(
+                    Resources.error(
+                        ex.localizedMessage ?: "" ?: "Unknown error", null
+                    )
+                )
             }
         }
     }
-
-
 
     fun uploadImageToServer(file: MultipartBody.Part, customerId: RequestBody) {
         uploadProfileImgLiveData.postValue(Resources.loading(null))
@@ -246,49 +225,51 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                 val response = ApiRepository().uploadImage(file, customerId)
                 uploadProfileImgLiveData.postValue(Resources.success(response))
             } catch (e: Exception) {
-                uploadProfileImgLiveData.postValue(Resources.error(e.localizedMessage ?: "Error occurred", null))
+                uploadProfileImgLiveData.postValue(
+                    Resources.error(
+                        e.localizedMessage ?: "Error occurred", null
+                    )
+                )
             }
         }
     }
 
-
-
-
     fun getLoginData(): LiveData<Resources<GetSignUpResponse>> {
         return loginLiveData
     }
+
     fun uploadProfileImgData(): LiveData<Resources<GetProfileResponse>> {
         return uploadProfileImgLiveData
     }
+
     fun getProfileData(): LiveData<Resources<GetProfileResponse>> {
         return getProfileLiveData
     }
+
     fun getEditProfileData(): LiveData<Resources<GetProfileResponse>> {
         return getEditLiveData
     }
+
     fun getProfileImgData(): LiveData<Resources<GetProfileImgResponse>> {
         return getGetProfileImgLiveData
     }
 
-
     private val landingPageLiveData = SingleLiveEvent<Resources<GetLandingPageResponse>>()
+
     fun getLandingPagesData() {
         try {
             landingPageLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     landingPageLiveData.postValue(
                         Resources.success(
                             ApiRepository().getLandingAPIs()
                         )
                     )
                 } catch (ex: Exception) {
-                    landingPageLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    landingPageLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -305,7 +286,6 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
             signUpLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     signUpLiveData.postValue(
                         Resources.success(
                             ApiRepository().getSignUpAPIs(
@@ -314,11 +294,9 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    signUpLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    signUpLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -328,7 +306,6 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
         return signUpLiveData
     }
 
-
     private val forgotLiveData = SingleLiveEvent<Resources<ForgotPassResponse>>()
 
     fun getForgotData(request: ForgotPassRequest) {
@@ -336,18 +313,15 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
             forgotLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     forgotLiveData.postValue(
                         Resources.success(
                             ApiRepository().getForgotApi(request)
                         )
                     )
                 } catch (ex: Exception) {
-                    forgotLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    forgotLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -356,7 +330,4 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
     fun getForgotPassData(): LiveData<Resources<ForgotPassResponse>> {
         return forgotLiveData
     }
-
-
-
 }

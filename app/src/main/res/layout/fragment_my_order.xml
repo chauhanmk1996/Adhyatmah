@@ -5,48 +5,50 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/black_opacity_10"
+        android:orientation="vertical"
         tools:context=".presentation.ui.fragment.MyOrderFragment">
 
         <RelativeLayout
+            android:id="@+id/gg"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:id="@+id/gg"
             android:elevation="10dp"
             tools:ignore="UselessLeaf">
+
             <LinearLayout
-                android:layout_marginTop="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="40dp"
+                android:orientation="horizontal"
                 tools:ignore="UselessParent">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/back_img"
-                    android:elevation="2dp"
                     android:layout_width="24dp"
-                    android:tint="#222222"
+                    android:layout_height="24dp"
+                    android:elevation="2dp"
                     android:src="@drawable/back_arrow1"
-                    android:layout_height="24dp"/>
+                    android:tint="#222222" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/my_orders_title"
                     android:layout_width="wrap_content"
-                    android:text="@string/my_orders"
-                    android:textSize="18sp"
-                    android:gravity="start"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:fontFamily="@font/muktamahee_regular"
+                    android:gravity="start"
+                    android:text="@string/my_orders"
                     android:textColor="@color/black"
                     android:textFontWeight="600"
-                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
                     tools:targetApi="28" />
 
             </LinearLayout>
 
         </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -58,33 +60,31 @@
                 android:id="@+id/here_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/here_are_your_orders"
-                android:textSize="16dp"
-                android:fontFamily="@font/muktamahee_semibold"
                 android:layout_marginTop="20dp"
-                android:textColor="@color/black_272727"/>
+                android:fontFamily="@font/muktamahee_semibold"
+                android:text="@string/here_are_your_orders"
+                android:textColor="@color/black_272727"
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                />
+                android:layout_marginTop="16dp" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textNoOrder"
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                android:text="No Order Available"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/muktamahee_bold"
                 android:gravity="center"
+                android:text="@string/no_order_available"
                 android:textColor="@color/black"
                 android:textSize="19dp"
-                android:fontFamily="@font/muktamahee_bold"
-                android:layout_height="match_parent"/>
+                android:visibility="gone" />
 
         </LinearLayout>
 
-
     </LinearLayout>
+
 </layout>
-
-

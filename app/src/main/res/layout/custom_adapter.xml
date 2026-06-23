@@ -1,21 +1,22 @@
-<com.google.android.material.textfield.TextInputLayout android:id="@+id/currencyInputLayout"
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/currencyInputLayout"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginEnd="15dp"
     android:layout_marginBottom="4dp"
     app:layout_constraintBottom_toTopOf="@+id/viewpager"
-    app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:layout_constraintTop_toTopOf="parent">
 
     <com.google.android.material.textfield.MaterialAutoCompleteTextView
         android:id="@+id/downArrow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Select Currency"
-        android:inputType="none"
+        android:backgroundTint="@color/black"
         android:dropDownHeight="wrap_content"
-        android:backgroundTint="@color/black" />
+        android:hint="@string/select_currency"
+        android:inputType="none" />
+
 </com.google.android.material.textfield.TextInputLayout>

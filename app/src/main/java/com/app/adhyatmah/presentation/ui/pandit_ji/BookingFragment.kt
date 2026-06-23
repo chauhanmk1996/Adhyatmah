@@ -1,7 +1,6 @@
 package com.app.adhyatmah.presentation.ui.pandit_ji
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,17 +19,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class BookingFragment : Fragment() {
     private lateinit var binding: FragmentBookingBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?,
+    ): View {
         binding = FragmentBookingBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -38,17 +31,10 @@ class BookingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadTabs()
+
         binding.backBtn.setOnClickListener {
             findNavController().popBackStack()
         }
-
-    }
-
-    private fun initViews() {
-        /* binding.ivBack.setOnClickListener {
-             findNavController().popBackStack()
-         }*/
-        loadTabs()
     }
 
     private fun loadTabs() {
@@ -60,6 +46,7 @@ class BookingFragment : Fragment() {
                 PreviousBookingFragment(),
                 CancelledBookingFragment(),
             )
+
         val adapter = HelpCenterAdapter(this, fragments)
         binding.viewPager.adapter = adapter
         binding.viewPager.offscreenPageLimit = 1
@@ -85,14 +72,11 @@ class BookingFragment : Fragment() {
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
         })
-
-
     }
-    private fun refreshFragment(position: Int) {
-        val tag = "f$position"   // ViewPager2 fragment tag
-        val fragment = childFragmentManager.findFragmentByTag(tag)
 
-        when (fragment) {
+    private fun refreshFragment(position: Int) {
+        val tag = "f$position"
+        when (val fragment = childFragmentManager.findFragmentByTag(tag)) {
             is PendingBookingFragment -> fragment.refresh()
             is OngoingBookingFragment -> fragment.refresh()
             is UpcomingBookingsFragment -> fragment.refresh()
@@ -100,6 +84,4 @@ class BookingFragment : Fragment() {
             is CancelledBookingFragment -> fragment.refresh()
         }
     }
-
-
 }

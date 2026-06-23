@@ -23,6 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop" />
+
         </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -33,7 +34,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/muktamahee_regular"
             android:maxLines="1"
-            android:text="Designing the Ratio Eight"
+            android:text="@string/designing_the_ratio_eight"
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@id/cardView"
@@ -49,7 +50,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/muktamahee_regular"
             android:maxLines="3"
-            android:text="We have your occasion covered..."
+            android:text="@string/we_have_your_occasion_covered"
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="@+id/header"

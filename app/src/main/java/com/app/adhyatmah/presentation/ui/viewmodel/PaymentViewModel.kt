@@ -8,7 +8,6 @@ import com.app.adhyatmah.domain.create_order.creat_order_request.CreaterOrderReq
 import com.app.adhyatmah.domain.create_order.creater_order_response.CreateCODResponse
 import com.app.adhyatmah.domain.model.faq.FAQResponse
 import com.app.adhyatmah.domain.repository.ApiRepository
-import com.app.adhyatmah.payment.message_sms.sms_request.SMSRequest
 import com.app.adhyatmah.payment.message_sms.sms_response.SMSResponse
 import com.app.adhyatmah.payment.payment.PaymentTypeResponse
 import com.app.adhyatmah.payment.paymentIniRequest.PaymentIniRequest
@@ -16,7 +15,6 @@ import com.app.adhyatmah.payment.payment_clear_order_list_resp.PaymentSuccessCle
 import com.app.adhyatmah.payment.payment_clear_order_request.PaymentSuccessClearOrderRequest
 import com.app.adhyatmah.payment.payment_initialize_response.PaymentIniResponse
 import com.app.adhyatmah.payment.payment_varify_response.PaymentVerifyResponse
-import com.app.adhyatmah.payment.payment_verify_request.PaymentVerifyRequest
 import com.app.adhyatmah.utils.common_utils.Resources
 import com.app.adhyatmah.utils.common_utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,31 +22,29 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PaymentViewModel @Inject constructor(application: Application):AndroidViewModel(application){
+class PaymentViewModel @Inject constructor(application: Application) :
+    AndroidViewModel(application) {
 
     private val codLiveData = SingleLiveEvent<Resources<CreateCODResponse>>()
     private val faqLiveData = SingleLiveEvent<Resources<FAQResponse>>()
-    private val smsLiveData = SingleLiveEvent<Resources<SMSResponse>>()
     private val paymentMethodLiveData = SingleLiveEvent<Resources<PaymentTypeResponse>>()
 
     fun getCOD(): LiveData<Resources<CreateCODResponse>> {
         return codLiveData
     }
-    fun hipAPICreateCODOrder(request : CreaterOrderRequest) {
+
+    fun hipAPICreateCODOrder(request: CreaterOrderRequest) {
         try {
             codLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     codLiveData.postValue(
                         Resources.success(
                             ApiRepository().createCODPaymentAPI(request)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    codLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    codLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
 
@@ -59,43 +55,18 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
 
     private val payStackLiveData = SingleLiveEvent<Resources<PaymentIniResponse>>()
 
-    fun createPayStackOrder(request : PaymentIniRequest) {
+    fun createPayStackOrder(request: PaymentIniRequest) {
         try {
             payStackLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     payStackLiveData.postValue(
                         Resources.success(
                             ApiRepository().payStackPaymentAPI(request)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    payStackLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
-                }
-            }
-
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-    }
-     fun hitSMSApi(request : SMSRequest) {
-        try {
-            smsLiveData.postValue(Resources.loading(null))
-            viewModelScope.launch {
-                try {
-
-                    smsLiveData.postValue(
-                        Resources.success(
-                            ApiRepository().smsAPi(request)
-                        )
-
-                    )
-                } catch (ex: Exception) {
-                    smsLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    payStackLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
 
@@ -109,16 +80,13 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
             faqLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     faqLiveData.postValue(
                         Resources.success(
                             ApiRepository().faqAPI(role)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    faqLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    faqLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
                 }
             }
 
@@ -130,41 +98,17 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
     fun getPayStackApisResponse(): LiveData<Resources<PaymentIniResponse>> {
         return payStackLiveData
     }
+
     fun getFAQApiResponse(): LiveData<Resources<FAQResponse>> {
         return faqLiveData
     }
-    fun getSMSApiResponse(): LiveData<Resources<SMSResponse>> {
-        return smsLiveData
-    }
+
     fun getPaymentMethodApiResponse(): LiveData<Resources<PaymentTypeResponse>> {
         return paymentMethodLiveData
     }
 
-
     private val paymentVerifyLiveData = SingleLiveEvent<Resources<PaymentVerifyResponse>>()
 
-    fun paymentVerify(request : PaymentVerifyRequest) {
-        try {
-            paymentVerifyLiveData.postValue(Resources.loading(null))
-            viewModelScope.launch {
-                try {
-
-                    paymentVerifyLiveData.postValue(
-                        Resources.success(
-                            ApiRepository().paymentVerifyAPI(request)
-                        )
-
-                    )
-                } catch (ex: Exception) {
-                    paymentVerifyLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
-                }
-            }
-
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-    }
     fun hitPaymentTypeAPI() {
         try {
             paymentMethodLiveData.postValue(Resources.loading(null))
@@ -179,7 +123,12 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
 
                     )
                 } catch (ex: Exception) {
-                    paymentMethodLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
+                    paymentMethodLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
 
                 }
             }
@@ -189,31 +138,28 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
         }
     }
 
-    fun getPaymentVerifyResponse(): LiveData<Resources<PaymentVerifyResponse>> {
-        return paymentVerifyLiveData
-    }
+    private val paymentSuOrderClearLiveData =
+        SingleLiveEvent<Resources<PaymentSuccessClearAllOrderResp>>()
 
-
- private val paymentSuOrderClearLiveData = SingleLiveEvent<Resources<PaymentSuccessClearAllOrderResp>>()
-
-    fun paymentSuOrderClearAPIs(accessToken : PaymentSuccessClearOrderRequest) {
+    fun paymentSuOrderClearAPIs(accessToken: PaymentSuccessClearOrderRequest) {
         try {
             paymentSuOrderClearLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
-
                     paymentSuOrderClearLiveData.postValue(
                         Resources.success(
                             ApiRepository().paymentSucClearOrderAPI(accessToken)
                         )
-
                     )
                 } catch (ex: Exception) {
-                    paymentSuOrderClearLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
-
+                    paymentSuOrderClearLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
                 }
             }
-
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -222,6 +168,4 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
     fun getPaymentSuOrderClearRes(): LiveData<Resources<PaymentSuccessClearAllOrderResp>> {
         return paymentSuOrderClearLiveData
     }
-
-
 }

@@ -40,11 +40,9 @@ import com.app.adhyatmah.utils.common_utils.Status
 import com.app.adhyatmah.utils.getString
 import com.google.android.material.snackbar.Snackbar
 
-
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
     private val authViewModel by activityViewModels<AuthViewModel>()
     private var isPasswordVisible = false
-
 
     override fun setLayout(): Int {
         return R.layout.fragment_sign_up
@@ -71,48 +69,47 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
 
     fun subFun() {
         binding.loginPage.setOnClickListener {
-            // Toast.makeText(requireActivity(),"1",Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
         }
+
         setObserver()
+
         binding.togglePasswordVisibility.setOnClickListener {
             isPasswordVisible = !isPasswordVisible
             if (isPasswordVisible) {
                 binding.etPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                binding.togglePasswordVisibility.setImageResource(R.drawable.eye_off) // 👁️ eye-open icon
+                binding.togglePasswordVisibility.setImageResource(R.drawable.eye_off)
             } else {
                 binding.etPassword.inputType =
                     InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                binding.togglePasswordVisibility.setImageResource(R.drawable.eye_on) // 🙈 eye-off icon
+                binding.togglePasswordVisibility.setImageResource(R.drawable.eye_on)
             }
-            binding.etPassword.setSelection(binding.etPassword.text!!.length) // keep cursor at end
+            binding.etPassword.setSelection(binding.etPassword.text!!.length)
         }
         hitSignUpAPi()
         privacyPolicy()
         keyBoardClose()
+
         binding.togglePasswordVisibility.setOnClickListener {
             isPasswordVisible = !isPasswordVisible
             if (isPasswordVisible) {
                 binding.etPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                binding.togglePasswordVisibility.setImageResource(R.drawable.eye_off) // 👁️ eye-open icon
+                binding.togglePasswordVisibility.setImageResource(R.drawable.eye_off)
             } else {
                 binding.etPassword.inputType =
                     InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                binding.togglePasswordVisibility.setImageResource(R.drawable.eye_on) // 🙈 eye-off icon
+                binding.togglePasswordVisibility.setImageResource(R.drawable.eye_on)
             }
-            binding.etPassword.setSelection(binding.etPassword.text!!.length) // keep cursor at end
+            binding.etPassword.setSelection(binding.etPassword.text!!.length)
         }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     fun keyBoardClose() {
         binding.scrollV.setOnTouchListener { _, motionEvent ->
-            // Check if the touch event is outside an EditText
             if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                // Find the currently focused view
                 val currentFocusedView = requireActivity().currentFocus
                 if (currentFocusedView is EditText) {
-                    // If it's an EditText, hide the keyboard when tapping outside of it
                     val imm =
                         requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(currentFocusedView.windowToken, 0)
@@ -122,62 +119,64 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
         }
     }
 
-
     fun hitSignUpAPi() {
         binding.signUpBtn.setOnClickListener {
             val firstName = binding.firstName.getString()
             val lastName = binding.etLastName.getString()
             val email = binding.etEmail.getString()
             val password = binding.etPassword.getString()
-//            val gender = "male"
             val phone = binding.etPhoneNumber.getString()
             val role = "user"
 
-            // Validate first name
             if (!isValidName(firstName)) {
-//                binding.firstName.error = "Please enter your first name"
-                //   Toast.makeText(requireActivity(), "Please enter your first name", Toast.LENGTH_SHORT).show()
                 Toast.makeText(
                     requireActivity(),
-                    "Please enter your valid first name",
+                    getString(R.string.please_enter_your_valid_first_name),
                     Toast.LENGTH_SHORT
                 ).show()
                 Toast.makeText(
                     requireActivity(),
-                    "Please enter your first name",
+                    getString(R.string.please_enter_your_first_name),
                     Toast.LENGTH_SHORT
                 ).show()
 
                 return@setOnClickListener
             }
 
-            // Validate last name
             if (!isValidName(lastName)) {
-//                binding.etLastName.error = "Please enter your last name"
-                Toast.makeText(requireActivity(), "Please enter your last name", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.please_enter_your_last_name), Toast.LENGTH_SHORT
+                )
                     .show()
 
                 return@setOnClickListener
             }
 
-            // Validate email
             if (email.isEmpty()) {
-                Toast.makeText(requireActivity(), "Please enter your email", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.please_enter_your_email),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
                 return@setOnClickListener
 
             }
 
             if (!isValidEmail(email)) {
-//                binding.etEmail.error = "Invalid email format"
-                Toast.makeText(requireActivity(), "Invalid email format", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.invalid_email_format),
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
             if (phone.isEmpty()) {
                 Toast.makeText(
                     requireActivity(),
-                    "Please enter your phone number",
+                    getString(R.string.please_enter_your_phone_number),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -186,7 +185,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
             if (phone.length < 10) {
                 Toast.makeText(
                     requireActivity(),
-                    "Please enter a valid phone number",
+                    getString(R.string.please_enter_a_valid_phone_number),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -194,25 +193,24 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
             }
 
             if (password.isEmpty()) {
-                Toast.makeText(requireActivity(), "Please enter password ", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.please_enter_password), Toast.LENGTH_SHORT
+                )
                     .show()
                 return@setOnClickListener
             }
 
-            // Validate password
             if (!isValidPassword(password)) {
-
-//                binding.etPassword.error = "Password must be at least 6 characters"
                 Toast.makeText(
                     requireActivity(),
-                    "Password must be at least 6 characters",
+                    getString(R.string.password_must_be_at_least_6_characters),
                     Toast.LENGTH_SHORT
                 ).show()
 
                 return@setOnClickListener
             }
 
-            // Proceed with signup
             val fcmToken = Preferences.getStringPreference(requireContext(), FCM_TOKEN)
             val request = SignUpRequest(
                 firstName,
@@ -228,7 +226,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
         }
 
     }
-
 
     fun privacyPolicy() {
         val terms = getString(R.string.terms_of_services)
@@ -253,7 +250,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                         R.id.action_signUpFragment_to_termConditionFragment,
                         bundle
                     )
-                    // Toast.makeText(requireContext(), "$terms clicked", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun updateDrawState(ds: TextPaint) {
@@ -275,8 +271,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
             val privacySpan = object : ClickableSpan() {
                 override fun onClick(widget: View) {
                     findNavController().navigate(R.id.action_signUpFragment_to_termConditionFragment)
-
-//                    Toast.makeText(requireContext(), "$privacy clicked", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun updateDrawState(ds: TextPaint) {
@@ -302,12 +296,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
         authViewModel.getSignupData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         201, 200 -> {
-                            var data = it.data.payload
-                            var token = it.data.payload.accessToken
+                            val data = it.data.payload
+                            val token = it.data.payload.accessToken
                             authViewModel.hitAPIProfileData(token)
                             Preferences.setStringPreference(requireContext(), ACCESS_TOKEN, token)
                             Preferences.setCustomModelPreference(
@@ -318,21 +311,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                             Preferences.setStringPreference(requireContext(), IS_LOGIN, "1")
                             Toast.makeText(
                                 requireActivity(),
-                                "${it.data.message}",
+                                getString(R.string.account_created_to_successfully),
                                 Toast.LENGTH_SHORT
                             ).show()
-
-
-                            /*val navController = view?.let { it1 -> Navigation.findNavController(it1) }
-                            navController?.navigate(R.id.action_signUpFragment_to_loginFragment)
-*/
-                            Toast.makeText(
-                                requireActivity(),
-                                "Account created to successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
-
                         }
 
                         401 -> {
@@ -352,17 +333,16 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
+
         authViewModel.getProfileData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload
-                            var payload = it.data.payload
+                            val data = it.data.payload
+                            val payload = it.data.payload
                             Preferences.setStringPreference(
                                 requireContext(),
                                 EMAIL_ID1,
@@ -376,7 +356,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                             )
                             startActivity(Intent(requireActivity(), MainActivity::class.java))
                             requireActivity().finish()
-
                         }
 
                         401 -> {
@@ -396,10 +375,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
-
     }
 
     private fun isValidEmail(email: String): Boolean {
@@ -414,5 +390,4 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
     private fun isValidName(name: String): Boolean {
         return name.isNotEmpty()
     }
-
 }
