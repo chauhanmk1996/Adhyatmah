@@ -85,7 +85,8 @@ class StripFragment : BaseFragment<FragmentStripBinding>() {
                 val text = s.toString()
                 if (text.length == 2 && !text.contains("/")) {
                     isFormattingExpiry = true
-                    binding.etExpiry.setText("$text/")
+                    val expiryText = "$text/"
+                    binding.etExpiry.setText(expiryText)
                     binding.etExpiry.setSelection(binding.etExpiry.getLength())
                     isFormattingExpiry = false
                 }
@@ -181,7 +182,7 @@ class StripFragment : BaseFragment<FragmentStripBinding>() {
         var month = 0
         try {
             month = sMonth.toInt()
-        } catch (ignored: Exception) {
+        } catch (_: Exception) {
         }
 
         card.expiryMonth = month
@@ -189,7 +190,7 @@ class StripFragment : BaseFragment<FragmentStripBinding>() {
         var year = 0
         try {
             year = sYear.toInt()
-        } catch (ignored: Exception) {
+        } catch (_: Exception) {
         }
         card.expiryYear = year
 
@@ -200,21 +201,10 @@ class StripFragment : BaseFragment<FragmentStripBinding>() {
         transaction = null
         PaystackSdk.chargeCard(requireActivity(), charge, object : Paystack.TransactionCallback {
             override fun onSuccess(transaction: Transaction) {
-
-                Log.d("Paystack", "Transaction Successful")
-                Log.d("Paystack", "Reference: ${transaction.reference}")
-                Log.d("Paystack", "Reference: ${transaction.toString()}")
-
-                Log.d("Paystack", "Charge Email: ${charge?.email}")
-                Log.d("Paystack", "Charge Amount: ${charge?.amount}")
-                Log.d("Paystack", "Charge Currency: ${charge?.currency}")
-                Log.d("Paystack", "Charge Reference: ${charge?.reference}")
-
-                //hide loading
                 binding.loadingPayOrder.visibility = View.GONE
                 binding.btnPay.visibility = View.VISIBLE
 
-                val request = PaymentIniRequest(
+                PaymentIniRequest(
                     token,
                     addressId,
                     carId,

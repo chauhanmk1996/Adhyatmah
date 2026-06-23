@@ -46,6 +46,7 @@ import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.app.adhyatmah.utils.getString
 import com.google.android.material.snackbar.Snackbar
+import java.util.Locale
 
 class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
@@ -221,15 +222,15 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         val availableVariants = productVariants.filter { it.availableForSale }
         val availableSizes = availableVariants
             .filter { it.partialMatch(selectedOptions, exclude = "Size") }
-            .mapNotNull { it.selectedOptions.find { it.name == "Size" }?.value }
+            .mapNotNull { it.selectedOptions.find { sizeOption -> sizeOption.name == "Size" }?.value }
 
         val availableColors = availableVariants
             .filter { it.partialMatch(selectedOptions, exclude = "Color") }
-            .mapNotNull { it.selectedOptions.find { it.name == "Color" }?.value }
+            .mapNotNull { it.selectedOptions.find { colorOption -> colorOption.name == "Color" }?.value }
 
         val availableSleeves = availableVariants
             .filter { it.partialMatch(selectedOptions, exclude = "Sleeve length type") }
-            .mapNotNull { it.selectedOptions.find { it.name == "Sleeve length type" }?.value }
+            .mapNotNull { it.selectedOptions.find { sleevesOption -> sleevesOption.name == "Sleeve length type" }?.value }
 
         productDetailSizeAdapter.updateSizeList(getAllSizes(), availableSizes.distinct())
         productDetailColorAdapter.updateColorList(getAllColors(), availableColors.distinct())
@@ -365,7 +366,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             when (it.status) {
                 Status.SUCCESS -> {
 
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload.product
@@ -374,7 +375,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                             stockQuantity = data.stockQuantity
                             setViewPager(img)
                             setAdapters(data)
-                            binding.greyPullover.text = data.title ?: ""
+                            binding.greyPullover.text = data.title
                             binding.productDetailsDis.text = data.description
 
                             if (!data.variants.isNullOrEmpty()) {
@@ -438,14 +439,17 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload.product.reviews
-                            binding.numOfRating.text = data.size.toString() + " " + "Ratings"
+                            val numOfRatingText =
+                                data.size.toString() + " " + getString(R.string.ratings)
+                            binding.numOfRating.text = numOfRatingText
 
-                            val totalRating = data.sumOf { it.rating.toDouble() }
+                            val totalRating = data.sumOf { rating->rating.rating.toDouble() }
                             val averageRating =
                                 if (data.isNotEmpty()) totalRating / data.size else 0.0
 
-                            binding.numOfRating.text = "${data.size} Ratings"
-                            binding.numRate.text = String.format("%.1f", averageRating)
+                            binding.numOfRating.text = numOfRatingText
+                            binding.numRate.text =
+                                String.format(Locale.getDefault(), "%.1f", averageRating)
                             binding.rating.rating = averageRating.toFloat()
                             binding.rating.progressTintList = ColorStateList.valueOf(Color.BLACK)
                             binding.rating.secondaryProgressTintList =
@@ -491,7 +495,6 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                             CART_COUNT = it.data.payload.cart.lines.edges.size
                             (requireActivity() as MainActivity).updateBagBadge(CART_COUNT)
                             updateCartBadge(CART_COUNT)
-
                             (requireActivity() as MainActivity).switchToCartTab()
                         }
 
@@ -569,7 +572,8 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     private fun updateSelectedVariant() {
         val match = productVariants.firstOrNull { it.matches(selectedOptions) }
         if (match != null && match.availableForSale) {
-            binding.price.text = "${match.price?.currencyCode} ${match?.price?.amount}"
+            val priceText = "${match.price?.currencyCode} ${match.price?.amount}"
+            binding.price.text = priceText
             binding.BagBtn.isEnabled = true
             binding.BagBtn.setBackgroundResource(R.drawable.rectangle_000000_radius_12)
             binding.BagBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
@@ -584,15 +588,15 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         val availableVariants = productVariants.filter { it.availableForSale }
         val availableSizes = availableVariants
             .filter { it.partialMatch(selectedOptions, exclude = "Size") }
-            .mapNotNull { it.selectedOptions.find { it.name == "Size" }?.value }
+            .mapNotNull { it.selectedOptions.find { sizeOption -> sizeOption.name == "Size" }?.value }
 
         val availableColors = availableVariants
             .filter { it.partialMatch(selectedOptions, exclude = "Color") }
-            .mapNotNull { it.selectedOptions.find { it.name == "Color" }?.value }
+            .mapNotNull { it.selectedOptions.find { colorOption -> colorOption.name == "Color" }?.value }
 
         val availableSleeves = availableVariants
             .filter { it.partialMatch(selectedOptions, exclude = "Sleeve length type") }
-            .mapNotNull { it.selectedOptions.find { it.name == "Sleeve length type" }?.value }
+            .mapNotNull { it.selectedOptions.find { sleeveOption -> sleeveOption.name == "Sleeve length type" }?.value }
 
         productDetailSizeAdapter.updateSizeList(getAllSizes(), availableSizes.distinct())
         productDetailColorAdapter.updateColorList(getAllColors(), availableColors.distinct())

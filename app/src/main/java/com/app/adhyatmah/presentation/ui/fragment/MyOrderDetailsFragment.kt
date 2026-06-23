@@ -29,8 +29,7 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
 
     private val profileViewModel by activityViewModels<ProfileViewModel>()
     private var myOrdersDetailsAdapter: MyOrderDetailsAdapter? = null
-    val orderList =
-        mutableListOf<com.app.adhyatmah.domain.model.customer_all_order_response.customer_order_details.Item>()
+    val orderList = mutableListOf<com.app.adhyatmah.domain.model.customer_all_order_response.customer_order_details.Item>()
     var byOderId = ""
     var name = ""
 
@@ -51,7 +50,6 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
         binding.cancelBtn.setOnClickListener {
             val request = CancelOrderRequest(byOderId)
             profileViewModel.cancelOrderData(request)
-
         }
 
         myOrdersDetailsAdapter = MyOrderDetailsAdapter(orderList)
@@ -61,7 +59,6 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
             copyToClipboard(byOderId)
             binding.copy.text = getString(R.string.copied)
         }
-
     }
 
     private fun copyToClipboard(text: String) {
@@ -154,7 +151,6 @@ class MyOrderDetailsFragment : BaseFragment<FragmentMyOrderDetailsBinding>() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-
                     }
                     ProcessDialog.dismissDialog(true)
                 }

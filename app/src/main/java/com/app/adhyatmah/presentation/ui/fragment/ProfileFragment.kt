@@ -93,7 +93,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 getString(R.string.wishlist) -> {
                     if (isLogin == "1") {
                         findNavController().navigate(R.id.action_profile_to_wishlist)
-                    }else {
+                    } else {
                         signupRequired(getString(R.string.please_sign_up_required_to_see_wishlist))
                     }
                 }
@@ -101,7 +101,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 getString(R.string.my_orders) -> {
                     if (isLogin == "1") {
                         findNavController().navigate(R.id.action_profileFragment_to_myOrderFragment)
-                    }else {
+                    } else {
                         signupRequired(getString(R.string.please_sign_up_required_to_see_my_order))
                     }
                 }
@@ -109,7 +109,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 getString(R.string.my_booking) -> {
                     if (isLogin == "1") {
                         findNavController().navigate(R.id.action_profileFragment_to_bookingFragment)
-                    }else {
+                    } else {
                         signupRequired(getString(R.string.please_sign_up_required_to_see_my_booking))
                     }
                 }
@@ -117,7 +117,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 getString(R.string.manage_address) -> {
                     if (isLogin == "1") {
                         findNavController().navigate(R.id.action_profileFragment_to_mangeAddressFragment)
-                    }else {
+                    } else {
                         signupRequired(getString(R.string.please_sign_up_required_to_see_manage_address))
                     }
                 }
@@ -171,7 +171,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         bottomSheet.show(parentFragmentManager, "LogoutBottomSheetFragment")
     }
 
-    private fun signupRequired(message:String) {
+    private fun signupRequired(message: String) {
         val bottomSheet =
             SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)

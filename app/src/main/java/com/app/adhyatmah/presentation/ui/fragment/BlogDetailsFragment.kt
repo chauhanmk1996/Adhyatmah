@@ -8,12 +8,12 @@ import com.app.adhyatmah.databinding.FragmentBlogDetailsBinding
 import com.app.adhyatmah.utils.base.BaseFragment
 
 class BlogDetailsFragment : BaseFragment<FragmentBlogDetailsBinding>() {
+
     override fun setLayout(): Int {
         return R.layout.fragment_blog_details
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-
         val title = arguments?.getString("title")
         val content = arguments?.getString("content")
         val imageUrl = arguments?.getString("imageUrl")

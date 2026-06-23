@@ -137,7 +137,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>() {
                     isLoading = false
                     Snackbar.make(
                         requireView(),
-                        it.message ?: "Unknown error",
+                        it.message ?: getString(R.string.unknown_error),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }

@@ -319,11 +319,11 @@
     <string name="out_of_5">out of 5</string>
     <string name="reviews">Reviews</string>
     <string name="_118_ratings">118 Ratings</string>
-    <string name="loading_please_wait">Loading, please wait...</string>
+    <string name="loading_please_wait">Loading, please wait…</string>
     <string name="forgot_your_password_heading">Forgot your password?</string>
     <string name="size_chart">SIZE CHART</string>
     <string name="designing_the_ratio_eight">Designing the Ratio Eight</string>
-    <string name="we_have_your_occasion_covered">We have your occasion covered...</string>
+    <string name="we_have_your_occasion_covered">We have your occasion covered…</string>
     <string name="_2_hours">2 hours</string>
     <string name="a_traditional_puja_to_welcome_lord_ganesha_for_prosperity_and_success">A traditional puja to welcome Lord Ganesha for prosperity and success</string>
     <string name="default_text">Default</string>
@@ -409,5 +409,9 @@
     <string name="hours_ago">hours ago</string>
     <string name="days_ago">days ago</string>
     <string name="invalid_item_please_try_again">Invalid item. Please try again.</string>
-
+    <string name="unknown_error1">Unknown error</string>
+    <string name="please_select_a_language">Please select a language</string>
+    <string name="fetch_error">Fetch error</string>
+    <string name="upload_error">Upload error</string>
+    <string name="ratings">Ratings</string>
 </resources>

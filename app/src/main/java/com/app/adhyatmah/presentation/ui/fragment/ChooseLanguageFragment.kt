@@ -49,7 +49,8 @@ class ChooseLanguageFragment : BaseFragment<FragmentSelectLanguageBinding>() {
 
         binding.btnNext.setOnClickListener {
             if (selectedLanguage == null) {
-                Toast.makeText(requireContext(), "Please select a language", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(),
+                    getString(R.string.please_select_a_language), Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
             }

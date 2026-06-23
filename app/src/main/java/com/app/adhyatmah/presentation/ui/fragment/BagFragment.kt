@@ -1,12 +1,10 @@
 package com.app.adhyatmah.presentation.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,13 +26,13 @@ import com.app.adhyatmah.presentation.ui.adapter.BagAdapter
 import com.app.adhyatmah.presentation.ui.bottom_sheet.SignUpRequiredBottomSheetFragment
 import com.app.adhyatmah.presentation.ui.viewmodel.BagViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
-import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.app.adhyatmah.utils.getString
 import com.app.adhyatmah.utils.hide
 import com.app.adhyatmah.utils.show
 import com.google.android.material.snackbar.Snackbar
+import java.util.Locale
 
 class BagFragment : BaseFragment<FragmentBagBinding>() {
 
@@ -88,7 +86,6 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
 
     override fun onResume() {
         super.onResume()
-        //Address Details
         if (UserPreference.savedAddress.isEmpty()) {
             binding.btnSelectAddress.show()
             binding.tvSelectedAddress.hide()
@@ -106,7 +103,7 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
             checkoutBtn.setOnClickListener {
                 val bundle = Bundle().apply {
                     putString(CART_ID, cartId)
-                    putString(ADDRESS_ID, UserPreference.savedAddressId ?: "")
+                    putString(ADDRESS_ID, UserPreference.savedAddressId)
                 }
                 findNavController().navigate(R.id.paymentMethodFragment, bundle)
             }
@@ -166,7 +163,7 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
         binding.couponTv.setText(couponCode)
     }
 
-    private fun signupRequired(message:String) {
+    private fun signupRequired(message: String) {
         val bottomSheet =
             SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
@@ -216,7 +213,6 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
         binding.removeCoupon.visibility = View.GONE
     }
 
-    @SuppressLint("SetTextI18n")
     private fun setObserver() {
         bagViewModel.getCartListData().observe(viewLifecycleOwner) {
             when (it.status) {
@@ -260,11 +256,13 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                                 if (disInfo != null) {
                                     val discount = "${data?.totalAmount?.currencyCode} ${
                                         String.format(
+                                            Locale.getDefault(),
                                             "%.2f",
                                             disInfo.totalDiscount
                                         )
                                     }"
-                                    binding.discountPriceTv.text = "- $discount"
+                                    val discountPriceTvText = "- $discount"
+                                    binding.discountPriceTv.text = discountPriceTvText
                                     if (isDiscount == true) {
                                         val coupon = it.data.payload.cart.discountCodes?.get(0)
                                         isApply = true

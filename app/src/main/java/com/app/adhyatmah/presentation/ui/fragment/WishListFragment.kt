@@ -1,6 +1,5 @@
 package com.app.adhyatmah.presentation.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -38,7 +37,6 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
         return R.layout.fragment_wish_list
     }
 
-    @SuppressLint("SuspiciousIndentation")
     override fun initView(savedInstanceState: Bundle?) {
         token = Preferences.getStringPreference(requireActivity(), ACCESS_TOKEN).toString()
 

@@ -47,6 +47,7 @@ import java.io.FileOutputStream
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
+
     private val viewmodel by activityViewModels<AuthViewModel>()
     private var file: File? = null
     private var mimeType: String = ""
@@ -427,7 +428,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
                 Status.ERROR -> {
                     Snackbar.make(
                         requireView(),
-                        it.message ?: "Upload error",
+                        it.message ?: getString(R.string.upload_error),
                         Snackbar.LENGTH_SHORT
                     ).show()
                     ProcessDialog.dismissDialog(true)
@@ -452,7 +453,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
                 Status.LOADING -> ProcessDialog.showDialog(requireActivity(), true)
 
                 Status.ERROR -> {
-                    Snackbar.make(requireView(), it.message ?: "Fetch error", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(requireView(), it.message ?: getString(R.string.fetch_error), Snackbar.LENGTH_SHORT)
                         .show()
                     ProcessDialog.dismissDialog(true)
                 }

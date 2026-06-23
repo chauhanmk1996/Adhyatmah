@@ -37,7 +37,6 @@ class PaymentGatewayFragment : BaseFragment<FragmentPaymentGatewayBinding>() {
         openPaymentUrlInWebView()
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private fun openPaymentUrlInWebView() {
         val webView = binding.webView
         val settings = webView.settings
@@ -98,7 +97,6 @@ class PaymentGatewayFragment : BaseFragment<FragmentPaymentGatewayBinding>() {
     private fun redirectToCongrats() {
         val navController = findNavController()
 
-        // Prevent crash if already navigated
         if (navController.currentDestination?.id != R.id.paymentGatewayFragment) {
             return
         }

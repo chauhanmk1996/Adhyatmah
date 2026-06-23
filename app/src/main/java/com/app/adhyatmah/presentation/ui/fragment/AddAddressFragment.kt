@@ -30,6 +30,7 @@ import com.app.adhyatmah.utils.getString
 import com.google.android.material.snackbar.Snackbar
 
 class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>() {
+
     private val profileViewModel by activityViewModels<ProfileViewModel>()
     private var isEditMode = false
     private var addressId = ""

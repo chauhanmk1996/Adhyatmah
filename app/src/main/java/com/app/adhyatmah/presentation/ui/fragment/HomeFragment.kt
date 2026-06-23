@@ -281,6 +281,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 }
                             binding.rvTrendingSections.adapter = trendingSectionAdapter
                         }
+
                         401 -> {
                             ProcessDialog.dismissDialog(true)
                             Toast.makeText(
@@ -290,6 +291,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             ).show()
                             Log.e("TAG", "Unauthorized access $res")
                         }
+
                         else -> {
                             // handle other codes gracefully
                             ProcessDialog.dismissDialog(true)
@@ -358,6 +360,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             }
                             binding.rvPanditJi.adapter = panditJiAdapter
                         }
+
                         401 -> {
                             ProcessDialog.dismissDialog(true)
                             Toast.makeText(
@@ -367,6 +370,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             ).show()
                             Log.e("TAG", "Unauthorized access $res")
                         }
+
                         else -> {
                             // handle other codes gracefully
                             ProcessDialog.dismissDialog(true)
@@ -451,7 +455,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                             positionOffset: Float,
                                             positionOffsetPixels: Int,
                                         ) {
-                                            binding.indicatorRatingReview.setCurrentPosition(position)
+                                            binding.indicatorRatingReview.setCurrentPosition(
+                                                position
+                                            )
                                         }
 
                                         override fun onPageSelected(p0: Int) {
@@ -463,6 +469,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 }
                             }
                         }
+
                         401 -> {
                             ProcessDialog.dismissDialog(true)
                             Toast.makeText(
@@ -472,6 +479,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             ).show()
                             Log.e("TAG", "Unauthorized access $res")
                         }
+
                         else -> {
                             // handle other codes gracefully
                             ProcessDialog.dismissDialog(true)
@@ -721,7 +729,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     signupRequired(getString(R.string.please_sign_up_required_to_see_wishlist))
                 }
             },
-            onSubAdapterClick = { collectionIndex, productIndex, isLiked ->
+            onSubAdapterClick = { collectionIndex, productIndex, _ ->
                 val product = filteredList[collectionIndex].products!![productIndex]
                 val productId = product.id
                 Preferences.setStringPreference(requireContext(), REVIEW_PD_ID, productId)
@@ -817,8 +825,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
             if (!addresses.isNullOrEmpty()) {
                 addresses[0].getAddressLine(0)
-                binding.tvLocation.text =
+                val locationText =
                     addresses[0].subAdminArea + ", " + addresses[0].adminArea + ", " + addresses[0].countryName + " - " + addresses[0].postalCode
+                binding.tvLocation.text = locationText
                 Preferences.setStringPreference(
                     requireContext(),
                     CURRENT_PINCODE,

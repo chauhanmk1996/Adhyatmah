@@ -39,8 +39,7 @@ class HelpSupportFragment : BaseFragment<FragmentHelpSupportBinding>() {
         viewModel.getFAQApiResponse().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload

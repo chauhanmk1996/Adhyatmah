@@ -1,6 +1,5 @@
 package com.app.adhyatmah.presentation.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -48,15 +47,11 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
     var fromFilter = ""
     var type = ""
 
-
     override fun setLayout(): Int {
         return R.layout.fragment_product_list
     }
 
-
-    @SuppressLint("SuspiciousIndentation")
     override fun initView(savedInstanceState: Bundle?) {
-
         type = arguments?.getString(TYPE).toString()
         discardType = arguments?.getString("discardType").toString()
         categoryHandle = arguments?.getString(CATEGORY_TITLE).toString()
@@ -64,7 +59,6 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         manuTitle = arguments?.getString("TITLE").toString()
         title = arguments?.getString(PRODUCT_TITLE).toString()
 
-        Log.d("Tafdfd", "fdkjhj: $collectionHandle")
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
         setObserver()
 
@@ -93,67 +87,70 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
     }
 
     fun fromWhere(type: String, fromFilter: String) {
+        when (type) {
+            "1" -> {
+                binding.tvHeading.text = title
+                productId = categoryHandle
+                productId = categoryHandle
+                homeViewModel.getViewAllData(token, ViewAllProductRequest(categoryHandle))
 
-        if (type == "1") {
-            binding.tvHeading.text = title
-            productId = categoryHandle
-            productId = categoryHandle
-            Log.d("tag", "initdd: $categoryHandle")
-            homeViewModel.getViewAllData(token, ViewAllProductRequest(categoryHandle))
+                when (fromFilter) {
+                    "fromFilter" -> {
+                        // Do nothing; filtered data already observed
+                    }
 
-            when (fromFilter) {
-                "fromFilter" -> {
-                    // Do nothing; filtered data already observed
-                }
+                    "fromDisCart" -> {
+                        homeViewModel.getViewAllData(token, ViewAllProductRequest(categoryHandle))
+                    }
 
-                "fromDisCart" -> {
-                    homeViewModel.getViewAllData(token, ViewAllProductRequest(categoryHandle))
-                }
-
-                else -> {
-                    homeViewModel.getViewAllData(token, ViewAllProductRequest(categoryHandle))
-                }
-            }
-        } else if (type == "2") {
-            binding.tvHeading.text = manuTitle
-            homeViewModel.getViewAllData(token, ViewAllProductRequest(collectionHandle))
-            productId = categoryHandle
-
-            when (fromFilter) {
-                "fromFilter" -> {
-
-                }
-
-                "fromDisCart" -> {
-                    homeViewModel.getViewAllData(token, ViewAllProductRequest(collectionHandle))
-                }
-
-                else -> {
-                    homeViewModel.getViewAllData(token, ViewAllProductRequest(collectionHandle))
+                    else -> {
+                        homeViewModel.getViewAllData(token, ViewAllProductRequest(categoryHandle))
+                    }
                 }
             }
-            productId = collectionHandle
 
-        } else {
-            val title = arguments?.getString(PRODUCT_TITLE).toString()
-            val productId = arguments?.getString(HANDLER).toString()
-            Log.d("TAG", "initView1:11 $title prdvv $productId")
-            this.productId = productId
+            "2" -> {
+                binding.tvHeading.text = manuTitle
+                homeViewModel.getViewAllData(token, ViewAllProductRequest(collectionHandle))
+                productId = categoryHandle
 
-            binding.tvHeading.text = title
-            homeViewModel.getViewAllData(token, ViewAllProductRequest(productId))
+                when (fromFilter) {
+                    "fromFilter" -> {
 
-            when (fromFilter) {
-                "fromFilter" -> {
-                    homeViewModel.getViewAllData(token, ViewAllProductRequest(productId, ""))
+                    }
+
+                    "fromDisCart" -> {
+                        homeViewModel.getViewAllData(token, ViewAllProductRequest(collectionHandle))
+                    }
+
+                    else -> {
+                        homeViewModel.getViewAllData(token, ViewAllProductRequest(collectionHandle))
+                    }
                 }
+                productId = collectionHandle
 
-                "fromDisCart" -> {
-                    homeViewModel.getViewAllData(token, ViewAllProductRequest(productId))
-                }
+            }
 
-                else -> {
-                    homeViewModel.getViewAllData(token, ViewAllProductRequest(productId))
+            else -> {
+                val title = arguments?.getString(PRODUCT_TITLE).toString()
+                val productId = arguments?.getString(HANDLER).toString()
+                this.productId = productId
+
+                binding.tvHeading.text = title
+                homeViewModel.getViewAllData(token, ViewAllProductRequest(productId))
+
+                when (fromFilter) {
+                    "fromFilter" -> {
+                        homeViewModel.getViewAllData(token, ViewAllProductRequest(productId, ""))
+                    }
+
+                    "fromDisCart" -> {
+                        homeViewModel.getViewAllData(token, ViewAllProductRequest(productId))
+                    }
+
+                    else -> {
+                        homeViewModel.getViewAllData(token, ViewAllProductRequest(productId))
+                    }
                 }
             }
         }
@@ -175,7 +172,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
     }
 
     fun isLikeClick(position: Int, isLike: Boolean) {
-        val product = adapter.getItemAt(position) // Make sure adapter exposes this function
+        val product = adapter.getItemAt(position)
         val request = AddWishListRequest(token, product.id)
         val isLogin = Preferences.getStringPreference(requireContext(), IS_LOGIN)
 
@@ -203,7 +200,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         )
     }
 
-    private fun signupRequired(message:String) {
+    private fun signupRequired(message: String) {
         val bottomSheet =
             SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
@@ -218,7 +215,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
             when (it.status) {
                 Status.SUCCESS -> {
 
-                    val statusCode = it.data?.status // assuming your wrapper contains code
+                    val statusCode = it.data?.status
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload.collection.products
@@ -250,7 +247,6 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
 
         filterViewModel.getShortCollectionList().observe(viewLifecycleOwner) {
@@ -259,7 +255,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
                     val statusCode = it.data?.code
                     if (statusCode == 200) {
                         val sortedProducts = it.data.payload.collection.products
-                        setAdapter(sortedProducts) // ✅ Update UI
+                        setAdapter(sortedProducts)
                     } else {
                         Log.e("TAG", "Sorting API returned non-200")
                     }
@@ -330,7 +326,6 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         binding.shortLayout.setOnClickListener {
             val handle = arguments?.getString(HANDLER).toString()
             val productId = arguments?.getString(PRODUCT_TITLE).toString()
-            // val productId = arguments?.getString(PRODUCT_TITLE).toString()
             Log.d("TAG", "filterAction: $productId $handle")
             showSortBottomSheet(handle)
         }
@@ -342,7 +337,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
             adapter.updateData(sortedList)
         }
         bottomSheet.onSortRequestSent = { request ->
-            binding.shortText.text = request.sortBy?.capitalizeFirst()?:""
+            binding.shortText.text = request.sortBy?.capitalizeFirst() ?: ""
             homeViewModel.getViewAllData(token, request)
         }
         bottomSheet.show(parentFragmentManager, "ShortByBottomSheet")

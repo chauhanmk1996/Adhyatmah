@@ -1,7 +1,6 @@
 package com.app.adhyatmah.presentation.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -43,7 +42,7 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
         setupCategoryList()
         setupProductList()
         clicks()
-        homeViewModel.getAllCtData(page = 1, limit = 100)  // load all categories first
+        homeViewModel.getAllCtData(page = 1, limit = 100)
     }
 
     private val filterViewModel by activityViewModels<FilterViewModel>()
@@ -93,7 +92,7 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
             subList = products,
             showImage = true,
             onWishlistClick = { pos, like -> onLikePressed(pos, like) },
-            onSubAdapterClick = { pos, _, data -> openProductDetail(data) }
+            onSubAdapterClick = { _, _, data -> openProductDetail(data) }
         )
 
         binding.recyProductsRight.apply {
@@ -119,13 +118,12 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
                     categories.clear()
                     categories.addAll(list)
                     categoryAdapter.updateItems(list)
-                    Log.i("TAG", "observeCategoryData: " + list)
 
                     if (list.isNotEmpty()) {
                         if (passedCategoryHandle.isNotEmpty()) {
                             val selectedIndex =
-                                list.indexOfFirst { it.handle == passedCategoryHandle }
-
+                                list.indexOfFirst { passed -> passed.handle == passedCategoryHandle }
+                            
                             if (selectedIndex != -1) {
                                 selectedCategoryHandle = passedCategoryHandle
                                 categoryAdapter.setSelectedCategory(selectedIndex)

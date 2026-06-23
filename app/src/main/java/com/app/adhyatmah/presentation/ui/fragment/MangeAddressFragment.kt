@@ -1,6 +1,5 @@
 package com.app.adhyatmah.presentation.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -60,8 +59,9 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
         manageAddListAdapter = ManageAddressAdapter(addresses) { id, address_data, type, data ->
             if (type == "mainLayoutClick") {
                 if (from == "bookPanditji" || from == "home") {
-                    val address = data.address1 + ", " + data.city + ", " + data.province + ", " + data.country + " - " + data.zip
-                    UserPreference.savedAddressId = data.id?:""
+                    val address =
+                        data.address1 + ", " + data.city + ", " + data.province + ", " + data.country + " - " + data.zip
+                    UserPreference.savedAddressId = data.id ?: ""
                     UserPreference.savedAddress = address
                     findNavController().popBackStack()
                 } else {
@@ -86,7 +86,6 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
     }
 
     private fun showActionPrompt(id: String, type: String, addresses: Addresse) {
-        Log.d("TAG", "showActionPrompt1: $addresses")
         var dialog: AlertDialog? = null
         val title = when (type) {
             "delete" -> getString(R.string.delete_address)
@@ -176,7 +175,7 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
         profileViewModel.getAddressData(request)
     }
 
-    private fun signupRequired(message:String) {
+    private fun signupRequired(message: String) {
         val bottomSheet =
             SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
@@ -186,13 +185,12 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
         bottomSheet.show(parentFragmentManager, "SignUpRequiredBottomSheetFragment")
     }
 
-    @SuppressLint("SuspiciousIndentation")
     private fun setObserver() {
         profileViewModel.getCustomerAddressRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
 
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
                             val data = it.data.payload.addresses
@@ -224,8 +222,8 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
+
         profileViewModel.getDeleteAddressRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {

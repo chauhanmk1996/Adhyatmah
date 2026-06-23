@@ -24,19 +24,15 @@ import kotlin.getValue
 class ApplyCouponsFragment : BaseFragment<FragmentApplyCouponsBinding>() {
 
     private val bagViewModel by activityViewModels<BagViewModel>()
-
     private lateinit var couponAdapter: CouponAdapter
-
     var token = ""
     var cartId = ""
-
 
     override fun setLayout(): Int {
         return R.layout.fragment_apply_coupons
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
         cartId = Preferences.getStringPreference(requireContext(), CART_ID).toString()
 
@@ -44,30 +40,25 @@ class ApplyCouponsFragment : BaseFragment<FragmentApplyCouponsBinding>() {
         bagViewModel.getCouponsList()
         bindViews()
 
-
         couponAdapter =
             CouponAdapter(mutableListOf(), object : CouponAdapter.OnApplyCouponsChangeListener {
-
                 override fun onApplyCouponsChanged(coupons: String) {
                     hitApplyCouponsAPI(coupons)
                 }
             })
+
         binding.itemsCodeRecycler.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = couponAdapter
         }
 
-        // Handle back button click
         binding.backImg.setOnClickListener {
             findNavController().popBackStack()
         }
-
     }
 
     private fun bindViews() {
-
         binding.apply {
-
             enterCodeTv.setOnClickListener {
                 findNavController().navigate(R.id.action_applyCouponsFragment_to_filtersFragment)
             }
@@ -76,50 +67,36 @@ class ApplyCouponsFragment : BaseFragment<FragmentApplyCouponsBinding>() {
                 applyCoupons()
             }
         }
-
     }
 
     private fun applyCoupons() {
         val couponCode = binding.couponCodeBtn.getString()
-
         if (couponCode.isEmpty()) {
-            Toast.makeText(requireContext(),
-                getString(R.string.please_enter_a_coupon_code), Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.please_enter_a_coupon_code),
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
-        val request = ApplyCouponsRequest(
-            cartId,
-            couponCode
-        )
+        val request = ApplyCouponsRequest(cartId, couponCode)
         bagViewModel.applyCouponsData(request)
-
-//        binding.couponTv.setText("")
-
     }
 
     private fun hitApplyCouponsAPI(coupons: String) {
-        val request = ApplyCouponsRequest(
-            cartId,
-            coupons
-        )
+        val request = ApplyCouponsRequest(cartId, coupons)
         bagViewModel.applyCouponsData(request)
     }
 
-
     private fun setObserver() {
-
         bagViewModel.getCouponsListData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
-
                             val cartListContainer = it.data.payload.coupons
                             couponAdapter.updateCoupons(cartListContainer)
-
                             Log.d("tt", "sds, $cartListContainer")
                         }
 
@@ -140,42 +117,38 @@ class ApplyCouponsFragment : BaseFragment<FragmentApplyCouponsBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
 
         bagViewModel.applyCouponsRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
                     val statusCode = it.data?.code // assuming your wrapper contains code
                     when (statusCode) {
                         200 -> {
-                            var data = it.data.payload
-//                            var coupons = data.discountCodes?.get(0)?.code
-                            var coupons = data.discountCodes?.get(0)
+                            val data = it.data.payload
+                            val coupons = data.discountCodes?.get(0)
                             bagViewModel.getCartList(token)
 
-                           /* if(data.discountCodes?.get(0)?.applicable == true){
-                                Toast.makeText(requireActivity(),"${it.data.message}",Toast.LENGTH_SHORT).show()
-                                var bundle = Bundle()
+                            if (data.discount?.code?.isNotEmpty() == true) {
+                                Toast.makeText(
+                                    requireActivity(), it.data.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                val bundle = Bundle()
                                 bundle.putString("TYPE", "1")
                                 bundle.putString("VALUE", coupons)
-                                findNavController().navigate(R.id.action_applyCouponsFragment_to_bagFragment, bundle)
-
-                            }*/
-                            if(data.discount?.code?.isNotEmpty() == true){
-                                Toast.makeText(requireActivity(),"${it.data.message}",Toast.LENGTH_SHORT).show()
-                                var bundle = Bundle()
-                                bundle.putString("TYPE", "1")
-                                bundle.putString("VALUE", coupons)
-                                findNavController().navigate(R.id.action_applyCouponsFragment_to_bagFragment, bundle)
-
+                                findNavController().navigate(
+                                    R.id.action_applyCouponsFragment_to_bagFragment,
+                                    bundle
+                                )
+                            } else {
+                                Toast.makeText(
+                                    requireActivity(),
+                                    getString(R.string.coupon_is_not_valid),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-                            else{
-                                Toast.makeText(requireActivity(),"Coupon is not valid",Toast.LENGTH_SHORT).show()
-                            }
-                           // Toast.makeText(requireActivity(), "${it.data.message}", Toast.LENGTH_SHORT).show()
-                            }
+                        }
 
                         401 -> {
                             Log.e("TAG", "Unauthorized access")
@@ -194,11 +167,6 @@ class ApplyCouponsFragment : BaseFragment<FragmentApplyCouponsBinding>() {
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
-
         }
-
-
     }
 }
-
-

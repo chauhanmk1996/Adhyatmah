@@ -65,7 +65,7 @@ class MyOrderFragment : BaseFragment<FragmentMyOrderBinding>() {
         }
     }
 
-    private fun signupRequired(message:String) {
+    private fun signupRequired(message: String) {
         val bottomSheet =
             SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)

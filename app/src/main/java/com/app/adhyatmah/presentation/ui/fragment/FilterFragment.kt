@@ -1,6 +1,5 @@
 package com.app.adhyatmah.presentation.ui.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -51,7 +50,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>() {
         return R.layout.fragment_filter
     }
 
-    @SuppressLint("SuspiciousIndentation")
     override fun initView(savedInstanceState: Bundle?) {
 
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
@@ -85,8 +83,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>() {
 
         hitApi(productId)
         setupClickListeners()
-        Log.d("TAG", "initcdcView: $brandList")
-        Log.d("tt", "iivdhdsvkjvx: $categoryHandle")
 
         try {
             if (type == "5") {
@@ -108,8 +104,10 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>() {
             val maxPrice = viewModel.maxPrice.takeIf { it > 0f } ?: 50000f
             values = listOf(minPrice, maxPrice)
 
-            binding.minText.text = "$${minPrice.toInt()}"
-            binding.maxText.text = "$${maxPrice.toInt()}"
+            val minText = "$${minPrice.toInt()}"
+            binding.minText.text = minText
+            val maxText = "$${maxPrice.toInt()}"
+            binding.maxText.text = maxText
 
             setLabelFormatter { value ->
                 "$${value.toInt()}"
@@ -118,28 +116,31 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>() {
             addOnChangeListener { slider, _, _ ->
                 val min = slider.values[0]
                 val max = slider.values[1]
-                binding.minText.text = "$${min.toInt()}"
-                binding.maxText.text = "$${max.toInt()}"
+                val minText = "$${min.toInt()}"
+                binding.minText.text = minText
+                val maxText = "$${max.toInt()}"
+                binding.maxText.text = maxText
             }
         }
 
         binding.discardTv.setOnClickListener {
-
             viewModel.selectedColors.clear()
             viewModel.selectedSizes.clear()
             viewModel.selectedCategories.clear()
             viewModel.selectedBrands.clear()
             viewModel.minPrice = 0f
             viewModel.maxPrice = 0f
-
             isFilterLoaded = false
-
 
             val handleToUse = when {
                 productId.isNotBlank() && productId != "null" -> productId
                 categoryHandle.isNotBlank() && categoryHandle != "null" -> categoryHandle
                 else -> {
-                    Snackbar.make(requireView(), getString(R.string.something_went_wrong), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.something_went_wrong),
+                        Snackbar.LENGTH_SHORT
+                    )
                         .show()
                     return@setOnClickListener
                 }
@@ -270,14 +271,12 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>() {
     }
 
     private fun setObserver() {
-
         viewModel.getFilterData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     val statusCode = it.data?.code
                     if (statusCode == 200) {
                         val key = it.data.payload.Key
-
                         val colorList = key.color
                         val sizeList = key.size
                         val genderList = key.gender
@@ -302,7 +301,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>() {
         homeViewModel.getViewAllLiveData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    val statusCode = it.data?.status // assuming your wrapper contains code
+                    val statusCode = it.data?.status
                     when (statusCode) {
                         200 -> {
 

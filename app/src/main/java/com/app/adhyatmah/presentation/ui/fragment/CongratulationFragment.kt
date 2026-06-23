@@ -49,7 +49,7 @@ class CongratulationFragment : BaseFragment<FragmentCongratulationBinding>() {
         paymentViewModel.getPaymentSuOrderClearRes().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    val statusCode = it.data?.code // assuming your wrapper contains code
+                    val statusCode = it.data?.code
                     when (statusCode) {
                         200 -> {
                             orderId = arguments?.getString("order_id").toString()

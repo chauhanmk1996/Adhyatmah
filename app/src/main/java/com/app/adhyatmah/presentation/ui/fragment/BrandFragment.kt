@@ -65,4 +65,3 @@ class BrandFragment : BaseFragment<FragmentBrandBinding>() {
         binding.brandRecyclerId.adapter = adapter
     }
 }
-

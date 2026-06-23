@@ -130,7 +130,7 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
                 else -> {
                     Toast.makeText(
                         requireContext(),
-                        "Selected method is not Cash on Delivery",
+                        getString(R.string.selected_method_is_not_cash_on_delivery),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -273,10 +273,7 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
                             val razor = it.data.payload.razorpay
                             val bundle = Bundle().apply {
                                 putString("paymentUrl", razor.payment_link.short_url)
-                                putString(
-                                    "successUrl",
-                                    data.success_url_app
-                                )   // backend will provide
+                                putString("successUrl", data.success_url_app)
                                 putString("order_id", razor.order_id)
                             }
 
