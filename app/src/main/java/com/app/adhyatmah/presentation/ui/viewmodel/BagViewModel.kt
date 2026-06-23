@@ -36,7 +36,7 @@ class BagViewModel @Inject constructor(application: Application): AndroidViewMod
                         )
                     )
                 } catch (ex: Exception) {
-                    cartListLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    cartListLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -65,7 +65,7 @@ class BagViewModel @Inject constructor(application: Application): AndroidViewMod
                         )
                     )
                 } catch (ex: Exception) {
-                    couponsListLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    couponsListLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -86,7 +86,7 @@ class BagViewModel @Inject constructor(application: Application): AndroidViewMod
                         )
                     )
                 } catch (ex: Exception) {
-                    removeCouponListLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    removeCouponListLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -118,7 +118,7 @@ class BagViewModel @Inject constructor(application: Application): AndroidViewMod
                         )
                     )
                 } catch (ex: Exception) {
-                    increaseQtyLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    increaseQtyLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -148,7 +148,7 @@ class BagViewModel @Inject constructor(application: Application): AndroidViewMod
 
                     )
                 } catch (ex: Exception) {
-                    applyCouponsLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    applyCouponsLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }

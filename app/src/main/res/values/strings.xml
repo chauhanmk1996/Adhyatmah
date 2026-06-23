@@ -288,4 +288,6 @@
     <string name="please_sign_up_required_to_see_my_order">Please sign up required to see my order.</string>
     <string name="please_sign_up_required_to_see_my_booking">Please sign up required to see my booking.</string>
     <string name="please_sign_up_required_to_see_manage_address">Please sign up required to see manage address.</string>
+    <string name="sign_up_required_to_book_a_pandit_ji">Sign up required to Book a Pandit Ji.</string>
+    <string name="please_sign_up_to_add_items_to_your_bag">Please sign up to add items to your bag.</string>
 </resources>

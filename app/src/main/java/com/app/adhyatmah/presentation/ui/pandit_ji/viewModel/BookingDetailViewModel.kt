@@ -30,7 +30,7 @@ class BookingDetailViewModel@Inject constructor(application: Application):Androi
                         )
                     )
                 } catch (ex: Exception) {
-                    getServicesLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getServicesLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
                 }
             }
         } catch (ex: Exception) {
@@ -49,7 +49,7 @@ class BookingDetailViewModel@Inject constructor(application: Application):Androi
                 try {
                     getPujaKitResponse.postValue(Resources.success(ApiRepository().getAddOnKitApi(serviceId)))
                 } catch (ex: Exception) {
-                    getPujaKitResponse.postValue(Resources.error(ex.localizedMessage?:"", null))
+                    getPujaKitResponse.postValue(Resources.error(ex.localizedMessage?:""?:"", null))
                 }
             }
         } catch (ex: Exception) {

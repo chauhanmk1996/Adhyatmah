@@ -55,7 +55,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    loginLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    loginLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -78,7 +78,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    loginWithMobileLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    loginWithMobileLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -104,7 +104,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    getVerifyOtpLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getVerifyOtpLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -130,7 +130,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    getResendOtpLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getResendOtpLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -157,7 +157,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    getProfileLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getProfileLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -179,7 +179,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    getGetProfileImgLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getGetProfileImgLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -202,7 +202,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    getEditLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getEditLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -232,7 +232,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                 }
                 getEditLiveData.postValue(Resources.error(errorMessage, null))
             } catch (ex: Exception) {
-                getEditLiveData.postValue(Resources.error(ex.localizedMessage ?: "Unknown error", null))
+                getEditLiveData.postValue(Resources.error(ex.localizedMessage?:"" ?: "Unknown error", null))
             }
         }
     }
@@ -284,7 +284,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    landingPageLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    landingPageLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -314,7 +314,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    signUpLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    signUpLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -343,7 +343,7 @@ class AuthViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    forgotLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    forgotLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }

@@ -218,6 +218,7 @@ class ApiRepository {
     suspend fun trendingSectionApi() = service.trendingSectionApi()
 
     suspend fun homeDataApi() = service.homeDataApi()
+    suspend fun getAllPopularPujaListApi() = service.getAllPopularPujaListApi()
 
     // Pandit List
 

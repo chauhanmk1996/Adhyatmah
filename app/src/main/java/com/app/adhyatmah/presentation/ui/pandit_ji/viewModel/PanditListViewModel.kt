@@ -29,7 +29,7 @@ class PanditListViewModel @Inject constructor(app: Application) : AndroidViewMod
                 singleLiveEventPanditList.postValue(Resources.success(response))
             } catch (ex: Exception) {
                 Log.e("PanditListViewModel", "API failed -> name=$name serviceName=$serviceName", ex)
-                singleLiveEventPanditList.postValue(Resources.error(ex.localizedMessage ?: "Error", null))
+                singleLiveEventPanditList.postValue(Resources.error(ex.localizedMessage?:"" ?: "Error", null))
             }
         }
     }

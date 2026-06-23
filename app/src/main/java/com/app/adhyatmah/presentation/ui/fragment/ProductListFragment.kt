@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.app.adhyatmah.data.preferences.PRODUCT_TITLE
@@ -25,11 +24,11 @@ import com.app.adhyatmah.domain.model.wish_list.wish_list_request.AddWishListReq
 import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.adapter.AdapterViewAllProduct
 import com.app.adhyatmah.presentation.ui.bottom_sheet.ShortByBottomSheet
+import com.app.adhyatmah.presentation.ui.bottom_sheet.SignUpRequiredBottomSheetFragment
 import com.app.adhyatmah.presentation.ui.viewmodel.FilterViewModel
 import com.app.adhyatmah.presentation.ui.viewmodel.HomeViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.capitalizeFirst
-import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.google.android.material.snackbar.Snackbar
@@ -194,7 +193,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
             }
 
         } else {
-            showLoginPrompt()
+            signupRequired(getString(R.string.please_sign_up_to_add_items_to_your_wishlist))
         }
     }
 
@@ -210,28 +209,14 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         )
     }
 
-    private fun showLoginPrompt() {
-        var dialog: AlertDialog? = null
-        dialog = CommonUtils.showCustomAlertDialog(
-            requireActivity(),
-            "Sign Up Required",
-            "Please sign up to add items to your wishlist.",
-            positiveButtonText = "Sign up",
-            negativeButtonText = "Cancel",
-            positiveButtonAction = {
-                dialog?.dismiss()
+    private fun signupRequired(message:String) {
+        val bottomSheet =
+            SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                val bundle = Bundle()
-                bundle.putString("previousScreen", "logout")
-                bundle.putString("selectedImage", "0")
-                intent.putExtras(bundle)
                 requireActivity().startActivity(intent)
-            },
-            negativeButtonAction = {
-                dialog?.dismiss()
             }
-        )
+        bottomSheet.show(parentFragmentManager, "SignUpRequiredBottomSheetFragment")
     }
 
     private fun setObserver() {

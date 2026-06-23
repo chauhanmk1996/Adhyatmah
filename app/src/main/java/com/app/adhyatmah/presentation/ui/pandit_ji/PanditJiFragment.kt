@@ -27,7 +27,6 @@ import com.app.adhyatmah.domain.model.create_booking.PanditJiDetails
 import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Vendor
 import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.PanditJiAdapter
-import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.MultiplePoojaAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.viewModel.PanditListViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.common_utils.CommonUtils
@@ -38,15 +37,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.core.graphics.drawable.toDrawable
 import com.app.adhyatmah.domain.model.PopularPooja
+import com.app.adhyatmah.presentation.ui.activity.MainActivity
 import com.app.adhyatmah.presentation.ui.adapter.PopularPujasGridAdapter
+import com.app.adhyatmah.presentation.ui.bottom_sheet.SignUpRequiredBottomSheetFragment
 import com.app.adhyatmah.presentation.ui.viewmodel.HomeViewModel
-import com.app.adhyatmah.utils.common_utils.ProcessDialog
 
 class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
 
     private var selectedType: String = "PanditJi"
     private lateinit var panditJiAdapter: PanditJiAdapter
-    private lateinit var multiplePoojaAdapter: MultiplePoojaAdapter
     private val viewmodel by activityViewModels<PanditListViewModel>()
     private val currentPanditList = mutableListOf<Vendor>()
     private var searchJob: Job? = null
@@ -60,7 +59,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObserver()
-        homeViewModel.homeDataApi()
+        homeViewModel.popularPujaListApi()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -71,14 +70,12 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s?.toString()?.trim() ?: ""
 
-                // if blank -> show cached full list
                 if (query.isEmpty()) {
                     searchJob?.cancel()
                     showFullList()
                     return
                 }
 
-                // Debounce API calls
                 searchJob?.cancel()
                 searchJob = lifecycleScope.launch {
                     delay(300)
@@ -231,6 +228,8 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         val rvPopularPuja = dialog.findViewById<RecyclerView>(R.id.rv_popular_puja)
         popularPujasGridAdapter =
             PopularPujasGridAdapter(popularPoojaList) { selectedPuja ->
+                (requireActivity() as? MainActivity)?.panditJiFromPopularPuja = false
+                poojaSelectFromHomeName = selectedPuja.name ?: ""
                 binding.searchView.setText(selectedPuja.name ?: "")
                 performSearch(selectedPuja.name ?: "")
                 dialog.dismiss()
@@ -268,7 +267,7 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                     ).show()
                 }
             } else {
-                showLoginPrompt()
+                signupRequired(getString(R.string.sign_up_required_to_book_a_pandit_ji))
             }
         }
         binding.recSearch.adapter = panditJiAdapter
@@ -276,25 +275,14 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         binding.noResult.visibility = if (panditJiList.isEmpty()) View.VISIBLE else View.GONE
     }
 
-    private fun showLoginPrompt() {
-        var dialog: AlertDialog? = null
-        dialog = CommonUtils.showCustomAlertDialog(
-            requireActivity(),
-            "Sign Up Required",
-            "Sign up required to Book a Pandit Ji.",
-            positiveButtonText = "Sign up",
-            negativeButtonText = "Cancel",
-            positiveButtonAction = {
-                dialog?.dismiss()
+    private fun signupRequired(message:String) {
+        val bottomSheet =
+            SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                Bundle()
                 requireActivity().startActivity(intent)
-            },
-            negativeButtonAction = {
-                dialog?.dismiss()
             }
-        )
+        bottomSheet.show(parentFragmentManager, "SignUpRequiredBottomSheetFragment")
     }
 
     private fun setObserver() {
@@ -333,42 +321,10 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             }
         }
 
-        homeViewModel.getHomeDataApi().observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                Status.LOADING -> ProcessDialog.showDialog(requireActivity(), true)
-
-                Status.SUCCESS -> {
-                    ProcessDialog.dismissDialog(true)
-                    val code = res.data?.code
-                    when (code) {
-                        200 -> {
-                            val payload = res.data.payload
-                            payload?.services?.let { list ->
-                                popularPoojaList.clear()
-                                popularPoojaList.addAll(list)
-                            }
-                        }
-
-                        401 -> {
-                            ProcessDialog.dismissDialog(true)
-                            Toast.makeText(requireActivity(), res.data.message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-
-                        else -> {
-                            ProcessDialog.dismissDialog(true)
-                        }
-                    }
-                }
-
-                Status.ERROR -> {
-                    ProcessDialog.dismissDialog(true)
-                    Snackbar.make(
-                        requireView(),
-                        res.message ?: "Something went wrong",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
+        homeViewModel.getPopularPujaListLiveData().observe(viewLifecycleOwner) { res ->
+            res.data?.data?.let { list ->
+                popularPoojaList.clear()
+                popularPoojaList.addAll(list)
             }
         }
     }

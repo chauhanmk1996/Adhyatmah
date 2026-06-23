@@ -53,3 +53,7 @@ data class Testimonials(
     val service: String?,
     val review: String?,
 )
+
+data class PopularPujaResponse(
+    val data: ArrayList<PopularPooja>?,
+)

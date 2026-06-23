@@ -36,7 +36,7 @@ class ConfirmBookingViewModel@Inject constructor(application: Application):Andro
                         )
                     )
                 } catch (ex: Exception) {
-                    bookPanditJiLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
+                    bookPanditJiLiveData.postValue(Resources.error(ex.localizedMessage?:""?:"", null))
                 }
             }
         } catch (ex: Exception) {
@@ -59,7 +59,7 @@ class ConfirmBookingViewModel@Inject constructor(application: Application):Andro
                         )
                     )
                 } catch (ex: Exception) {
-                    bookingPaymentLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
+                    bookingPaymentLiveData.postValue(Resources.error(ex.localizedMessage?:""?:"", null))
                 }
             }
         } catch (ex: Exception) {

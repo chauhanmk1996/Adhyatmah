@@ -44,7 +44,7 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
 
                     )
                 } catch (ex: Exception) {
-                    contactUsLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    contactUsLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -66,7 +66,7 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
 
                     )
                 } catch (ex: Exception) {
-                    getAddressLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getAddressLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -89,7 +89,7 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
 
                     )
                 } catch (ex: Exception) {
-                    createAddressLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    createAddressLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -111,7 +111,7 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
 
                     )
                 } catch (ex: Exception) {
-                    createAddressLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    createAddressLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -133,7 +133,7 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
 
                     )
                 } catch (ex: Exception) {
-                    deleteAddressLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    deleteAddressLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -155,7 +155,7 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
 
                     )
                 } catch (ex: Exception) {
-                    indianStateLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    indianStateLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -198,7 +198,7 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
 
                     )
                 } catch (ex: Exception) {
-                    customerOrdersLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    customerOrdersLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -228,7 +228,7 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
 
                     )
                 } catch (ex: Exception) {
-                    myOrderDetailsLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    myOrderDetailsLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -258,7 +258,7 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
 
                     )
                 } catch (ex: Exception) {
-                    cancelOrderLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    cancelOrderLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -288,7 +288,7 @@ class ProfileViewModel @Inject constructor(application: Application): AndroidVie
 
                     )
                 } catch (ex: Exception) {
-                    shippingUrlLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    shippingUrlLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }

@@ -25,6 +25,7 @@ import com.app.adhyatmah.domain.model.bag_response.remove_coupon.remove_coupon_r
 import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.activity.MainActivity
 import com.app.adhyatmah.presentation.ui.adapter.BagAdapter
+import com.app.adhyatmah.presentation.ui.bottom_sheet.SignUpRequiredBottomSheetFragment
 import com.app.adhyatmah.presentation.ui.viewmodel.BagViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.common_utils.CommonUtils
@@ -77,7 +78,7 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
         setupRecyclerView()
 
         if (token.isEmpty()) {
-            showLoginPrompt()
+            signupRequired(getString(R.string.please_sign_up_to_add_items_to_your_wishlist))
         } else {
             binding.bagLayout.visibility = View.VISIBLE
             binding.noBaglayout.visibility = View.GONE
@@ -165,28 +166,14 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
         binding.couponTv.setText(couponCode)
     }
 
-    private fun showLoginPrompt() {
-        var dialog: AlertDialog? = null
-        dialog = CommonUtils.showCustomAlertDialog(
-            requireActivity(),
-            getString(R.string.sign_up_required),
-            getString(R.string.please_sign_up_to_add_items_to_your_wishlist),
-            positiveButtonText = getString(R.string.sign_up),
-            negativeButtonText = getString(R.string.cancel),
-            positiveButtonAction = {
-                dialog?.dismiss()
+    private fun signupRequired(message:String) {
+        val bottomSheet =
+            SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                val bundle = Bundle()
-                bundle.putString("previousScreen", "logout")
-                bundle.putString("selectedImage", "0")
-                intent.putExtras(bundle)
                 requireActivity().startActivity(intent)
-            },
-            negativeButtonAction = {
-                dialog?.dismiss()
             }
-        )
+        bottomSheet.show(parentFragmentManager, "SignUpRequiredBottomSheetFragment")
     }
 
     private fun setupRecyclerView() {

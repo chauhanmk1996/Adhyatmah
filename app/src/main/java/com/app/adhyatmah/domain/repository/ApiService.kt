@@ -7,6 +7,7 @@ import com.app.adhyatmah.domain.model.wish_list.wish_list_request.AddWishListReq
 import com.app.adhyatmah.domain.model.AllCategoryListResponse
 import com.app.adhyatmah.domain.model.GetLanguagesResponse
 import com.app.adhyatmah.domain.model.HomeResponse
+import com.app.adhyatmah.domain.model.PopularPujaResponse
 import com.app.adhyatmah.domain.model.ProductReviewListResponse
 import com.app.adhyatmah.domain.model.TrendingSectionResponse
 import com.app.adhyatmah.domain.model.add_to_bag.add_to_bag_request.AddToBagRequest
@@ -102,12 +103,12 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("getHomepageCollections")
-    suspend fun getHomeCollection(@Query ("accessToken") token: String): HomeCollectionResponse
+    suspend fun getHomeCollection(@Query("accessToken") token: String): HomeCollectionResponse
 
     @GET("getBanner")
     suspend fun getHomeBanner(/*@Header ("Authorization") token: String*/): HomeBannerResponse
 
-     @GET("blogs")
+    @GET("blogs")
     suspend fun getHomeBlog(/*@Header ("Authorization") token: String*/): HomeBlogResponse
 
 
@@ -117,21 +118,21 @@ interface ApiService {
     @GET("getProductAttributes/")
     suspend fun getProductAttributes(
         @Query("id") id: String,
-        @Query("accessToken") token: String
+        @Query("accessToken") token: String,
     ): ProductDetailResponse
 
 
     @GET("allCollections")
     suspend fun getAllCollections(
         @Query("page") page: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
     ): AllCategoryListResponse
 
     @GET("getReviewData")
     suspend fun getReviewData(
         @Query("id") productId: String,
         @Query("page") page: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
     ): ProductReviewListResponse
 
     @POST("getSortedCollection")
@@ -142,32 +143,32 @@ interface ApiService {
     @POST("getViewAllData")
     suspend fun getViewAllData(
         @Query("accessToken") token: String,
-        @Body handle : ViewAllProductRequest
+        @Body handle: ViewAllProductRequest,
     ): ViewAllProductResponse
 
-   /* @POST("getMasterCollectionProducts")
-    suspend fun getViewAllData(
-        @Query("accessToken") token: String,
-        @Body handle : ViewAllProductRequest
-    ): ViewAllProductResponse
-*/
+    /* @POST("getMasterCollectionProducts")
+     suspend fun getViewAllData(
+         @Query("accessToken") token: String,
+         @Body handle : ViewAllProductRequest
+     ): ViewAllProductResponse
+ */
     @POST("addToWishlist")
     suspend fun addWishListData(@Body request: AddWishListRequest): AddWishListResponse
 
     @GET("getWishlist")
     suspend fun getWishListData(
-        @Query("accessToken") token: String
+        @Query("accessToken") token: String,
     ): FetchWishListResponse
 
 
     @POST("login")
     suspend fun login(
-        @Body request: LoginRequest
+        @Body request: LoginRequest,
     ): GetSignUpResponse
 
     @POST("createCustomer")
     suspend fun signUp(
-        @Body request: SignUpRequest
+        @Body request: SignUpRequest,
     ): GetSignUpResponse
 
     @GET("getLandingPage")
@@ -175,25 +176,26 @@ interface ApiService {
 
     @POST("forgotPassword")
     suspend fun forgotPass(
-        @Body request: ForgotPassRequest
+        @Body request: ForgotPassRequest,
     ): ForgotPassResponse
 
-     @GET("getPolicies")
+    @GET("getPolicies")
     suspend fun getPolicies(): TermPrivacyResponse
 
-     @POST("logout")
-      suspend fun logout(@Body  accessToken: LogOutRequest): GetLoginResponse
+    @POST("logout")
+    suspend fun logout(@Body accessToken: LogOutRequest): GetLoginResponse
 
-       @POST("filterCollection")
-      suspend fun filterCollection(@Body  request: FilterRequest): ViewAllProductResponse
+    @POST("filterCollection")
+    suspend fun filterCollection(@Body request: FilterRequest): ViewAllProductResponse
 
 
-      @POST("removeFromWishlist")
-      suspend fun removeWishList(@Body  request: AddWishListRequest): RemoveWishListResponse
+    @POST("removeFromWishlist")
+    suspend fun removeWishList(@Body request: AddWishListRequest): RemoveWishListResponse
 
     @GET("getContactInfo")
     suspend fun getContactUs(): ContactUsResponse
-     @GET("getPaymentMethods")
+
+    @GET("getPaymentMethods")
     suspend fun getPaymentMethod(): PaymentTypeResponse
 
     @POST("createCustomerAddress")
@@ -202,14 +204,14 @@ interface ApiService {
     @GET("getCustomerAddresses")
     suspend fun getCustomerAdd(): CustomerAddressResponse
 
- @POST("createCart")
+    @POST("createCart")
     suspend fun addToBag(
-        @Body accessToken: AddToBagRequest
- ): AddtoBagResponse
+        @Body accessToken: AddToBagRequest,
+    ): AddtoBagResponse
 
     @GET("getCart")
     suspend fun getAllCartListData(
-        @Query("accessToken") token: String
+        @Query("accessToken") token: String,
     ): GetCartListResponse
 
     @GET("getCoupons")
@@ -217,112 +219,114 @@ interface ApiService {
 
     @POST("updateCart")
     suspend fun updateQty(
-        @Body request: IncreaseQtyRequest
+        @Body request: IncreaseQtyRequest,
     ): CartQtyIncreaseResponse
 
-  @POST("deleteCustomerAddress")
+    @POST("deleteCustomerAddress")
     suspend fun deleteCustomAddress(
-        @Body request: DeleteAddressRequest
+        @Body request: DeleteAddressRequest,
     ): DeleteAddressResponse
 
-      @PUT("updateCustomerAddress")
-       suspend fun editCustomAddress(@Body request: AddAddressRequest): CreateAddressResponse
+    @PUT("updateCustomerAddress")
+    suspend fun editCustomAddress(@Body request: AddAddressRequest): CreateAddressResponse
 
 //       @GET("getCustomerProfile")
 //       suspend fun getProfile(@Query("accessToken") token: String, ): GetProfileResponse
 
-        @GET("getUserProfile")
-        suspend fun getProfile(@Query("accessToken") token: String, ): GetProfileResponse
-
+    @GET("getUserProfile")
+    suspend fun getProfile(@Query("accessToken") token: String): GetProfileResponse
 
 
     @POST("updateCustomerProfile")
-       suspend fun editProfile(@Body request: EditProfileRequest): GetProfileResponse
+    suspend fun editProfile(@Body request: EditProfileRequest): GetProfileResponse
+
     @POST("customerAllOrders")
     suspend fun customerAllOrders(
-        @Body request: ManageAddressRequest
+        @Body request: ManageAddressRequest,
     ): CustomerAllOrdersResponse
 
     @POST("applyCoupon")
     suspend fun applyCoupons(
-        @Body request: ApplyCouponsRequest
+        @Body request: ApplyCouponsRequest,
     ): ApplyCouponsResponse
 
-   @POST("search")
+    @POST("search")
     suspend fun searchList(
-        @Body request: SearchListRequest
+        @Body request: SearchListRequest,
     ): GetSearchListResponse
 
-     @GET("getSearchTypes")
+    @GET("getSearchTypes")
     suspend fun getSearchTypeList(): GetSearchTypeResponse
 
-       @GET("getFilterCollectionData")
-       suspend fun getFilter(): GetFilterResponse
+    @GET("getFilterCollectionData")
+    suspend fun getFilter(): GetFilterResponse
 
-      @POST("createCodOrder")
-      suspend fun createCODOrder(@Body request: CreaterOrderRequest): CreateCODResponse
+    @POST("createCodOrder")
+    suspend fun createCODOrder(@Body request: CreaterOrderRequest): CreateCODResponse
 
 
-      @Multipart
-      @POST("upload")
-      suspend fun upLoadImg(
-          @Part file: MultipartBody.Part,
-          @Part ("customerId") customerId: RequestBody
-      ): GetProfileResponse
+    @Multipart
+    @POST("upload")
+    suspend fun upLoadImg(
+        @Part file: MultipartBody.Part,
+        @Part("customerId") customerId: RequestBody,
+    ): GetProfileResponse
 
     @GET("getProfileImage")
     suspend fun getProfileImg(@Query("customerId") customer: String): GetProfileImgResponse
 
     @GET("getOrderById")
     suspend fun getOrderDetails(
-        @Query("orderId") orderId: String
+        @Query("orderId") orderId: String,
     ): GetMyOrderDetailsResponse
 
     @POST("initializePayment")
     suspend fun paymentIniApi(
-        @Body request: PaymentIniRequest
+        @Body request: PaymentIniRequest,
     ): PaymentIniResponse
+
     @GET("getFAQs")
     suspend fun faq(@Query("role") role: String): FAQResponse
 
     @POST("sendSMS")
     suspend fun smsApi(
-        @Body request: SMSRequest
+        @Body request: SMSRequest,
     ): SMSResponse
-   @POST("verifyPaymentAndCreateOrder")
+
+    @POST("verifyPaymentAndCreateOrder")
     suspend fun paymentVerifyApi(
-        @Body request: PaymentVerifyRequest
+        @Body request: PaymentVerifyRequest,
     ): PaymentVerifyResponse
 
-   @POST("clearCartStore")
+    @POST("clearCartStore")
     suspend fun paymentSuccessClearAllOrderApi(
-     @Body accessToken: PaymentSuccessClearOrderRequest
+        @Body accessToken: PaymentSuccessClearOrderRequest,
     ): PaymentSuccessClearAllOrderResp
- /*@POST("clearCartStore")
-  suspend fun paymentSuccessClearAllOrderApi(@Body accessToken: PaymentSuccessClearOrderRequest): PaymentSuccessClearAllOrderResp
-*/
+    /*@POST("clearCartStore")
+     suspend fun paymentSuccessClearAllOrderApi(@Body accessToken: PaymentSuccessClearOrderRequest): PaymentSuccessClearAllOrderResp
+   */
 
-  @POST("removeDiscount")
-  suspend fun removeCoupon(@Body request: RemoveCouponRequest): RemoveCouponResponse
+    @POST("removeDiscount")
+    suspend fun removeCoupon(@Body request: RemoveCouponRequest): RemoveCouponResponse
 
- @POST("currencyConveter")
-  suspend fun postCurrency(@Body request: CurencyPostRequest): PostCurrencyResponse
+    @POST("currencyConveter")
+    suspend fun postCurrency(@Body request: CurencyPostRequest): PostCurrencyResponse
 
-  @GET("getCurrency")
-  suspend fun getCurrency(): GetCurrencyResponse
+    @GET("getCurrency")
+    suspend fun getCurrency(): GetCurrencyResponse
 
     @GET("getYoutubeUrl")
     suspend fun getYoutubeUrl(): YoutubeUrlResponse
 
     @POST("cancelCustomerOrder")
     suspend fun cancelOrderApi(
-        @Body request: CancelOrderRequest
+        @Body request: CancelOrderRequest,
     ): CancelOrderResponse
 
 
- @POST("deleteCustomer")
+    @POST("deleteCustomer")
     suspend fun deleteAccountApi(
-        @Body request: DeleteRequest
+        @Body request: DeleteRequest,
     ): DeleteResponse
 
     @GET("getShippingUrls")
@@ -332,18 +336,17 @@ interface ApiService {
     @GET("getYoutubeUrl")
     suspend fun getYoutubeVideo(): YoutubeResponse
 
-     @GET("getIndianStates")
+    @GET("getIndianStates")
     suspend fun getIndianState(): ShippingUrlResponse
 
 
-
-   // Pandit ji API
+    // Pandit ji API
 
     @GET("getAllPandit")
     suspend fun getPanditList(
         @Query("name") name: String? = null,
         @Query("serviceName") serviceName: String? = null,
-        ): GetPanditResponse
+    ): GetPanditResponse
 
     @GET("getHomepageCollections")
     suspend fun trendingSectionApi(
@@ -353,19 +356,25 @@ interface ApiService {
     suspend fun homeDataApi(
     ): HomeResponse
 
+    @GET("getHomepagePoojaServicesAll")
+    suspend fun getAllPopularPujaListApi(
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 1000,
+    ): PopularPujaResponse
+
     @POST("createBooking")
     suspend fun createBookingApi(
-        @Body request: BookPanditJiRequest
+        @Body request: BookPanditJiRequest,
     ): PanditJiBookingResponse
 
     @GET("services")
     suspend fun getPanditjiServices(
-        @Query("panditId") panditId: String
+        @Query("panditId") panditId: String,
     ): GetServicesResponse
 
     @GET("getHomepagePoojaServicesKit")
     suspend fun getAddOnKit(
-        @Query("serviceId") serviceId: String
+        @Query("serviceId") serviceId: String,
     ): GetPujaKitResponse
 
     @GET("getBookings")
@@ -389,17 +398,17 @@ interface ApiService {
 
     @POST("login-mobile")
     suspend fun loginWithMobile(
-        @Body model: LoginWithMobileRequest?
+        @Body model: LoginWithMobileRequest?,
     ): GetLoginResponse
 
     @POST("verify-mobile-otp")
     suspend fun verifyOtp(
-        @Body model: RegistrationModel?
+        @Body model: RegistrationModel?,
     ): GetSignUpResponse
 
 
     @POST("resend-mobile-otp")
     suspend fun reSendOtp(
-        @Body model: SendOtpModel?
+        @Body model: SendOtpModel?,
     ): ApiResponse
 }

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.app.adhyatmah.domain.model.wish_list.wish_list_request.AddWishListRequest
 import com.app.adhyatmah.domain.model.AllCategoryListResponse
 import com.app.adhyatmah.domain.model.HomeResponse
+import com.app.adhyatmah.domain.model.PopularPujaResponse
 import com.app.adhyatmah.domain.model.ProductReviewListResponse
 import com.app.adhyatmah.domain.model.TrendingSectionResponse
 import com.app.adhyatmah.domain.model.add_to_bag.add_to_bag_request.AddToBagRequest
@@ -34,12 +35,14 @@ import com.app.adhyatmah.domain.model.youtube_url_response.YoutubeUrlResponse
 import com.app.adhyatmah.domain.repository.ApiRepository
 import com.app.adhyatmah.utils.common_utils.Resources
 import com.app.adhyatmah.utils.common_utils.SingleLiveEvent
+import com.app.adhyatmah.utils.common_utils.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
+
     private val homeCollectionLiveData = SingleLiveEvent<Resources<HomeCollectionResponse>>()
     private val homeBannerLiveData = SingleLiveEvent<Resources<HomeBannerResponse>>()
     private val homeBlogLiveData = SingleLiveEvent<Resources<HomeBlogResponse>>()
@@ -48,20 +51,17 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
     private val getViewAllLiveData = SingleLiveEvent<Resources<ViewAllProductResponse>>()
     private val getCurrencyLiveData = SingleLiveEvent<Resources<GetCurrencyResponse>>()
     private val postCurrencyLiveData = SingleLiveEvent<Resources<PostCurrencyResponse>>()
-
     private val addToaBagLiveData = SingleLiveEvent<Resources<AddtoBagResponse>>()
-
-
     private val getCateAllLiveData = SingleLiveEvent<Resources<AllCategoryListResponse>>()
     private val getAllProductReviews = SingleLiveEvent<Resources<ProductReviewListResponse>>()
-
-
     private val addWishListData = SingleLiveEvent<Resources<AddWishListResponse>>()
     private val removeWishListLiveData = SingleLiveEvent<Resources<RemoveWishListResponse>>()
-
     private val singleLiveEventPanditList = SingleLiveEvent<Resources<GetPanditResponse>>()
     private val trendingSectionResponse = SingleLiveEvent<Resources<TrendingSectionResponse>>()
+
+    private val getAddressLiveData = SingleLiveEvent<Resources<CustomerAddressResponse>>()
     private val homeResponse = SingleLiveEvent<Resources<HomeResponse>>()
+    private val popularPujaResponse = SingleLiveEvent<Resources<PopularPujaResponse>>()
 
     fun trendingSectionApi() {
         trendingSectionResponse.postValue(Resources.loading(null))
@@ -70,12 +70,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                 val response = ApiRepository().trendingSectionApi()
                 trendingSectionResponse.postValue(Resources.success(response))
             } catch (ex: Exception) {
-                trendingSectionResponse.postValue(
-                    Resources.error(
-                        ex.localizedMessage ?: "Error",
-                        null
-                    )
-                )
+                trendingSectionResponse.postValue(Resources.error(ex.localizedMessage ?: "", null))
             }
         }
     }
@@ -94,7 +89,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                 val response = ApiRepository().getPanditListApi(name, serviceName)
                 Log.d(
                     "PanditListViewModel",
-                    "API success: vendors=${response.payload?.vendors?.size ?: 0}"
+                    "API success: vendors=${response.payload.vendors.size}"
                 )
                 singleLiveEventPanditList.postValue(Resources.success(response))
             } catch (ex: Exception) {
@@ -105,7 +100,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                 )
                 singleLiveEventPanditList.postValue(
                     Resources.error(
-                        ex.localizedMessage ?: "Error",
+                        ex.localizedMessage ?: "",
                         null
                     )
                 )
@@ -122,7 +117,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                 val response = ApiRepository().homeDataApi()
                 homeResponse.postValue(Resources.success(response))
             } catch (ex: Exception) {
-                homeResponse.postValue(Resources.error(ex.localizedMessage ?: "Error", null))
+                homeResponse.postValue(Resources.error(ex.localizedMessage ?: "", null))
             }
         }
     }
@@ -142,7 +137,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
 
                     )
                 } catch (ex: Exception) {
-                    addToaBagLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    addToaBagLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
                 }
             }
@@ -162,7 +157,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                 } catch (ex: Exception) {
                     homeCollectionLiveData.postValue(
                         Resources.error(
-                            ex.localizedMessage ?: "Error",
+                            ex.localizedMessage ?: "",
                             null
                         )
                     )
@@ -180,7 +175,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                 } catch (ex: Exception) {
                     homeBannerLiveData.postValue(
                         Resources.error(
-                            ex.localizedMessage,
+                            ex.localizedMessage ?: "",
                             null
                         )
                     )
@@ -199,7 +194,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                 } catch (ex: Exception) {
                     homeBlogLiveData.postValue(
                         Resources.error(
-                            ex.localizedMessage,
+                            ex.localizedMessage ?: "",
                             null
                         )
                     )
@@ -218,7 +213,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                 } catch (ex: Exception) {
                     homeMenuLiveData.postValue(
                         Resources.error(
-                            ex.localizedMessage,
+                            ex.localizedMessage ?: "",
                             null
                         )
                     )
@@ -246,7 +241,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    getViewAllLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getViewAllLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
                 }
             }
@@ -270,7 +265,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    addWishListData.postValue(Resources.error(ex.localizedMessage, null))
+                    addWishListData.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
                 }
             }
@@ -294,7 +289,12 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    removeWishListLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    removeWishListLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
 
                 }
             }
@@ -315,7 +315,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
 
                 )
             } catch (ex: Exception) {
-                homeProductDtLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                homeProductDtLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
             }
         }
@@ -332,7 +332,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
 
                 )
             } catch (ex: Exception) {
-                getCateAllLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                getCateAllLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
             }
         }
 
@@ -349,7 +349,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
 
                 )
             } catch (ex: Exception) {
-                getAllProductReviews.postValue(Resources.error(ex.localizedMessage, null))
+                getAllProductReviews.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
             }
         }
@@ -372,7 +372,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
 
                     )
                 } catch (ex: Exception) {
-                    searchListLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    searchListLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
                 }
             }
@@ -402,7 +402,12 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
 
                     )
                 } catch (ex: Exception) {
-                    searchTypeListLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    searchTypeListLiveData.postValue(
+                        Resources.error(
+                            ex.localizedMessage ?: "",
+                            null
+                        )
+                    )
 
                 }
             }
@@ -432,7 +437,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
 
                     )
                 } catch (ex: Exception) {
-                    youTubeUrlLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    youTubeUrlLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
                 }
             }
@@ -455,7 +460,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
 
                     )
                 } catch (ex: Exception) {
-                    postCurrencyLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    postCurrencyLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
                 }
             }
@@ -478,7 +483,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
 
                     )
                 } catch (ex: Exception) {
-                    getCurrencyLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getCurrencyLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
                 }
             }
@@ -491,8 +496,6 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
     fun getYouTubeUrlResponse(): LiveData<Resources<YoutubeUrlResponse>> {
         return youTubeUrlLiveData
     }
-
-
 
     fun getBannerLiveData(): LiveData<Resources<HomeBannerResponse>> {
         return homeBannerLiveData
@@ -546,8 +549,6 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
         return getAddressLiveData
     }
 
-    private val getAddressLiveData = SingleLiveEvent<Resources<CustomerAddressResponse>>()
-
     fun getAddressData(token: ManageAddressRequest) {
         try {
             getAddressLiveData.postValue(Resources.loading(null))
@@ -561,7 +562,7 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
 
                     )
                 } catch (ex: Exception) {
-                    getAddressLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getAddressLiveData.postValue(Resources.error(ex.localizedMessage ?: "", null))
 
                 }
             }
@@ -571,5 +572,17 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
         }
     }
 
+    fun popularPujaListApi() {
+        popularPujaResponse.postValue(Resources.loading(null))
+        viewModelScope.launch {
+            try {
+                val response = ApiRepository().getAllPopularPujaListApi()
+                popularPujaResponse.postValue(Resources.success(response))
+            } catch (ex: Exception) {
+                popularPujaResponse.postValue(Resources.error(ex.localizedMessage ?: "", null))
+            }
+        }
+    }
 
+    fun getPopularPujaListLiveData(): LiveData<Resources<PopularPujaResponse>> = popularPujaResponse
 }

@@ -31,7 +31,7 @@ class SelectLanguageViewModel@Inject constructor(application: Application):Andro
 
                     )
                 } catch (ex: Exception) {
-                    languagesListLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    languagesListLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }

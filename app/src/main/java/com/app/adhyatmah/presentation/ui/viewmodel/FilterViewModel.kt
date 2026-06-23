@@ -52,7 +52,7 @@ class FilterViewModel @Inject constructor(application: Application):AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    shortCollectionLiveData.postValue(com.app.adhyatmah.utils.common_utils.Resources.error(ex.localizedMessage, null))
+                    shortCollectionLiveData.postValue(com.app.adhyatmah.utils.common_utils.Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -72,7 +72,7 @@ class FilterViewModel @Inject constructor(application: Application):AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    privacyLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    privacyLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -92,7 +92,7 @@ class FilterViewModel @Inject constructor(application: Application):AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    logOutLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    logOutLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -112,7 +112,7 @@ class FilterViewModel @Inject constructor(application: Application):AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    deleteAccountLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    deleteAccountLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -133,7 +133,7 @@ class FilterViewModel @Inject constructor(application: Application):AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    fetchWishLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    fetchWishLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -155,7 +155,7 @@ class FilterViewModel @Inject constructor(application: Application):AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    filterLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    filterLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -185,7 +185,7 @@ class FilterViewModel @Inject constructor(application: Application):AndroidViewM
                         )
                     )
                 } catch (ex: Exception) {
-                    getFilterLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    getFilterLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
 

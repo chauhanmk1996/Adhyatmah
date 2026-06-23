@@ -47,7 +47,7 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
 
                     )
                 } catch (ex: Exception) {
-                    codLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    codLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -72,7 +72,7 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
 
                     )
                 } catch (ex: Exception) {
-                    payStackLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    payStackLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -94,7 +94,7 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
 
                     )
                 } catch (ex: Exception) {
-                    smsLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    smsLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -117,7 +117,7 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
 
                     )
                 } catch (ex: Exception) {
-                    faqLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    faqLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -156,7 +156,7 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
 
                     )
                 } catch (ex: Exception) {
-                    paymentVerifyLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    paymentVerifyLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -179,7 +179,7 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
 
                     )
                 } catch (ex: Exception) {
-                    paymentMethodLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    paymentMethodLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }
@@ -209,7 +209,7 @@ class PaymentViewModel @Inject constructor(application: Application):AndroidView
 
                     )
                 } catch (ex: Exception) {
-                    paymentSuOrderClearLiveData.postValue(Resources.error(ex.localizedMessage, null))
+                    paymentSuOrderClearLiveData.postValue(Resources.error(ex.localizedMessage?:"", null))
 
                 }
             }

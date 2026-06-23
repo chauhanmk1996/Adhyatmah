@@ -22,6 +22,7 @@ import com.app.adhyatmah.domain.model.profile.manage_address.Addresse
 import com.app.adhyatmah.domain.model.profile.manage_address.ManageAddressRequest
 import com.app.adhyatmah.presentation.ui.activity.LoginActivity
 import com.app.adhyatmah.presentation.ui.adapter.ManageAddressAdapter
+import com.app.adhyatmah.presentation.ui.bottom_sheet.SignUpRequiredBottomSheetFragment
 import com.app.adhyatmah.presentation.ui.viewmodel.ProfileViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.common_utils.CommonUtils
@@ -152,7 +153,7 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
 
         binding.addBtn.setOnClickListener {
             if (token.isEmpty()) {
-                showLoginPrompt()
+                signupRequired(getString(R.string.please_sign_up_required_to_add_address_and_see_address))
             } else {
                 val bundle = Bundle()
                 bundle.putString("type", "1")
@@ -167,7 +168,7 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
 
     fun fetchAddressList() {
         if (token.isEmpty()) {
-            showLoginPrompt()
+            signupRequired(getString(R.string.please_sign_up_required_to_add_address_and_see_address))
             return
         }
         val request = ManageAddressRequest()
@@ -175,25 +176,14 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
         profileViewModel.getAddressData(request)
     }
 
-    private fun showLoginPrompt() {
-        var dialog: AlertDialog? = null
-        dialog = CommonUtils.showCustomAlertDialog(
-            requireActivity(),
-            getString(R.string.sign_up_required),
-            getString(R.string.please_sign_up_required_to_add_address_and_see_address),
-            positiveButtonText = "Sign up",
-            negativeButtonText = "Cancel",
-            positiveButtonAction = {
-                dialog?.dismiss()
+    private fun signupRequired(message:String) {
+        val bottomSheet =
+            SignUpRequiredBottomSheetFragment(message) {
                 val intent = Intent(context, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                val bundle = Bundle()
                 requireActivity().startActivity(intent)
-            },
-            negativeButtonAction = {
-                dialog?.dismiss()
             }
-        )
+        bottomSheet.show(parentFragmentManager, "SignUpRequiredBottomSheetFragment")
     }
 
     @SuppressLint("SuspiciousIndentation")
