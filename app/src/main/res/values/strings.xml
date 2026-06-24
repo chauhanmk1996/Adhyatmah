@@ -57,7 +57,7 @@
     <string name="this_is_a_custom_message">This is a custom message!</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="select_pooja">Select Pooja</string>
+    <string name="select_pooja">Select Puja</string>
     <string name="new_arrivals">New Arrivals</string>
     <string name="add_address">Add Address</string>
     <string name="step_1">Step 1</string>
@@ -115,7 +115,7 @@
     <string name="thank_you_for_your_purchase_your_order_will_n_be_delivered_in_3_5_working_days_we_hope_n_you_enjoy_your_new_items">Thank you for your purchase. Your order will \n be delivered in 3-5 working days.We hope \n you enjoy your new items!</string>
     <string name="contact_us">Contact Us</string>
     <string name="introduction">Introduction</string>
-    <string name="welcome_to_adhyatmah_your_one_stop_destination_for_all_essential_pooja_and_spiritual_items_we_believe_that_every_ritual_deserves_purity_and_authenticity_which_is_why_we_bring_you_carefully_sourced_and_high_quality_products_for_every_religious_occasion_from_daily_puja_essentials_to_festival_specific_items_we_ensure_that_your_spiritual_journey_remains_seamless_and_divine_with_adhyatmah_experience_convenience_trust_and_devotion_delivered_to_your_doorstep">Welcome to Adhyatmah, your one-stop destination for all essential pooja and spiritual items. We believe that every ritual deserves purity and authenticity, which is why we bring you carefully sourced and high-quality products for every religious occasion. From daily puja essentials to festival-specific items, we ensure that your spiritual journey remains seamless and divine. With Adhyatmah, experience convenience, trust, and devotion delivered to your doorstep.</string>
+    <string name="welcome_to_adhyatmah_your_one_stop_destination_for_all_essential_pooja_and_spiritual_items_we_believe_that_every_ritual_deserves_purity_and_authenticity_which_is_why_we_bring_you_carefully_sourced_and_high_quality_products_for_every_religious_occasion_from_daily_puja_essentials_to_festival_specific_items_we_ensure_that_your_spiritual_journey_remains_seamless_and_divine_with_adhyatmah_experience_convenience_trust_and_devotion_delivered_to_your_doorstep">Welcome to Adhyatmah, your one-stop destination for all essential puja and spiritual items. We believe that every ritual deserves purity and authenticity, which is why we bring you carefully sourced and high-quality products for every religious occasion. From daily puja essentials to festival-specific items, we ensure that your spiritual journey remains seamless and divine. With Adhyatmah, experience convenience, trust, and devotion delivered to your doorstep.</string>
     <string name="whatsapp">WhatsApp</string>
     <string name="gmail">Gmail</string>
     <string name="instagram">Instagram</string>
@@ -133,7 +133,7 @@
     <string name="follow_us_on_youtube">FOLLOW US ON YOUTUBE</string>
     <string name="discover_our_product">Discover Our Product</string>
     <string name="view_all">View All</string>
-    <string name="choose_the_pooja_and_book_a_pandit_ji_online">Choose the pooja and book a pandit ji online</string>
+    <string name="choose_the_pooja_and_book_a_pandit_ji_online">Choose the puja and book a pandit ji online</string>
     <string name="login">Login</string>
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
@@ -162,8 +162,8 @@
     <string name="verify">Verify</string>
     <string name="search_">Search...</string>
     <string name="pandit_details">Pandit Details</string>
-    <string name="pooja">Pooja</string>
-    <string name="pooja_items">Pooja Items</string>
+    <string name="pooja">Puja</string>
+    <string name="pooja_items">Puja Items</string>
     <string name="date_and_time">Date and Time</string>
     <string name="fees">Fees</string>
     <string name="payment_gateway">Payment Gateway</string>
@@ -183,8 +183,8 @@
     <string name="read_more">Read more</string>
     <string name="featured_products">Featured Products</string>
     <string name="price">Price</string>
-    <string name="pooja_time">Pooja Time</string>
-    <string name="pooja_samagri">Pooja Samagri</string>
+    <string name="pooja_time">Puja Time</string>
+    <string name="pooja_samagri">Puja Samagri</string>
     <string name="track">Track</string>
     <string name="credit_or_debit_card">Credit or Debit Card</string>
     <string name="perfect_must_buy">Perfect. Must buy!</string>
@@ -192,7 +192,7 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="pending">Pending</string>
-    <string name="pooja_booked">Pooja Booked</string>
+    <string name="pooja_booked">Puja Booked</string>
     <string name="select_language">Select Language</string>
     <string name="no_item_found">No Item Found</string>
     <string name="no_items_in_your_bag">No items in your bag</string>
@@ -301,7 +301,7 @@
     <string name="gotra">Gotra</string>
     <string name="get_it_by">Get It By</string>
     <string name="google_pay">Google Pay</string>
-    <string name="search_pooja_samagri_pandit">Search Pooja, Samagri, Pandit</string>
+    <string name="search_pooja_samagri_pandit">Search Puja, Samagri, Pandit</string>
     <string name="no_address_found">No address found</string>
     <string name="no_order_available">No Order Available</string>
     <string name="rectangle_is">Rectangle is</string>
@@ -415,4 +415,5 @@
     <string name="upload_error">Upload error</string>
     <string name="ratings">Ratings</string>
     <string name="product_not_available">Product not available!</string>
+    <string name="puja_samagri">Puja Samagri</string>
 </resources>

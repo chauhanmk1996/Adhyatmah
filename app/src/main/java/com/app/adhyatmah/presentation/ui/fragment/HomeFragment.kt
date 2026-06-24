@@ -149,7 +149,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.clLongBanner.setOnClickListener {
-            (requireActivity() as? MainActivity)?.switchToPanditJiTab()
+            findNavController().navigate(R.id.popularPujaFragment)
         }
 
         binding.ivLanguage.setOnClickListener {

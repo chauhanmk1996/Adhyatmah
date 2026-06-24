@@ -12,6 +12,8 @@ import com.app.adhyatmah.data.preferences.PENDING
 import com.app.adhyatmah.data.preferences.UP_COMING
 import com.app.adhyatmah.databinding.RcvItemBookingBinding
 import com.app.adhyatmah.utils.common_utils.CommonUtils
+import com.app.adhyatmah.utils.hide
+import com.app.adhyatmah.utils.show
 import com.app.panditji.data.model.get_booking.GetBookingResponse
 import com.bumptech.glide.Glide
 
@@ -42,7 +44,45 @@ class PreviousBookingAdapter(
             val name = data.vendor.firstName + " " + data.vendor.lastName
             btNameId.text = name
 
-            val address = data.address.streetAddress + ", " + data.address.city + ", " + data.address.state + ", " + data.address.country + ", " + data.address.zip
+            if (data.pujaSamagri == null) {
+                tvPujaSamagri.hide()
+                tvPujaKit.hide()
+                tvInstantKit.hide()
+            } else {
+                tvPujaSamagri.show()
+                if (data.pujaSamagri.pujaKit.isNullOrEmpty()) {
+                    tvPujaKit.hide()
+                } else {
+                    tvPujaKit.show()
+                    var pujaKit = ""
+                    data.pujaSamagri.pujaKit.forEach { kit ->
+                        pujaKit = if (pujaKit.isEmpty()) {
+                            "${context.getString(R.string.puja_kit)} - $kit"
+                        } else {
+                            "$pujaKit, $kit"
+                        }
+                    }
+                    tvPujaKit.text = pujaKit
+                }
+
+                if (data.pujaSamagri.instantKit.isNullOrEmpty()) {
+                    tvInstantKit.hide()
+                } else {
+                    tvInstantKit.show()
+                    var instantKit = ""
+                    data.pujaSamagri.instantKit.forEach { kit ->
+                        instantKit = if (instantKit.isEmpty()) {
+                            "${context.getString(R.string.instant_kit)} - $kit"
+                        } else {
+                            "$instantKit, $kit"
+                        }
+                    }
+                    tvInstantKit.text = instantKit
+                }
+            }
+
+            val address =
+                data.address.streetAddress + ", " + data.address.city + ", " + data.address.state + ", " + data.address.country + ", " + data.address.zip
             tvAddressId1.text = address
 
             tvInr.text = CommonUtils.formatDate(data.dateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -56,22 +96,25 @@ class PreviousBookingAdapter(
         when (type) {
             PENDING -> {
                 holder.binding.btStatusId.text = context.getString(R.string.pending)
-                holder.binding.btStatusId.backgroundTintList = context.getColorStateList(R.color.red_e30000)
+                holder.binding.btStatusId.backgroundTintList =
+                    context.getColorStateList(R.color.red_e30000)
                 holder.binding.btnCompleteId.visibility = View.GONE
                 holder.binding.btnLayoutIdId.visibility = View.VISIBLE
                 holder.binding.btnCancel.visibility = View.VISIBLE
             }
 
             ON_GOING -> {
-                holder.binding.btStatusId.backgroundTintList = context.getColorStateList(R.color.theme)
-                holder.binding.btStatusId.text =context.getString(R.string.ongoing)
+                holder.binding.btStatusId.backgroundTintList =
+                    context.getColorStateList(R.color.theme)
+                holder.binding.btStatusId.text = context.getString(R.string.ongoing)
                 holder.binding.btnCompleteId.visibility = View.VISIBLE
                 holder.binding.btnLayoutIdId.visibility = View.GONE
             }
 
             UP_COMING -> {
                 holder.binding.btStatusId.text = context.getString(R.string.upcoming)
-                holder.binding.btStatusId.backgroundTintList = context.getColorStateList(R.color.green_00da45)
+                holder.binding.btStatusId.backgroundTintList =
+                    context.getColorStateList(R.color.green_00da45)
                 holder.binding.btnCompleteId.visibility = View.GONE
                 holder.binding.btnLayoutIdId.visibility = View.GONE
                 holder.binding.btnCancel.visibility = View.VISIBLE
@@ -79,7 +122,8 @@ class PreviousBookingAdapter(
 
             CANCELLED -> {
                 holder.binding.btStatusId.text = context.getString(R.string.cancelled)
-                holder.binding.btStatusId.backgroundTintList = context.getColorStateList(R.color.red_e30000)
+                holder.binding.btStatusId.backgroundTintList =
+                    context.getColorStateList(R.color.red_e30000)
                 holder.binding.btnCompleteId.visibility = View.GONE
                 holder.binding.btnLayoutIdId.visibility = View.GONE
                 holder.binding.btnCancel.visibility = View.GONE

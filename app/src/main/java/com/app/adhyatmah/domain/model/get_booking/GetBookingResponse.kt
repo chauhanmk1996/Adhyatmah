@@ -29,7 +29,8 @@ data class GetBookingResponse(
             val service: String,
             val status: String,
             val updatedAt: String,
-            val vendor: Vender
+            val vendor: Vender,
+            val pujaSamagri:PujaSamagri?
         ): Parcelable {
             @Parcelize
             data class Address(
@@ -57,6 +58,12 @@ data class GetBookingResponse(
             val email: String,
             val image: String,
             val phone: String
+        ): Parcelable
+
+        @Parcelize
+        data class PujaSamagri(
+            val pujaKit: ArrayList<String>?,
+            val instantKit: ArrayList<String>?,
         ): Parcelable
     }
 }
