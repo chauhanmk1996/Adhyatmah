@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/featured_product" />
+                tools:src="@drawable/featured_product" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/wishList"
@@ -35,39 +35,55 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/like" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="68dp"
                 android:layout_gravity="bottom"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20sp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/rectangle_top_right_bottom_right"
                 android:gravity="bottom"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/label"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/muktamahee_regular"
+                    android:maxLines="1"
                     android:textColor="@color/black"
                     android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="Ribbed Top" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/featuredProducts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/muktamahee_semibold"
-                    android:text="₹ 599"
                     android:textColor="@color/black"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@+id/label"
+                    app:layout_constraintTop_toBottomOf="@+id/label"
+                    tools:text="₹ 599" />
 
-            </LinearLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:src="@mipmap/cart_icon"
+                    android:tint="@color/theme"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
 

@@ -15,6 +15,7 @@ class AdapterViewAllProduct(
     private val showImage: Boolean,
     var onWishlistClick: (Int, Boolean) -> Unit,
     var onSubAdapterClick: (Int, Boolean, Product) -> Any,
+    var onAddToCartClick: (Product) -> Unit,
 ) : RecyclerView.Adapter<AdapterViewAllProduct.ViewPager>() {
 
     class ViewPager(
@@ -87,6 +88,10 @@ class AdapterViewAllProduct(
 
         holder.binding.cardView.setOnClickListener {
             onSubAdapterClick(position, false, product)
+        }
+
+        holder.binding.ivCart.setOnClickListener {
+            onAddToCartClick(product)
         }
     }
 }

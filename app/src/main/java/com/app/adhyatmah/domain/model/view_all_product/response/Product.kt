@@ -10,5 +10,7 @@ data class Product(
     val tags: List<Any>,
     val title: String,
     val variants: List<Variant>,
-    val wishlist: Boolean
+    val wishlist: Boolean,
+    val stockQuantity: Int,
+    val pincode : List<String> ?= null
 )

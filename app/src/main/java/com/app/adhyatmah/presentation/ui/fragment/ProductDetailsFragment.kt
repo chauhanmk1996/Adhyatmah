@@ -315,7 +315,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             if (token.isNullOrEmpty()) {
                 signupRequired(getString(R.string.please_sign_up_to_add_items_to_your_bag))
             } else if (stockQuantity == 0) {
-                Toast.makeText(requireContext(), "Product not available!", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), getString(R.string.product_not_available), Toast.LENGTH_SHORT)
                     .show()
             } else if ((availablePincode.isEmpty()) || (availablePincode.any {
                     it.equals(
