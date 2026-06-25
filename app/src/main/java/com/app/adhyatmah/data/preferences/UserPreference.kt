@@ -9,4 +9,6 @@ object UserPreference {
     var panditJiDetails = PanditJiDetails()
     var savedAddress = ""
     var savedAddressId = ""
+    var selectedType:String? = null
+    var search:String? = null
 }

@@ -3,6 +3,7 @@ package com.app.adhyatmah.presentation.ui.fragment
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import com.app.adhyatmah.R
+import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.databinding.FragmentPopularPujaBinding
 import com.app.adhyatmah.domain.model.PopularPooja
@@ -32,11 +33,10 @@ class PopularPujaFragment : BaseFragment<FragmentPopularPujaBinding>() {
                 popularPoojaList.addAll(list)
                 popularPujasGridAdapter =
                     PopularPujasGridAdapter(popularPoojaList) { selectedPuja ->
+                        UserPreference.selectedType = "Service"
+                        UserPreference.search = selectedPuja.name ?: ""
                         (requireActivity() as? MainActivity)?.panditJiFromPopularPuja = true
-                        (requireActivity() as? MainActivity)?.switchToPanditJiTab(
-                            "Service",
-                            selectedPuja.name ?: ""
-                        )
+                        (requireActivity() as? MainActivity)?.switchToPanditJiTab()
                     }
                 binding.rvPopularPuja.adapter = popularPujasGridAdapter
                 ProcessDialog.dismissDialog(true)

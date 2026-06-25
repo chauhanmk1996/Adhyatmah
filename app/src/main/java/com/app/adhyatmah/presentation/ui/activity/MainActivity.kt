@@ -330,14 +330,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         return resId > 0 && resources.getInteger(resId) == 2
     }
 
-    fun switchToPanditJiTab(selectedType: String? = null, search: String? = null) {
+    fun switchToPanditJiTab() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        val bundle = Bundle().apply {
-            putString("selectedType", selectedType)
-            putString("search", search)
-        }
-        supportFragmentManager.setFragmentResult("searchData", bundle)
-
         bottomNav.selectedItemId = R.id.navigation_pandit_ji
     }
 

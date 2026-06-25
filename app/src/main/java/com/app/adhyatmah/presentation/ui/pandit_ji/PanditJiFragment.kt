@@ -61,6 +61,8 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     private var isLoading = false
     private var isLastPage = false
 
+    private var isSearchResultReceived = false
+
     override fun setLayout(): Int = R.layout.fragment_pandit_ji
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -68,12 +70,23 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         setObserver()
         searchListener()
         scrollListener()
-
         currentPage = 1
         name = null
         serviceName = null
         isLastPage = false
-        panditJiApi()
+        panditJiList.clear()
+        panditJiAdapter.clearList()
+
+        if (UserPreference.selectedType.isNullOrEmpty() && UserPreference.search.isNullOrEmpty()){
+            panditJiApi()
+        }else{
+            selectedType =UserPreference.selectedType?:""
+            poojaSelectFromHomeName = UserPreference.search?:""
+            binding.searchView.setText(UserPreference.search?:"")
+            UserPreference.selectedType = null
+            UserPreference.search = null
+        }
+
         setSpinnerOptions()
         homeViewModel.popularPujaListApi()
     }
@@ -176,17 +189,15 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             override fun afterTextChanged(s: Editable?) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s?.toString()?.trim() ?: ""
-
-                if (query.isEmpty()) {
+                if (query.isNotEmpty()) {
+                    searchJob?.cancel()
+                    searchJob = lifecycleScope.launch {
+                        delay(300)
+                        performSearch(query)
+                    }
+                } else {
                     searchJob?.cancel()
                     showFullList()
-                    return
-                }
-
-                searchJob?.cancel()
-                searchJob = lifecycleScope.launch {
-                    delay(300)
-                    performSearch(query)
                 }
             }
         })
@@ -195,6 +206,8 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     private fun performSearch(query: String) {
         currentPage = 1
         isLastPage = false
+        panditJiList.clear()
+        panditJiAdapter.clearList()
         if (selectedType == "PanditJi") {
             name = query
             serviceName = null
@@ -211,6 +224,8 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         isLastPage = false
         name = null
         serviceName = null
+        panditJiList.clear()
+        panditJiAdapter.clearList()
         panditJiApi()
     }
 
@@ -298,30 +313,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         }
 
         ignoreNextSpinnerSelection = false
-
-        requireActivity().supportFragmentManager.setFragmentResultListener(
-            "searchData",
-            viewLifecycleOwner
-        ) { _, bundle ->
-            if (bundle.isEmpty) return@setFragmentResultListener
-            val type = bundle.getString("selectedType")
-            val search = bundle.getString("search")
-            poojaSelectFromHomeName = search ?: ""
-
-            if (!type.isNullOrEmpty()) {
-                selectedType = type
-            }
-
-            if (!search.isNullOrEmpty()) {
-                for (i in 0 until adapter.count) {
-                    if (adapter.getItem(i).toString() == search) {
-                        binding.mySpinner.setSelection(i)
-                        break
-                    }
-                }
-                binding.searchView.setText(search)
-            }
-        }
     }
 
     private fun openPoojaSelectionDialog() {

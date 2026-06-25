@@ -130,7 +130,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         homeViewModel.homeCollectionApi(token)
         homeViewModel.trendingSectionApi()
-        homeViewModel.hitPanditListApi(page=1)
+        homeViewModel.hitPanditListApi(page = 1)
         homeViewModel.homeDataApi()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
@@ -414,12 +414,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 popularPoojaList.addAll(list)
                                 popularPujasAdapter =
                                     PopularPujasAdapter(popularPoojaList) { selectedPuja ->
+                                        UserPreference.selectedType = "Service"
+                                        UserPreference.search = selectedPuja.name ?: ""
                                         (requireActivity() as? MainActivity)?.panditJiFromPopularPuja =
                                             false
-                                        (requireActivity() as? MainActivity)?.switchToPanditJiTab(
-                                            "Service",
-                                            selectedPuja.name ?: ""
-                                        )
+                                        (requireActivity() as? MainActivity)?.switchToPanditJiTab()
                                     }
                                 binding.rvPopularPujas.adapter = popularPujasAdapter
                             }
@@ -789,7 +788,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             singUpOpen = {
                 signupRequired(getString(R.string.please_sign_up_required_to_see_wishlist))
             },
-            onAddToCartClick ={product->
+            onAddToCartClick = { product ->
                 onAddToCartClick(product)
             }
         )
