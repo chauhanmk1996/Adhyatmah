@@ -40,7 +40,7 @@
     <string name="booking_id_123546567895">booking id 123456789</string>
     <string name="g_52_sector_63_rd_g_block_sector_63_noida_chotpur_uttar_pradesh_201309">Noida sector 73\n</string>
     <string name="hanuman_puja">Hanuman Puja</string>
-    <string name="date_time"><![CDATA[Date & Time]]></string>
+    <string name="date_time">Date &amp; Time</string>
     <string name="complete">Complete</string>
     <string name="decline">Decline</string>
     <string name="_1_25_lakh_mantra">1.25 lakh mantra</string>

@@ -55,9 +55,7 @@ class PendingBookingFragment : BaseFragment<FragmentPendingBinding>() {
     }
 
     private fun hitPendingBookingApi() {
-        viewModel.hitGetBookings(
-            "pending"
-        )
+        viewModel.hitGetBookings("pending")
     }
 
     private fun observeBookings() {

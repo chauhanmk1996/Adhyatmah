@@ -30,6 +30,8 @@ data class Product(
     val handle: String?,
     var wishlist: Boolean?,
     val variant: Variant?,
+    val stockQuantity: Int,
+    val pincode : List<String> ?= null
 )
 
 data class FeaturedImage(

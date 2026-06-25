@@ -182,17 +182,6 @@
                     tools:text="Instant Kit - Mahamrtyunjay path" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvHanumanPuja"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/muktamahee_bold"
-                    android:text="@string/hanuman_puja"
-                    android:textColor="@color/theme"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
-                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvCreateTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

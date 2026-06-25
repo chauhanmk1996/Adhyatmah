@@ -16,6 +16,7 @@ class HomeProductsAdapter(
     private val onWishlistClick: (collectionIndex: Int, productIndex: Int, isLiked: Boolean) -> Unit,
     private val onSubAdapterClick: (collectionIndex: Int, productIndex: Int, isLiked: Boolean) -> Unit,
     private val singUpOpen: () -> Unit,
+    var onAddToCartClick: (Product) -> Unit,
 ) : BaseRecyclerAdapter<ListItemHomeProductBinding>() {
 
     override fun getLayoutId(): Int = R.layout.list_item_home_product
@@ -58,6 +59,10 @@ class HomeProductsAdapter(
 
             cvProduct.setOnClickListener {
                 onSubAdapterClick(collectionIndex, position, false)
+            }
+
+            ivCart.setOnClickListener {
+                onAddToCartClick(product)
             }
         }
     }

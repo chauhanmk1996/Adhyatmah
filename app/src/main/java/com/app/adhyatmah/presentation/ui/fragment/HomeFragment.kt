@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,6 +23,7 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
+import com.app.adhyatmah.data.preferences.CART_ID
 import com.app.adhyatmah.data.preferences.CURRENT_PINCODE
 import com.app.adhyatmah.data.preferences.IS_LOGIN
 import com.app.adhyatmah.data.preferences.MENU_TITLE
@@ -35,9 +37,11 @@ import com.app.adhyatmah.domain.model.PopularPooja
 import com.app.adhyatmah.domain.model.Testimonials
 import com.app.adhyatmah.domain.model.TrendingSection
 import com.app.adhyatmah.domain.model.WhyChooseUs
+import com.app.adhyatmah.domain.model.add_to_bag.add_to_bag_request.AddToBagRequest
 import com.app.adhyatmah.domain.model.create_booking.PanditJiDetails
 import com.app.adhyatmah.domain.model.home_banner_response.HomeBanner
 import com.app.adhyatmah.domain.model.home_collection_Response.HomeCollection
+import com.app.adhyatmah.domain.model.home_collection_Response.Product
 import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Vendor
 import com.app.adhyatmah.domain.model.profile.manage_address.ManageAddressRequest
 import com.app.adhyatmah.domain.model.wish_list.wish_list_request.AddWishListRequest
@@ -54,6 +58,7 @@ import com.app.adhyatmah.presentation.ui.bottom_sheet.SignUpRequiredBottomSheetF
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.HomePanditJiAdapter
 import com.app.adhyatmah.presentation.ui.viewmodel.HomeViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
+import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
 import com.app.adhyatmah.utils.hide
@@ -700,6 +705,43 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
         }
+
+        homeViewModel.getAddToBag().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val statusCode = it.data?.code
+                    when (statusCode) {
+                        200 -> {
+                            val message = it.data.message
+                            Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+                            Preferences.setStringPreference(
+                                requireContext(),
+                                CART_ID,
+                                it.data.payload.cart.id
+                            )
+                            CART_COUNT = it.data.payload.cart.lines.edges.size
+                            (requireActivity() as MainActivity).updateBagBadge(CART_COUNT)
+                            (requireActivity() as MainActivity).switchToCartTab()
+                        }
+
+                        401 -> {
+                            Log.e("TAG", "Unauthorized access")
+                        }
+                    }
+                    ProcessDialog.dismissDialog(true)
+                }
+
+                Status.LOADING -> {
+                    ProcessDialog.showDialog(requireActivity(), true)
+                }
+
+                Status.ERROR -> {
+                    Log.e("TAG", "Error: ${it.message}")
+                    ProcessDialog.dismissDialog(true)
+                    Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     fun setAdapter(list: ArrayList<HomeCollection>) {
@@ -746,9 +788,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             },
             singUpOpen = {
                 signupRequired(getString(R.string.please_sign_up_required_to_see_wishlist))
+            },
+            onAddToCartClick ={product->
+                onAddToCartClick(product)
             }
         )
         binding.rvFeaturedProducts.adapter = productsAdapter
+    }
+
+    private fun onAddToCartClick(product: Product) {
+        var availablePinCode: List<String> = listOf()
+        if (product.pincode?.isNotEmpty() == true) availablePinCode = product.pincode
+        if (token.isEmpty()) {
+            signupRequired(getString(R.string.please_sign_up_to_add_items_to_your_bag))
+        } else if (product.stockQuantity == 0) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.product_not_available), Toast.LENGTH_SHORT
+            )
+                .show()
+        } else if ((availablePinCode.isEmpty()) || (availablePinCode.any {
+                it.equals(
+                    Preferences.getStringPreference(requireContext(), CURRENT_PINCODE),
+                    ignoreCase = true
+                )
+            })) {
+            val request = AddToBagRequest()
+            request.accessToken = token
+            request.quantity = 1
+            request.variantId = product.id
+            homeViewModel.addToBagApi(request)
+        } else {
+            showPinCodePrompt()
+        }
     }
 
     private fun signupRequired(message: String) {
@@ -759,6 +831,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 requireActivity().startActivity(intent)
             }
         bottomSheet.show(parentFragmentManager, "SignUpRequiredBottomSheetFragment")
+    }
+
+    private fun showPinCodePrompt() {
+        var dialog: AlertDialog? = null
+        dialog = CommonUtils.showPinCodeDialog(
+            requireActivity(),
+            getString(R.string.alert),
+            getString(R.string.product_is_not_available_for_your_current_location),
+            positiveButtonText = getString(R.string.ok),
+            negativeButtonText = "",
+            positiveButtonAction = {
+                dialog?.dismiss()
+            },
+            negativeButtonAction = {
+                dialog?.dismiss()
+            }
+        )
     }
 
     private var shimmerLoadingCount = 0
