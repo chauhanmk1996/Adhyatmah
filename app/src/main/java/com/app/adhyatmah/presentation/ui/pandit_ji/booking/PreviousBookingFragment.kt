@@ -36,11 +36,13 @@ class PreviousBookingFragment : BaseFragment<FragmentPreviousBookingBinding>() {
             requireActivity(),
             PREVIOUS,
             mutableListOf(),
-            {},
-            {}
-        ) {
-            Log.d("TAG", "Item clicked: $it")
-        }
+            completeBooking = {},
+            cancelBooking = {},
+            callBack = {},
+            callClick = { phone ->
+                openDialPad(phone)
+            }
+        )
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
 
@@ -84,11 +86,13 @@ class PreviousBookingFragment : BaseFragment<FragmentPreviousBookingBinding>() {
             requireActivity(),
             PREVIOUS,
             list.toMutableList(),
-            {},
-            {}
-        ) {
-            Log.d("TAG", "loadRcvBooking: $it")
-        }
+            completeBooking = {},
+            cancelBooking = {},
+            callBack = {},
+            callClick = { phone ->
+                openDialPad(phone)
+            }
+        )
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
 }

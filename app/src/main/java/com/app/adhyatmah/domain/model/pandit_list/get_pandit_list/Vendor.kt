@@ -17,6 +17,10 @@ data class Vendor(
     val phone: String?=null,
     val services: List<Service>?=null,
     val gotra: String?=null,
+    val veda: String?=null,
+    val pankti: String?=null,
+    val shakha: String?=null,
+    val sutra: String?=null,
     val verified: Boolean?=null,
     val trusted: Boolean?=null,
     var seoContent: SeoContent? = null

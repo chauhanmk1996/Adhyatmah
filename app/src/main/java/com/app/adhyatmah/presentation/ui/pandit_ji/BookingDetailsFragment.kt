@@ -82,10 +82,11 @@ class BookingDetailsFragment : Fragment() {
 
             setPanditDescription(panditJiDetails.seoContent?.about?.content)
 
-            //val description = panditJiDetails.seoContent?.about?.content?.toString() ?: ""
-            //tvDescription.setHtml(description)
-
-            tvGotra.text = panditJiDetails.gotra ?: ""
+            tvGotra.text = panditJiDetails.gotra ?: getString(R.string.n_a)
+            tvVeda.text = panditJiDetails.veda ?: getString(R.string.n_a)
+            tvPankti.text = panditJiDetails.pankti ?: getString(R.string.n_a)
+            tvShakha.text = panditJiDetails.shakha ?: getString(R.string.n_a)
+            tvSutra.text = panditJiDetails.sutra ?: getString(R.string.n_a)
 
             if (panditJiDetails.verified == true) {
                 clVerifiedPandit.show()

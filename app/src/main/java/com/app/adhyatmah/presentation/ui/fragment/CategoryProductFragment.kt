@@ -100,7 +100,7 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
             selectedCategoryHandle = selectedCategory.handle
             loadProducts(selectedCategory.handle)
         }
-        binding.recyCategoryLeft.adapter = categoryAdapter
+        binding.rvCategory.adapter = categoryAdapter
     }
 
     private fun setupProductList() {
@@ -111,7 +111,7 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
             onSubAdapterClick = { _, _, data -> openProductDetail(data) }, onAddToCartClick = ::onAddToCartClick
         )
 
-        binding.recyProductsRight.apply {
+        binding.rvProduct.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = productAdapter
         }

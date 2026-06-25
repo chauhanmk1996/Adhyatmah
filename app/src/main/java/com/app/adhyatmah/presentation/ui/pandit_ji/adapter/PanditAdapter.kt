@@ -7,10 +7,12 @@ import com.app.adhyatmah.domain.model.pandit_list.get_pandit_list.Vendor
 import com.bumptech.glide.Glide
 
 class PanditJiAdapter(
-    private val panditJiList: List<Vendor>, private val onSelected: (Vendor) -> Unit,
+    private val onSelected: (Vendor) -> Unit,
 ) : BaseRecyclerAdapter<ListItemPanditBinding>() {
 
     override fun getLayoutId(): Int = R.layout.list_item_pandit
+
+    private val panditJiList: ArrayList<Vendor> = ArrayList()
 
     override fun getItemCount(): Int {
         return panditJiList.size
@@ -43,5 +45,16 @@ class PanditJiAdapter(
                 onSelected(panditJi)
             }
         }
+    }
+
+    fun addList(list: ArrayList<Vendor>) {
+        val startPosition = panditJiList.size
+        panditJiList.addAll(list)
+        notifyItemRangeInserted(startPosition, list.size)
+    }
+
+    fun clearList() {
+        panditJiList.clear()
+        notifyDataSetChanged()
     }
 }

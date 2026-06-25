@@ -1,5 +1,7 @@
 package com.app.adhyatmah.utils.base
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,5 +31,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
         binding = DataBindingUtil.inflate(inflater, setLayout(), container, false)
+    }
+
+    fun openDialPad(phoneNumber: String) {
+        val intent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse("tel:$phoneNumber")
+        }
+        startActivity(intent)
     }
 }

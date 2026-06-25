@@ -74,26 +74,13 @@ class HomeViewModel @Inject constructor(application: Application) : AndroidViewM
     fun getTrendingSectionLiveData(): LiveData<Resources<TrendingSectionResponse>> =
         trendingSectionResponse
 
-    fun hitPanditListApi(name: String? = null, serviceName: String? = null) {
+    fun hitPanditListApi(name: String? = null, serviceName: String? = null,page:Int) {
         singleLiveEventPanditList.postValue(Resources.loading(null))
         viewModelScope.launch {
             try {
-                Log.d(
-                    "PanditListViewModel",
-                    "hitPanditListApi called: name=$name serviceName=$serviceName"
-                )
-                val response = ApiRepository().getPanditListApi(name, serviceName)
-                Log.d(
-                    "PanditListViewModel",
-                    "API success: vendors=${response.payload.vendors.size}"
-                )
+                val response = ApiRepository().getPanditListApi(name, serviceName,page)
                 singleLiveEventPanditList.postValue(Resources.success(response))
             } catch (ex: Exception) {
-                Log.e(
-                    "PanditListViewModel",
-                    "API failed -> name=$name serviceName=$serviceName",
-                    ex
-                )
                 singleLiveEventPanditList.postValue(
                     Resources.error(
                         ex.localizedMessage ?: "",

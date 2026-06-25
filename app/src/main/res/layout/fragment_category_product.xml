@@ -1,181 +1,201 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_opacity_10">
+        android:background="@color/black_opacity_10"
+        tools:context=".presentation.ui.fragment.CategoryProductFragment">
 
-        <RelativeLayout
-            android:id="@+id/scrollId"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="246dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/home_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_logo"
-                android:layout_width="246dp"
-                android:layout_height="68dp"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/home_logo" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/filterMainLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rectangle_radius_16_background_f7f7f7"
+            android:backgroundTint="@color/white"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_logo">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/iv_logo"
-                android:layout_marginTop="5dp"
-                android:orientation="vertical">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/filterLayoutId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/filterMainLayout"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/filterLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginHorizontal="30dp"
-                    android:background="@drawable/rectangle_radius_16_background_f7f7f7"
-                    android:backgroundTint="@color/white"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="3dp"
-                    android:paddingVertical="6dp">
+                    android:layout_marginStart="24dp"
+                    android:src="@drawable/filter_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/filterLayoutId"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/filterText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/muktamahee_regular"
+                    android:text="@string/filters"
+                    android:textColor="@color/black_222222"
+                    android:textSize="11dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/backButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/backButton" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/filterLayout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:src="@drawable/filter_icon"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/filterText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/muktamahee_regular"
-                            android:text="@string/filters"
-                            android:textColor="@color/black_222222"
-                            android:textSize="11dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/backButton"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/backButton" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/shortLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:orientation="horizontal">
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/shortImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:src="@drawable/short_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/shortLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/shortText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/muktamahee_regular"
+                    android:text="@string/sort"
+                    android:textColor="@color/black_222222"
+                    android:textSize="11dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/backButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/backButton" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/shortImg"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:src="@drawable/short_icon"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/shortText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/muktamahee_regular"
-                            android:text="@string/sort"
-                            android:textColor="@color/black_222222"
-                            android:textSize="11dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/backButton"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/backButton" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filterMainLayout">
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+            <View
+                android:id="@+id/view_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.5"
+                android:background="@color/grey_9B9B9B"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+            <View
+                android:id="@+id/view_vertical"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:alpha="0.5"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guidelineCategory"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineCategory"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_category"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp">
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    android:paddingBottom="40dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_left_category" />
 
-                    <View
-                        android:id="@+id/horizontalView"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:alpha="0.5"
-                        android:background="@color/grey_9B9B9B"
-                        app:layout_constraintTop_toTopOf="parent" />
+            </androidx.core.widget.NestedScrollView>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyCategoryLeft"
-                        android:layout_width="110dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginBottom="15dp"
-                        android:background="#F6F6F6"
-                        android:clipToPadding="false"
-                        android:orientation="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/horizontalView" />
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guidelineCategory"
+                app:layout_constraintTop_toTopOf="parent">
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="0dp"
-                        android:alpha="0.2"
-                        android:background="@color/black"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/recyCategoryLeft"
-                        app:layout_constraintTop_toTopOf="@id/recyCategoryLeft" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical"
+                    android:layout_marginHorizontal="4dp"
+                    android:paddingBottom="40dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:spanCount="2"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/list_item_product_grid" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyProductsRight"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="15dp"
-                        android:clipToPadding="false"
-                        android:padding="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/recyCategoryLeft"
-                        app:layout_constraintTop_toTopOf="parent" />
+            </androidx.core.widget.NestedScrollView>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/shimmerLayoutId"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="100dp" />
 
-                        <include
-                            android:id="@+id/myPropertyShimmer"
-                            layout="@layout/category_simmer"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:visibility="visible" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/shimmerLayoutId"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filterMainLayout">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/myPropertyShimmer"
+                layout="@layout/category_simmer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
 
-            </LinearLayout>
-
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -24,7 +24,6 @@ class PendingBookingFragment : BaseFragment<FragmentPendingBinding>() {
 
     private val viewModel: BookingViewModel by viewModels()
     private lateinit var adapter: PreviousBookingAdapter
-
     private lateinit var previousBookingAdapter: PreviousBookingAdapter
 
     override fun setLayout(): Int = R.layout.fragment_pending
@@ -44,10 +43,14 @@ class PendingBookingFragment : BaseFragment<FragmentPendingBinding>() {
             requireActivity(),
             PENDING,
             mutableListOf(),
-            {},
-            {}
-        ) {
-        }
+            completeBooking = {
+            },
+            cancelBooking = {},
+            callBack = {},
+            callClick = { phone ->
+                openDialPad(phone)
+            }
+        )
         binding.rcvUpComing.adapter = adapter
     }
 
@@ -108,13 +111,16 @@ class PendingBookingFragment : BaseFragment<FragmentPendingBinding>() {
             requireActivity(),
             UP_COMING,
             list.toMutableList(),
-            {},
-            {
+            completeBooking = {
+            },
+            cancelBooking = {
                 showCancelBookingPrompt(it)
+            },
+            callBack = {},
+            callClick = { phone ->
+                openDialPad(phone)
             }
-        ) {
-            Log.d("TAG", "loadRcvBooking: $it")
-        }
+        )
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
 
@@ -122,10 +128,10 @@ class PendingBookingFragment : BaseFragment<FragmentPendingBinding>() {
         var dialog: AlertDialog? = null
         dialog = CommonUtils.showCustomAlertDialog(
             requireActivity(),
-            "Alert!",
-            "There will be no refund if cancelled before 24 hours of the scheduled time. Do you want to proceed?",
-            positiveButtonText = "Yes",
-            negativeButtonText = "No",
+            getString(R.string.alert),
+            getString(R.string.there_will_be_no_refund_if_cancelled_before_24_hours_of_the_scheduled_time_do_you_want_to_proceed),
+            positiveButtonText =getString(R.string.yes),
+            negativeButtonText = getString(R.string.no),
             positiveButtonAction = {
                 dialog?.dismiss()
                 updateBookingStatus(data)

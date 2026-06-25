@@ -222,8 +222,8 @@ class ApiRepository {
 
     // Pandit List
 
-    suspend fun getPanditListApi(name: String? = null, serviceName: String? = null) =
-        service.getPanditList(name, serviceName)
+    suspend fun getPanditListApi(name: String? = null, serviceName: String? = null,page:Int) =
+        service.getPanditList(name, serviceName,page)
 
     suspend fun panditJiBookingApi(request: BookPanditJiRequest): PanditJiBookingResponse =
         service.createBookingApi(request)

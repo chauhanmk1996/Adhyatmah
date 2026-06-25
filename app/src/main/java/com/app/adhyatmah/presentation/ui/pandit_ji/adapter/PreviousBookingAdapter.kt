@@ -24,6 +24,7 @@ class PreviousBookingAdapter(
     var completeBooking: (GetBookingResponse.Payload.Booking) -> Unit,
     var cancelBooking: (GetBookingResponse.Payload.Booking) -> Unit,
     var callBack: (Int) -> Unit,
+    var callClick: (String) -> Unit,
 ) : RecyclerView.Adapter<PreviousBookingAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = RcvItemBookingBinding.inflate(
@@ -44,7 +45,7 @@ class PreviousBookingAdapter(
             val name = data.vendor.firstName + " " + data.vendor.lastName
             btNameId.text = name
 
-            if (data.pujaSamagri == null) {
+            if (data.pujaSamagri == null || (data.pujaSamagri.pujaKit.isNullOrEmpty() && data.pujaSamagri.instantKit.isNullOrEmpty())) {
                 tvPujaSamagri.hide()
                 tvPujaKit.hide()
                 tvInstantKit.hide()
@@ -146,6 +147,10 @@ class PreviousBookingAdapter(
 
         holder.binding.btnCancel.setOnClickListener {
             cancelBooking(data)
+        }
+
+        holder.binding.ivCall.setOnClickListener {
+            callClick(data.vendor.phone)
         }
     }
 

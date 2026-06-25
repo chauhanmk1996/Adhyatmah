@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/rectangle_white"
-                android:paddingBottom="20sp"
+                android:paddingBottom="12dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/confirm_order_recycler">
 
@@ -153,7 +153,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/muktamahee_semibold"
                     android:text="@string/address"
                     android:textColor="#272727"
@@ -163,33 +163,33 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/user_address_tv"
-                    android:layout_width="150dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:fontFamily="@font/jost"
-                    android:maxLines="1"
-                    tools:text="Sarang, House no 65..."
+                    android:textAlignment="viewEnd"
                     android:textColor="#272727"
                     android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/order_address_tv"
+                    app:layout_constraintTop_toTopOf="@+id/order_address_tv"
+                    tools:text="Sarang, House no Sarang, House no Sarang, House no Sarang, House no 65..." />
 
                 <View
                     android:id="@+id/view_line"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="12dp"
                     android:background="#E3E3E3"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/order_address_tv" />
+                    app:layout_constraintTop_toBottomOf="@id/user_address_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/total_amount_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/muktamahee_semibold"
                     android:text="@string/total_amount"
                     android:textColor="#272727"
@@ -201,20 +201,19 @@
                     android:id="@+id/rs_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/jost"
-                    android:text="₹1,498"
                     android:textColor="#272727"
                     android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/view_line" />
+                    app:layout_constraintTop_toTopOf="@id/total_amount_tv"
+                    tools:text="₹1,498" />
 
                 <View
                     android:id="@+id/view_line2"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="12dp"
                     android:background="#E3E3E3"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/total_amount_tv" />
@@ -224,7 +223,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/muktamahee_semibold"
                     android:text="@string/pay_with"
                     android:textColor="#272727"
@@ -234,22 +233,24 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/gpay_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/jost"
                     android:text="@string/google_pay"
+                    android:textAlignment="viewEnd"
                     android:textColor="#272727"
                     android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/view_line2" />
+                    app:layout_constraintStart_toEndOf="@+id/pay_with_tv"
+                    app:layout_constraintTop_toTopOf="@id/pay_with_tv" />
 
                 <View
                     android:id="@+id/view_line3"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="12dp"
                     android:background="#E3E3E3"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
@@ -260,7 +261,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/muktamahee_semibold"
                     android:text="@string/get_it_by"
                     android:textColor="#272727"
@@ -273,7 +274,7 @@
                     android:id="@+id/date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/jost"
                     android:paddingBottom="16dp"
@@ -282,7 +283,7 @@
                     android:textSize="15dp"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/view_line3" />
+                    app:layout_constraintTop_toTopOf="@id/get_it_tv" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

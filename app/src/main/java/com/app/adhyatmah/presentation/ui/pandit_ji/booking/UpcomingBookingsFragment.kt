@@ -41,11 +41,13 @@ class UpcomingBookingsFragment : BaseFragment<FragmentUpcomingBookingsBinding>()
             requireActivity(),
             UP_COMING,
             mutableListOf(),
-            {},
-            {}
-        ) {
-            Log.d("TAG", "Item clicked: $it")
-        }
+            completeBooking = {},
+            cancelBooking = {},
+            callBack = {},
+            callClick = { phone ->
+                openDialPad(phone)
+            }
+        )
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
 
@@ -107,13 +109,15 @@ class UpcomingBookingsFragment : BaseFragment<FragmentUpcomingBookingsBinding>()
             requireActivity(),
             UP_COMING,
             list.toMutableList(),
-            {},
-            {
+            completeBooking = {},
+            cancelBooking = {
                 showCancelBookingPrompt(it)
+            },
+            callBack = {},
+            callClick = { phone ->
+                openDialPad(phone)
             }
-        ) {
-            Log.d("TAG", "loadRcvBooking: $it")
-        }
+        )
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
 

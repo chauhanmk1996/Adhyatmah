@@ -1,7 +1,6 @@
 package com.app.adhyatmah.presentation.ui.pandit_ji.viewModel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -16,31 +15,14 @@ class PanditListViewModel @Inject constructor(app: Application) : AndroidViewMod
 
     private val singleLiveEventPanditList = SingleLiveEvent<Resources<GetPanditResponse>>()
 
-    fun hitPanditListApi(name: String? = null, serviceName: String? = null) {
+    fun hitPanditListApi(name: String? = null, serviceName: String? = null,page:Int) {
         singleLiveEventPanditList.postValue(Resources.loading(null))
         viewModelScope.launch {
             try {
-                Log.d(
-                    "PanditListViewModel",
-                    "hitPanditListApi called: name=$name serviceName=$serviceName"
-                )
-                val response = ApiRepository().getPanditListApi(name, serviceName)
-                Log.d(
-                    "PanditListViewModel",
-                    "API success: vendors=${response.payload.vendors?.size ?: 0}"
-                )
+                val response = ApiRepository().getPanditListApi(name, serviceName,page)
                 singleLiveEventPanditList.postValue(Resources.success(response))
             } catch (ex: Exception) {
-                Log.e(
-                    "PanditListViewModel",
-                    "API failed -> name=$name serviceName=$serviceName",
-                    ex
-                )
-                singleLiveEventPanditList.postValue(
-                    Resources.error(
-                        ex.localizedMessage ?: "" ?: "Error", null
-                    )
-                )
+                singleLiveEventPanditList.postValue(Resources.error(ex.localizedMessage ?: "", null))
             }
         }
     }

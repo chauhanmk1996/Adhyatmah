@@ -39,11 +39,15 @@ class OngoingBookingFragment : BaseFragment<FragmentOngoingBookingBinding>() {
             requireActivity(),
             ON_GOING,
             mutableListOf(),
-            ::updateBookingStatus,
-            {}
-        ) {
-            Log.d("TAG", "Item clicked: $it")
-        }
+            completeBooking = {
+                updateBookingStatus(it)
+            },
+            cancelBooking = {},
+            callBack = {},
+            callClick = { phone ->
+                openDialPad(phone)
+            }
+        )
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
 
@@ -116,11 +120,15 @@ class OngoingBookingFragment : BaseFragment<FragmentOngoingBookingBinding>() {
             requireActivity(),
             ON_GOING,
             list.toMutableList(),
-            ::updateBookingStatus,
-            {}
-        ) {
-            Log.d("TAG", "loadRcvBooking: $it")
-        }
+            completeBooking = {
+                updateBookingStatus(it)
+            },
+            cancelBooking = {},
+            callBack = {},
+            callClick = { phone ->
+                openDialPad(phone)
+            }
+        )
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
 }

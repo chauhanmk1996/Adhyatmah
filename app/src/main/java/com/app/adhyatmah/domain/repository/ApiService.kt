@@ -346,6 +346,8 @@ interface ApiService {
     suspend fun getPanditList(
         @Query("name") name: String? = null,
         @Query("serviceName") serviceName: String? = null,
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 10,
     ): GetPanditResponse
 
     @GET("getHomepageCollections")

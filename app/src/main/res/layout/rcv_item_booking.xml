@@ -43,8 +43,8 @@
                 android:background="@drawable/rectangle_000000_radius_12"
                 android:backgroundTint="@color/red"
                 android:fontFamily="@font/muktamahee_semibold"
-                android:paddingHorizontal="21dp"
-                android:paddingVertical="4dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="3dp"
                 android:text="@string/pending"
                 android:textColor="@color/white"
                 android:textSize="14sp"
@@ -75,13 +75,13 @@
                 android:id="@+id/btNameId"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
+                android:layout_marginStart="12dp"
                 android:fontFamily="@font/muktamahee_semibold"
                 android:maxLength="20"
                 android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iv_call"
                 app:layout_constraintStart_toEndOf="@+id/imageCardView"
                 app:layout_constraintTop_toTopOf="@+id/imageCardView"
                 tools:text="Manish kumar" />
@@ -90,16 +90,26 @@
                 android:id="@+id/tvAddressId1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
+                android:layout_marginStart="12dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/muktamahee_regular"
                 android:maxLines="2"
                 android:text="@string/india"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iv_call"
                 app:layout_constraintStart_toEndOf="@+id/imageCardView"
                 app:layout_constraintTop_toBottomOf="@+id/btNameId" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/call"
+                android:padding="8dp"
+                app:layout_constraintTop_toTopOf="@+id/imageCardView"
+                app:layout_constraintBottom_toBottomOf="@+id/imageCardView"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <View
                 android:id="@+id/viewId"
@@ -147,6 +157,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/muktamahee_bold"
                     android:text="@string/puja_samagri"
+                    android:visibility="gone"
                     android:textColor="@color/theme"
                     android:textSize="12sp" />
 
@@ -156,6 +167,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/muktamahee_regular"
                     android:textColor="@color/black"
+                    android:visibility="gone"
                     android:textSize="12sp"
                     tools:text="Puja Kit - Mahamrtyunjay path" />
 
@@ -163,6 +175,7 @@
                     android:id="@+id/tvInstantKit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:fontFamily="@font/muktamahee_regular"
                     android:textColor="@color/black"
                     android:textSize="12sp"

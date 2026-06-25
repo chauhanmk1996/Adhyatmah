@@ -125,7 +125,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         homeViewModel.homeCollectionApi(token)
         homeViewModel.trendingSectionApi()
-        homeViewModel.hitPanditListApi()
+        homeViewModel.hitPanditListApi(page=1)
         homeViewModel.homeDataApi()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
@@ -339,6 +339,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                         about = panditJi.about ?: "",
                                         seoContent = panditJi.seoContent,
                                         gotra = panditJi.gotra ?: "",
+                                        veda = panditJi.veda ?: "",
+                                        pankti = panditJi.pankti ?: "",
+                                        shakha = panditJi.shakha ?: "",
+                                        sutra = panditJi.sutra ?: "",
                                         verified = panditJi.verified ?: false,
                                         trusted = panditJi.trusted ?: false,
                                         address = panditJi.address ?: "",

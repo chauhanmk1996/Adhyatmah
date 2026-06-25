@@ -1,7 +1,6 @@
 package com.app.adhyatmah.presentation.ui.pandit_ji.booking
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.app.adhyatmah.R
@@ -39,11 +38,13 @@ class CancelledBookingFragment : BaseFragment<FragmentPendingBinding>() {
             requireActivity(),
             CANCELLED,
             mutableListOf(),
-            {},
-            {}
-        ) {
-            Log.d("TAG", "Item clicked: $it")
-        }
+            completeBooking = {},
+            cancelBooking = {},
+            callBack = {},
+            callClick = { phone ->
+                openDialPad(phone)
+            }
+        )
         binding.rcvUpComing.adapter = adapter
     }
 
@@ -82,15 +83,17 @@ class CancelledBookingFragment : BaseFragment<FragmentPendingBinding>() {
     }
 
     private fun loadRcvBooking(list: List<GetBookingResponse.Payload.Booking>) {
-        previousBookingAdapter = PreviousBookingAdapter(
+        adapter = PreviousBookingAdapter(
             requireActivity(),
             CANCELLED,
             list.toMutableList(),
-            {},
-            {}
-        ) {
-            Log.d("TAG", "loadRcvBooking: $it")
-        }
+            completeBooking = {},
+            cancelBooking = {},
+            callBack = {},
+            callClick = { phone ->
+                openDialPad(phone)
+            }
+        )
         binding.rcvUpComing.adapter = previousBookingAdapter
     }
 }

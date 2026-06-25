@@ -34,34 +34,143 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.widget.NestedScrollView
 import com.app.adhyatmah.domain.model.PopularPooja
 import com.app.adhyatmah.presentation.ui.activity.MainActivity
 import com.app.adhyatmah.presentation.ui.adapter.PopularPujasGridAdapter
 import com.app.adhyatmah.presentation.ui.bottom_sheet.SignUpRequiredBottomSheetFragment
 import com.app.adhyatmah.presentation.ui.viewmodel.HomeViewModel
+import com.app.adhyatmah.utils.hide
+import com.app.adhyatmah.utils.show
 
 class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
 
     private var selectedType: String = "PanditJi"
-    private lateinit var panditJiAdapter: PanditJiAdapter
     private val viewmodel by activityViewModels<PanditListViewModel>()
-    private val currentPanditList = mutableListOf<Vendor>()
     private var searchJob: Job? = null
     private var poojaSelectFromHomeName: String = ""
     private val homeViewModel by activityViewModels<HomeViewModel>()
+    private val panditJiList: ArrayList<Vendor> = ArrayList()
+    private lateinit var panditJiAdapter: PanditJiAdapter
     private val popularPoojaList: ArrayList<PopularPooja> = ArrayList()
     private lateinit var popularPujasGridAdapter: PopularPujasGridAdapter
+    private var name: String? = null
+    private var serviceName: String? = null
+    private var ignoreNextSpinnerSelection = false
+    private var currentPage = 1
+    private var isLoading = false
+    private var isLastPage = false
 
     override fun setLayout(): Int = R.layout.fragment_pandit_ji
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView(savedInstanceState: Bundle?) {
+        setAdapter()
         setObserver()
+        searchListener()
+        scrollListener()
+
+        currentPage = 1
+        name = null
+        serviceName = null
+        isLastPage = false
+        panditJiApi()
+        setSpinnerOptions()
         homeViewModel.popularPujaListApi()
     }
 
-    override fun initView(savedInstanceState: Bundle?) {
-        spinnerSet()
+    private fun setAdapter() {
+        panditJiAdapter = PanditJiAdapter { data ->
+            UserPreference.panditJiDetails = PanditJiDetails(
+                id = data.id,
+                image = data.image?.url ?: "",
+                firstName = data.firstName ?: "",
+                lastName = data.lastName ?: "",
+                city = data.city ?: "",
+                experience = data.experience ?: "",
+                about = data.about ?: "",
+                seoContent = data.seoContent,
+                gotra = data.gotra ?: "",
+                verified = data.verified ?: false,
+                trusted = data.trusted ?: false,
+                address = data.address ?: "",
+                panditLanguage = data.language,
+                poojaSelectFromHomeName = poojaSelectFromHomeName
+            )
+            if (Preferences.getStringPreference(requireContext(), IS_LOGIN) == "1") {
+                if ((data.services?.size ?: 0) > 0) {
+                    findNavController().navigate(R.id.bookingDetailsFragment)
+                } else {
+                    Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.no_service_available),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                signupRequired(getString(R.string.sign_up_required_to_book_a_pandit_ji))
+            }
+        }
+        binding.rvPanditJi.adapter = panditJiAdapter
+    }
+
+    private fun signupRequired(message: String) {
+        val bottomSheet =
+            SignUpRequiredBottomSheetFragment(message) {
+                val intent = Intent(context, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                requireActivity().startActivity(intent)
+            }
+        bottomSheet.show(parentFragmentManager, "SignUpRequiredBottomSheetFragment")
+    }
+
+    private fun setObserver() {
+        viewmodel.getPanditListLiveData().observe(viewLifecycleOwner) { res ->
+            when (res.status) {
+                Status.LOADING -> {
+                }
+
+                Status.SUCCESS -> {
+                    val code = res.data?.code
+                    if (code == 200) {
+                        res.data.payload.vendors.let { list ->
+                            if (list.isNotEmpty()) {
+                                isLastPage = false
+                                panditJiAdapter.addList(list)
+                                panditJiList.addAll(list)
+                            } else {
+                                isLastPage = true
+                            }
+                        }
+                        isLoading = false
+                        if (panditJiList.isEmpty()) {
+                            binding.rvPanditJi.hide()
+                            binding.noResult.show()
+                        } else {
+                            binding.rvPanditJi.show()
+                            binding.noResult.hide()
+                        }
+                    }
+                }
+
+                Status.ERROR -> {
+                    Snackbar.make(
+                        requireView(),
+                        res.message ?: getString(R.string.something_went_wrong),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        homeViewModel.getPopularPujaListLiveData().observe(viewLifecycleOwner) { res ->
+            res.data?.data?.let { list ->
+                popularPoojaList.clear()
+                popularPoojaList.addAll(list)
+            }
+        }
+    }
+
+    private fun searchListener() {
         binding.searchView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
@@ -83,31 +192,48 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
         })
     }
 
-    private fun spinnerSet() {
-        viewmodel.hitPanditListApi()
-    }
-
     private fun performSearch(query: String) {
+        currentPage = 1
+        isLastPage = false
         if (selectedType == "PanditJi") {
-            viewmodel.hitPanditListApi(name = query)
+            name = query
+            serviceName = null
+            panditJiApi()
         } else {
-            viewmodel.hitPanditListApi(serviceName = query)
+            name = null
+            serviceName = query
+            panditJiApi()
         }
     }
 
     private fun showFullList() {
-        if (currentPanditList.isNotEmpty()) {
-            setAdapter(currentPanditList)
-            binding.recSearch.visibility = View.VISIBLE
-            binding.noResult.visibility = View.GONE
-        } else {
-            viewmodel.hitPanditListApi()
-        }
+        currentPage = 1
+        isLastPage = false
+        name = null
+        serviceName = null
+        panditJiApi()
     }
 
-    private var ignoreNextSpinnerSelection = false
+    private fun panditJiApi() {
+        isLoading = true
+        viewmodel.hitPanditListApi(name = name, serviceName = serviceName, page = currentPage)
+    }
 
-    private fun setSpinnerOptions(options: List<String>, panditJiList: List<Vendor>) {
+    private fun scrollListener() {
+        binding.nextScrollId.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { nestedScrollView, _, scrollY, _, _ ->
+                val view = nestedScrollView.getChildAt(nestedScrollView.childCount - 1)
+                val diff = view.bottom - (nestedScrollView.height + scrollY)
+                if (diff <= 500 && !isLoading && !isLastPage) {
+                    currentPage++
+                    panditJiApi()
+                }
+            }
+        )
+    }
+
+    private fun setSpinnerOptions() {
+        val options = listOf("PanditJi", "Service")
         val spinnerItems = mutableListOf<String>()
         spinnerItems.add(getString(R.string.select))
         spinnerItems.addAll(options)
@@ -118,9 +244,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             spinnerItems
         )
         binding.mySpinner.adapter = adapter
-
-        currentPanditList.clear()
-        currentPanditList.addAll(panditJiList)
 
         // Set initial selection to placeholder without triggering listener
         binding.mySpinner.setSelection(0, false)
@@ -199,8 +322,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
                 binding.searchView.setText(search)
             }
         }
-
-        setAdapter(panditJiList)
     }
 
     private fun openPoojaSelectionDialog() {
@@ -224,96 +345,5 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             }
         rvPopularPuja.adapter = popularPujasGridAdapter
         dialog.show()
-    }
-
-    private fun setAdapter(panditJiList: List<Vendor>) {
-        panditJiAdapter = PanditJiAdapter(panditJiList.toMutableList()) { data ->
-            UserPreference.panditJiDetails = PanditJiDetails(
-                id = data.id,
-                image = data.image?.url ?: "",
-                firstName = data.firstName ?: "",
-                lastName = data.lastName ?: "",
-                city = data.city ?: "",
-                experience = data.experience ?: "",
-                about = data.about ?: "",
-                seoContent = data.seoContent,
-                gotra = data.gotra ?: "",
-                verified = data.verified ?: false,
-                trusted = data.trusted ?: false,
-                address = data.address ?: "",
-                panditLanguage = data.language,
-                poojaSelectFromHomeName = poojaSelectFromHomeName
-            )
-            if (Preferences.getStringPreference(requireContext(), IS_LOGIN) == "1") {
-                if ((data.services?.size ?: 0) > 0) {
-                    findNavController().navigate(R.id.bookingDetailsFragment)
-                } else {
-                    Toast.makeText(
-                        requireActivity(),
-                        getString(R.string.no_service_available),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } else {
-                signupRequired(getString(R.string.sign_up_required_to_book_a_pandit_ji))
-            }
-        }
-        binding.recSearch.adapter = panditJiAdapter
-        binding.recSearch.visibility = View.VISIBLE
-        binding.noResult.visibility = if (panditJiList.isEmpty()) View.VISIBLE else View.GONE
-    }
-
-    private fun signupRequired(message: String) {
-        val bottomSheet =
-            SignUpRequiredBottomSheetFragment(message) {
-                val intent = Intent(context, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                requireActivity().startActivity(intent)
-            }
-        bottomSheet.show(parentFragmentManager, "SignUpRequiredBottomSheetFragment")
-    }
-
-    private fun setObserver() {
-        viewmodel.getPanditListLiveData().observe(viewLifecycleOwner) { res ->
-            when (res.status) {
-                Status.LOADING -> {
-
-                }
-
-                Status.SUCCESS -> {
-                    val code = res.data?.code
-                    if (code == 200) {
-                        val vendors = res.data.payload.vendors
-                        currentPanditList.clear()
-                        currentPanditList.addAll(vendors)
-
-                        binding.searchView.text?.toString()?.trim() ?: ""
-                        val spinnerItems = listOf("PanditJi", "Service")
-                        if (binding.mySpinner.adapter == null) {
-                            setSpinnerOptions(spinnerItems, vendors)
-                        } else {
-                            setAdapter(vendors)
-                        }
-                    } else {
-                        setAdapter(emptyList())
-                    }
-                }
-
-                Status.ERROR -> {
-                    Snackbar.make(
-                        requireView(),
-                        res.message ?: getString(R.string.something_went_wrong),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-
-        homeViewModel.getPopularPujaListLiveData().observe(viewLifecycleOwner) { res ->
-            res.data?.data?.let { list ->
-                popularPoojaList.clear()
-                popularPoojaList.addAll(list)
-            }
-        }
     }
 }
