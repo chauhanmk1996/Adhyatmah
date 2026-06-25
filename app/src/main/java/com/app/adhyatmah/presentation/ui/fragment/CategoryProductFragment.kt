@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
 import com.app.adhyatmah.data.preferences.CART_ID
@@ -40,6 +39,7 @@ import com.google.android.material.snackbar.Snackbar
 class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
 
     private val homeViewModel by activityViewModels<HomeViewModel>()
+    private val filterViewModel by activityViewModels<FilterViewModel>()
     var token = ""
     private var passedCategoryHandle: String = ""
     private var selectedCategoryHandle: String = ""
@@ -51,6 +51,7 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
     override fun setLayout(): Int = R.layout.fragment_category_product
 
     override fun initView(savedInstanceState: Bundle?) {
+        observeData()
         arguments?.getString("category_handle")?.let {
             passedCategoryHandle = it
         }
@@ -58,45 +59,122 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
         setupCategoryList()
         setupProductList()
         clicks()
+        startShimmer()
         homeViewModel.getAllCtData(page = 1, limit = 100)
     }
 
-    private val filterViewModel by activityViewModels<FilterViewModel>()
+    private fun observeData() {
+        homeViewModel.getAllCatLiveData().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val list = it.data?.payload?.collections ?: emptyList()
+                    categories.clear()
+                    categories.addAll(list)
+                    categoryAdapter.updateItems(list)
 
-    private fun clicks() {
-        binding.shortLayout.setOnClickListener {
-            if (selectedCategoryHandle.isNotEmpty()) {
-                showSortBottomSheet(selectedCategoryHandle)
+                    if (list.isNotEmpty()) {
+                        if (passedCategoryHandle.isNotEmpty()) {
+                            val selectedIndex =
+                                list.indexOfFirst { passed -> passed.handle == passedCategoryHandle }
+
+                            if (selectedIndex != -1) {
+                                selectedCategoryHandle = passedCategoryHandle
+                                categoryAdapter.setSelectedCategory(selectedIndex)
+                                loadProducts(selectedCategoryHandle)
+                            } else {
+                                selectedCategoryHandle = list[0].handle
+                                categoryAdapter.setSelectedCategory(0)
+                                loadProducts(selectedCategoryHandle)
+                            }
+                        } else {
+                            selectedCategoryHandle = list[0].handle
+                            categoryAdapter.setSelectedCategory(0)
+                            loadProducts(list[0].handle)
+                        }
+                    } else {
+                        stopShimmer()
+                    }
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> stopShimmer()
+            }
+        }
+
+        homeViewModel.getViewAllLiveData().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val list = it.data?.payload?.collection?.products ?: emptyList()
+                    products.clear()
+                    products.addAll(list)
+                    productAdapter.updateData(products)
+                    stopShimmer()
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> stopShimmer()
+            }
+        }
+
+        filterViewModel.getShortCollectionList().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val code = it.data?.code
+                    if (code == 200) {
+                        val sorted = it.data.payload.collection.products
+                        products.clear()
+                        products.addAll(sorted)
+                        productAdapter.updateData(products)
+                    }
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {}
+            }
+        }
+
+        homeViewModel.getAddToBag().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val statusCode = it.data?.code
+                    when (statusCode) {
+                        200 -> {
+                            val message = it.data.message
+                            Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+                            Preferences.setStringPreference(
+                                requireContext(),
+                                CART_ID,
+                                it.data.payload.cart.id
+                            )
+                            CART_COUNT = it.data.payload.cart.lines.edges.size
+                            (requireActivity() as MainActivity).updateBagBadge(CART_COUNT)
+                            (requireActivity() as MainActivity).switchToCartTab()
+                        }
+
+                        401 -> {
+                            Log.e("TAG", "Unauthorized access")
+                        }
+                    }
+                    ProcessDialog.dismissDialog(true)
+                }
+
+                Status.LOADING -> {
+                    ProcessDialog.showDialog(requireActivity(), true)
+                }
+
+                Status.ERROR -> {
+                    Log.e("TAG", "Error: ${it.message}")
+                    ProcessDialog.dismissDialog(true)
+                    Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
-    private fun showSortBottomSheet(categoryHandle: String) {
-        val sheet = ShortByBottomSheet.newInstance(categoryHandle)
-        sheet.onSortRequestSent = { request ->
-            homeViewModel.getViewAllData(
-                Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString(),
-                request
-            )
-        }
-
-        sheet.onSortSelected = { sortedList ->
-            products.clear()
-            products.addAll(sortedList)
-            productAdapter.updateData(products)
-        }
-        sheet.show(parentFragmentManager, "ShortByBottomSheet")
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        observeCategoryData()
-        observeProductData()
-        observeSortingData()
-    }
-
     private fun setupCategoryList() {
         categoryAdapter = AllCategoryListAdapter(categories) { selectedCategory ->
+            products.clear()
+            productAdapter.clearList()
             selectedCategoryHandle = selectedCategory.handle
             loadProducts(selectedCategory.handle)
         }
@@ -108,13 +186,11 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
             subList = products,
             showImage = true,
             onWishlistClick = { pos, like -> onLikePressed(pos, like) },
-            onSubAdapterClick = { _, _, data -> openProductDetail(data) }, onAddToCartClick = ::onAddToCartClick
+            onSubAdapterClick = { _, _, data -> openProductDetail(data) },
+            onAddToCartClick = ::onAddToCartClick
         )
 
-        binding.rvProduct.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = productAdapter
-        }
+        binding.rvProduct.adapter = productAdapter
     }
 
     private fun onAddToCartClick(product: Product) {
@@ -171,123 +247,37 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
         bottomSheet.show(parentFragmentManager, "SignUpRequiredBottomSheetFragment")
     }
 
+    private fun clicks() {
+        binding.shortLayout.setOnClickListener {
+            if (selectedCategoryHandle.isNotEmpty()) {
+                showSortBottomSheet(selectedCategoryHandle)
+            }
+        }
+    }
+
+    private fun showSortBottomSheet(categoryHandle: String) {
+        val sheet = ShortByBottomSheet.newInstance(categoryHandle)
+        sheet.onSortRequestSent = { request ->
+            homeViewModel.getViewAllData(
+                Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString(),
+                request
+            )
+        }
+
+        sheet.onSortSelected = { sortedList ->
+            products.clear()
+            products.addAll(sortedList)
+            productAdapter.updateData(products)
+        }
+        sheet.show(parentFragmentManager, "ShortByBottomSheet")
+    }
+
     private fun loadProducts(categoryHandle: String) {
-        startShimmer()
+
         homeViewModel.getViewAllData(
             Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString(),
             ViewAllProductRequest(categoryHandle)
         )
-    }
-
-    private fun observeCategoryData() {
-        homeViewModel.getAllCatLiveData().observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    stopShimmer()
-                    val list = it.data?.payload?.collections ?: emptyList()
-                    categories.clear()
-                    categories.addAll(list)
-                    categoryAdapter.updateItems(list)
-
-                    if (list.isNotEmpty()) {
-                        if (passedCategoryHandle.isNotEmpty()) {
-                            val selectedIndex =
-                                list.indexOfFirst { passed -> passed.handle == passedCategoryHandle }
-                            
-                            if (selectedIndex != -1) {
-                                selectedCategoryHandle = passedCategoryHandle
-                                categoryAdapter.setSelectedCategory(selectedIndex)
-                                loadProducts(selectedCategoryHandle)
-                            } else {
-                                selectedCategoryHandle = list[0].handle
-                                categoryAdapter.setSelectedCategory(0)
-                                loadProducts(selectedCategoryHandle)
-                            }
-                        } else {
-                            selectedCategoryHandle = list[0].handle
-                            categoryAdapter.setSelectedCategory(0)
-                            loadProducts(list[0].handle)
-                        }
-                    }
-                }
-
-                Status.LOADING -> startShimmer()
-                Status.ERROR -> stopShimmer()
-            }
-        }
-
-        homeViewModel.getAddToBag().observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    val statusCode = it.data?.code
-                    when (statusCode) {
-                        200 -> {
-                            val message = it.data.message
-                            Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
-                            Preferences.setStringPreference(
-                                requireContext(),
-                                CART_ID,
-                                it.data.payload.cart.id
-                            )
-                            CART_COUNT = it.data.payload.cart.lines.edges.size
-                            (requireActivity() as MainActivity).updateBagBadge(CART_COUNT)
-                            (requireActivity() as MainActivity).switchToCartTab()
-                        }
-
-                        401 -> {
-                            Log.e("TAG", "Unauthorized access")
-                        }
-                    }
-                    ProcessDialog.dismissDialog(true)
-                }
-
-                Status.LOADING -> {
-                    ProcessDialog.showDialog(requireActivity(), true)
-                }
-
-                Status.ERROR -> {
-                    Log.e("TAG", "Error: ${it.message}")
-                    ProcessDialog.dismissDialog(true)
-                    Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    private fun observeProductData() {
-        homeViewModel.getViewAllLiveData().observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    stopShimmer()
-                    val list = it.data?.payload?.collection?.products ?: emptyList()
-                    products.clear()
-                    products.addAll(list)
-                    productAdapter.updateData(products)
-                }
-
-                Status.LOADING -> startShimmer()
-                Status.ERROR -> stopShimmer()
-            }
-        }
-    }
-
-    private fun observeSortingData() {
-        filterViewModel.getShortCollectionList().observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    val code = it.data?.code
-                    if (code == 200) {
-                        val sorted = it.data.payload.collection.products
-                        products.clear()
-                        products.addAll(sorted)
-                        productAdapter.updateData(products)
-                    }
-                }
-
-                Status.LOADING -> {}
-                Status.ERROR -> {}
-            }
-        }
     }
 
     private fun startShimmer() {

@@ -11,7 +11,7 @@ import com.app.adhyatmah.domain.model.view_all_product.response.Product
 import com.app.adhyatmah.utils.common_utils.CommonUtils
 
 class AdapterViewAllProduct(
-    var subList: List<Product>,
+    private var subList: List<Product>,
     private val showImage: Boolean,
     var onWishlistClick: (Int, Boolean) -> Unit,
     var onSubAdapterClick: (Int, Boolean, Product) -> Any,
@@ -31,6 +31,11 @@ class AdapterViewAllProduct(
     fun updateData(newList: List<Product>) {
         subList = newList
         selectedItems = subList.map { it.wishlist }.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun clearList(){
+        subList = emptyList()
         notifyDataSetChanged()
     }
 

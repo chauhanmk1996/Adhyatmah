@@ -155,19 +155,25 @@
                 app:layout_constraintStart_toEndOf="@+id/guidelineCategory"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_product"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:orientation="vertical"
-                    android:layout_marginHorizontal="4dp"
-                    android:paddingBottom="40dp"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:spanCount="2"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/list_item_product_grid" />
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="40dp"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:spanCount="2"
+                        tools:itemCount="31"
+                        tools:listitem="@layout/list_item_product_grid" />
+
+                </FrameLayout>
 
             </androidx.core.widget.NestedScrollView>
 
@@ -193,7 +199,7 @@
                 layout="@layout/category_simmer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

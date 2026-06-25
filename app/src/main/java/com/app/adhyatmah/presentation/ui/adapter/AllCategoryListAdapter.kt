@@ -17,15 +17,6 @@ class AllCategoryListAdapter(
     private var selectedPosition = 0
     private val originalList = mutableListOf<AllCategoryListResponse.Collection>()
 
-    fun updateItems(newItems: List<AllCategoryListResponse.Collection>) {
-        originalList.clear()
-        originalList.addAll(newItems)
-        items.clear()
-        items.addAll(newItems)
-        selectedPosition = 0
-        notifyDataSetChanged()
-    }
-
     class CategoryViewHolder(val binding: ItemLeftCategoryBinding)
         : RecyclerView.ViewHolder(binding.root)
 
@@ -79,6 +70,15 @@ class AllCategoryListAdapter(
                 it.title.contains(q, ignoreCase = true)
             })
         }
+        notifyDataSetChanged()
+    }
+
+    fun updateItems(newItems: List<AllCategoryListResponse.Collection>) {
+        originalList.clear()
+        originalList.addAll(newItems)
+        items.clear()
+        items.addAll(newItems)
+        selectedPosition = 0
         notifyDataSetChanged()
     }
 

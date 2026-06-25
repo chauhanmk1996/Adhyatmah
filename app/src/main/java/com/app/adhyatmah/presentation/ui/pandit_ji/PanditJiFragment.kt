@@ -61,8 +61,6 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     private var isLoading = false
     private var isLastPage = false
 
-    private var isSearchResultReceived = false
-
     override fun setLayout(): Int = R.layout.fragment_pandit_ji
 
     override fun initView(savedInstanceState: Bundle?) {
