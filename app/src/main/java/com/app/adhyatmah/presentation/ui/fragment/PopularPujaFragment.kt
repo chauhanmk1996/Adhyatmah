@@ -2,6 +2,7 @@ package com.app.adhyatmah.presentation.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.utils.base.BaseFragment
@@ -24,6 +25,10 @@ class PopularPujaFragment : BaseFragment<FragmentPopularPujaBinding>() {
         setObserver()
         ProcessDialog.showDialog(requireActivity(), true)
         homeViewModel.popularPujaListApi()
+
+        binding.ivBack.setOnClickListener{
+            findNavController().popBackStack()
+        }
     }
 
     private fun setObserver() {

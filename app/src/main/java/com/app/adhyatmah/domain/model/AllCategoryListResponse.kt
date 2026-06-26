@@ -25,7 +25,8 @@ data class AllCategoryListResponse(
         val image: Image,
         val products: List<Product>,
         val title: String,
-        val viewAllUrl: String
+        val viewAllUrl: String,
+        val product_count:Int?
     )
 
     data class Image(

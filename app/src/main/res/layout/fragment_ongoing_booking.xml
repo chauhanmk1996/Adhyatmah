@@ -9,7 +9,7 @@
         tools:context=".ui.dashboard.booking.UpcomingBookingsFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvUpComing"
+            android:id="@+id/rvOngoing"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"

@@ -24,6 +24,18 @@
                 tools:src="@drawable/featured_product" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_cart"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="8dp"
+                android:elevation="4dp"
+                android:scaleType="center"
+                android:src="@mipmap/cart_icon"
+                android:tint="@color/theme"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/wishList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,9 +49,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="68dp"
+                android:layout_height="56dp"
                 android:layout_gravity="bottom"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="12dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/rectangle_top_right_bottom_right"
                 android:gravity="bottom"
@@ -71,17 +83,6 @@
                     app:layout_constraintStart_toStartOf="@+id/label"
                     app:layout_constraintTop_toBottomOf="@+id/label"
                     tools:text="₹ 599" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_cart"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@mipmap/cart_icon"
-                    android:layout_margin="8dp"
-                    android:scaleType="center"
-                    android:tint="@color/theme"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

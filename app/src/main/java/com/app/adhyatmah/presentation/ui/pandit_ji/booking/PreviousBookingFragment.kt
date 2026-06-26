@@ -43,7 +43,7 @@ class PreviousBookingFragment : BaseFragment<FragmentPreviousBookingBinding>() {
                 openDialPad(phone)
             }
         )
-        binding.rcvUpComing.adapter = previousBookingAdapter
+        binding.rvPrevious.adapter = previousBookingAdapter
     }
 
     private fun hitPreviousBookingApi() {
@@ -61,11 +61,11 @@ class PreviousBookingFragment : BaseFragment<FragmentPreviousBookingBinding>() {
 
                     if (!data.isNullOrEmpty()) {
                         loadRcvBooking(data)
-                        binding.rcvUpComing.visibility = View.VISIBLE
+                        binding.rvPrevious.visibility = View.VISIBLE
                         binding.tvNoSlots.visibility = View.GONE
                     } else {
                         binding.tvNoSlots.visibility = View.VISIBLE
-                        binding.rcvUpComing.visibility = View.GONE
+                        binding.rvPrevious.visibility = View.GONE
                     }
                 }
 
@@ -93,6 +93,6 @@ class PreviousBookingFragment : BaseFragment<FragmentPreviousBookingBinding>() {
                 openDialPad(phone)
             }
         )
-        binding.rcvUpComing.adapter = previousBookingAdapter
+        binding.rvPrevious.adapter = previousBookingAdapter
     }
 }

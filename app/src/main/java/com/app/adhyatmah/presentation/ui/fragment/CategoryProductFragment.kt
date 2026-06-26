@@ -34,6 +34,8 @@ import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.common_utils.CommonUtils
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
+import com.app.adhyatmah.utils.hide
+import com.app.adhyatmah.utils.show
 import com.google.android.material.snackbar.Snackbar
 
 class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
@@ -67,31 +69,37 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
         homeViewModel.getAllCatLiveData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    val list = it.data?.payload?.collections ?: emptyList()
-                    categories.clear()
-                    categories.addAll(list)
-                    categoryAdapter.updateItems(list)
+                    it.data?.payload?.collections?.let { list ->
+                        val filteredList = list.filter { filter -> (filter.product_count ?: 0) > 0 }
+                        categories.clear()
+                        categories.addAll(filteredList)
+                        categoryAdapter.updateItems(filteredList)
+                    }
 
-                    if (list.isNotEmpty()) {
+                    if (categories.isNotEmpty()) {
+                        binding.rvCategory.show()
+                        binding.tvNoCategory.hide()
                         if (passedCategoryHandle.isNotEmpty()) {
                             val selectedIndex =
-                                list.indexOfFirst { passed -> passed.handle == passedCategoryHandle }
+                                categories.indexOfFirst { passed -> passed.handle == passedCategoryHandle }
 
                             if (selectedIndex != -1) {
                                 selectedCategoryHandle = passedCategoryHandle
                                 categoryAdapter.setSelectedCategory(selectedIndex)
                                 loadProducts(selectedCategoryHandle)
                             } else {
-                                selectedCategoryHandle = list[0].handle
+                                selectedCategoryHandle = categories[0].handle
                                 categoryAdapter.setSelectedCategory(0)
                                 loadProducts(selectedCategoryHandle)
                             }
                         } else {
-                            selectedCategoryHandle = list[0].handle
+                            selectedCategoryHandle = categories[0].handle
                             categoryAdapter.setSelectedCategory(0)
-                            loadProducts(list[0].handle)
+                            loadProducts(categories[0].handle)
                         }
                     } else {
+                        binding.rvCategory.hide()
+                        binding.tvNoCategory.show()
                         stopShimmer()
                     }
                 }
@@ -125,6 +133,14 @@ class CategoryProductFragment : BaseFragment<FragmentCategoryProductBinding>() {
                         products.clear()
                         products.addAll(sorted)
                         productAdapter.updateData(products)
+
+                        if (products.isEmpty()) {
+                            binding.rvProduct.hide()
+                            binding.tvNoProduct.show()
+                        } else {
+                            binding.rvProduct.show()
+                            binding.tvNoProduct.hide()
+                        }
                     }
                 }
 

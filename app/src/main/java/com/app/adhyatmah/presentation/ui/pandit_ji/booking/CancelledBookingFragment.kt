@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.CANCELLED
-import com.app.adhyatmah.databinding.FragmentPendingBinding
+import com.app.adhyatmah.databinding.FragmentCancelledBookingBinding
 import com.app.adhyatmah.presentation.ui.pandit_ji.adapter.PreviousBookingAdapter
 import com.app.adhyatmah.presentation.ui.pandit_ji.viewModel.BookingViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
@@ -14,14 +14,12 @@ import com.app.adhyatmah.utils.common_utils.Status
 import com.app.panditji.data.model.get_booking.GetBookingResponse
 import kotlin.getValue
 
-class CancelledBookingFragment : BaseFragment<FragmentPendingBinding>() {
+class CancelledBookingFragment : BaseFragment<FragmentCancelledBookingBinding>() {
 
     private val viewModel: BookingViewModel by viewModels()
     private lateinit var adapter: PreviousBookingAdapter
 
-    private lateinit var previousBookingAdapter: PreviousBookingAdapter
-
-    override fun setLayout(): Int = R.layout.fragment_pending
+    override fun setLayout(): Int = R.layout.fragment_cancelled_booking
 
     override fun initView(savedInstanceState: Bundle?) {
         setupRecyclerView()
@@ -45,7 +43,7 @@ class CancelledBookingFragment : BaseFragment<FragmentPendingBinding>() {
                 openDialPad(phone)
             }
         )
-        binding.rcvUpComing.adapter = adapter
+        binding.rvCancelled.adapter = adapter
     }
 
     private fun hitPendingBookingApi() {
@@ -63,11 +61,11 @@ class CancelledBookingFragment : BaseFragment<FragmentPendingBinding>() {
 
                     if (!data.isNullOrEmpty()) {
                         loadRcvBooking(data)
-                        binding.rcvUpComing.visibility = View.VISIBLE
+                        binding.rvCancelled.visibility = View.VISIBLE
                         binding.tvNoSlots.visibility = View.GONE
                     } else {
                         binding.tvNoSlots.visibility = View.VISIBLE
-                        binding.rcvUpComing.visibility = View.GONE
+                        binding.rvCancelled.visibility = View.GONE
                     }
                 }
 
@@ -94,6 +92,6 @@ class CancelledBookingFragment : BaseFragment<FragmentPendingBinding>() {
                 openDialPad(phone)
             }
         )
-        binding.rcvUpComing.adapter = previousBookingAdapter
+        binding.rvCancelled.adapter = adapter
     }
 }

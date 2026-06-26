@@ -48,7 +48,7 @@ class UpcomingBookingsFragment : BaseFragment<FragmentUpcomingBookingsBinding>()
                 openDialPad(phone)
             }
         )
-        binding.rcvUpComing.adapter = previousBookingAdapter
+        binding.rvUpComing.adapter = previousBookingAdapter
     }
 
     private fun hitUpcomingBookingApi() {
@@ -66,11 +66,11 @@ class UpcomingBookingsFragment : BaseFragment<FragmentUpcomingBookingsBinding>()
 
                     if (!data.isNullOrEmpty()) {
                         loadRcvBooking(data)
-                        binding.rcvUpComing.visibility = View.VISIBLE
+                        binding.rvUpComing.visibility = View.VISIBLE
                         binding.tvNoSlots.visibility = View.GONE
                     } else {
                         binding.tvNoSlots.visibility = View.VISIBLE
-                        binding.rcvUpComing.visibility = View.GONE
+                        binding.rvUpComing.visibility = View.GONE
                     }
                 }
 
@@ -118,7 +118,7 @@ class UpcomingBookingsFragment : BaseFragment<FragmentUpcomingBookingsBinding>()
                 openDialPad(phone)
             }
         )
-        binding.rcvUpComing.adapter = previousBookingAdapter
+        binding.rvUpComing.adapter = previousBookingAdapter
     }
 
     private fun showCancelBookingPrompt(data: GetBookingResponse.Payload.Booking) {
