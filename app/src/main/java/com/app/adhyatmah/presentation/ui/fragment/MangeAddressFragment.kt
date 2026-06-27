@@ -16,7 +16,6 @@ import com.app.adhyatmah.data.preferences.CART_ID
 import com.app.adhyatmah.data.preferences.TYPE
 import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.databinding.FragmentMangeAddressBinding
-import com.app.adhyatmah.domain.model.delete_address.request_Address.DeleteAddressRequest
 import com.app.adhyatmah.domain.model.profile.manage_address.Addresse
 import com.app.adhyatmah.domain.model.profile.manage_address.ManageAddressRequest
 import com.app.adhyatmah.presentation.ui.activity.LoginActivity
@@ -131,12 +130,9 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
         )
     }
 
-    fun deleteAddress(id: String) {
+    fun deleteAddress(addressId: String) {
         val token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN)
-        val request = DeleteAddressRequest()
-        request.addressId = id
-        request.accessToken = token
-        profileViewModel.hitDeleteAddressApi(request)
+        profileViewModel.hitDeleteAddressApi(addressId)
     }
 
     fun navigateToEditAddress(addresses: Addresse) {

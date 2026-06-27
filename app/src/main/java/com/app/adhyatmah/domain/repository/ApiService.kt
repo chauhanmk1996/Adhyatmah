@@ -40,7 +40,6 @@ import com.app.adhyatmah.domain.model.customer_all_order_response.customer_all_o
 import com.app.adhyatmah.domain.model.customer_all_order_response.customer_order_details.GetMyOrderDetailsResponse
 import com.app.adhyatmah.domain.model.delete_account.delete_request.DeleteRequest
 import com.app.adhyatmah.domain.model.delete_account.delete_response.DeleteResponse
-import com.app.adhyatmah.domain.model.delete_address.request_Address.DeleteAddressRequest
 import com.app.adhyatmah.domain.model.delete_address.response_delete_address.DeleteAddressResponse
 import com.app.adhyatmah.domain.model.faq.FAQResponse
 import com.app.adhyatmah.domain.model.fetch_wish_data.FetchWishListResponse
@@ -224,14 +223,11 @@ interface ApiService {
 
     @POST("deleteCustomerAddress")
     suspend fun deleteCustomAddress(
-        @Body request: DeleteAddressRequest,
+        @Query("addressId") addressId: String
     ): DeleteAddressResponse
 
     @PUT("updateCustomerAddress")
     suspend fun editCustomAddress(@Body request: AddAddressRequest): CreateAddressResponse
-
-//       @GET("getCustomerProfile")
-//       suspend fun getProfile(@Query("accessToken") token: String, ): GetProfileResponse
 
     @GET("getUserProfile")
     suspend fun getProfile(@Query("accessToken") token: String): GetProfileResponse

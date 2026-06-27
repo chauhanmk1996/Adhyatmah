@@ -32,7 +32,6 @@ import com.app.adhyatmah.domain.model.customer_all_order_response.cancel_order_r
 import com.app.adhyatmah.domain.model.customer_all_order_response.customer_order_details.GetMyOrderDetailsResponse
 import com.app.adhyatmah.domain.model.delete_account.delete_request.DeleteRequest
 import com.app.adhyatmah.domain.model.delete_account.delete_response.DeleteResponse
-import com.app.adhyatmah.domain.model.delete_address.request_Address.DeleteAddressRequest
 import com.app.adhyatmah.domain.model.delete_address.response_delete_address.DeleteAddressResponse
 import com.app.adhyatmah.domain.model.faq.FAQResponse
 import com.app.adhyatmah.domain.model.fetch_wish_data.FetchWishListResponse
@@ -161,8 +160,8 @@ class ApiRepository {
     suspend fun getPaymentMethodApi() = service.getPaymentMethod()
 
     suspend fun addToBagApi(request: AddToBagRequest) = service.addToBag(request)
-    suspend fun deleteAddressAPI(request: DeleteAddressRequest): DeleteAddressResponse =
-        service.deleteCustomAddress(request)
+    suspend fun deleteAddressAPI(addressId: String): DeleteAddressResponse =
+        service.deleteCustomAddress(addressId)
 
     suspend fun editAddressAPI(request: AddAddressRequest): CreateAddressResponse =
         service.editCustomAddress(request)

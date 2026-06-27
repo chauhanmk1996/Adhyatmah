@@ -8,7 +8,6 @@ import com.app.adhyatmah.domain.model.customer_all_order_response.cancel_order_r
 import com.app.adhyatmah.domain.model.customer_all_order_response.cancel_order_response.CancelOrderResponse
 import com.app.adhyatmah.domain.model.customer_all_order_response.customer_all_orders.CustomerAllOrdersResponse
 import com.app.adhyatmah.domain.model.customer_all_order_response.customer_order_details.GetMyOrderDetailsResponse
-import com.app.adhyatmah.domain.model.delete_address.request_Address.DeleteAddressRequest
 import com.app.adhyatmah.domain.model.delete_address.response_delete_address.DeleteAddressResponse
 import com.app.adhyatmah.domain.model.profile.add_address.AddAddressRequest
 import com.app.adhyatmah.domain.model.profile.add_address.CreateAddressResponse
@@ -117,14 +116,14 @@ class ProfileViewModel @Inject constructor(application: Application) :
         }
     }
 
-    fun hitDeleteAddressApi(request: DeleteAddressRequest) {
+    fun hitDeleteAddressApi(addressId: String) {
         try {
             deleteAddressLiveData.postValue(Resources.loading(null))
             viewModelScope.launch {
                 try {
                     deleteAddressLiveData.postValue(
                         Resources.success(
-                            ApiRepository().deleteAddressAPI(request)
+                            ApiRepository().deleteAddressAPI(addressId)
                         )
                     )
                 } catch (ex: Exception) {

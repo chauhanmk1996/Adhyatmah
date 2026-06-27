@@ -108,21 +108,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return R.layout.fragment_home
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().supportFragmentManager.setFragmentResultListener(
-            "selectedAddress",
-            viewLifecycleOwner
-        ) { _, bundle ->
-            if (bundle.isEmpty) return@setFragmentResultListener
-            val address = bundle.getString("address")
-            val zip = bundle.getString("zip")
-            binding.tvLocation.text = address
-            Preferences.setStringPreference(requireContext(), CURRENT_PINCODE, zip)
-        }
-    }
-
     override fun initView(savedInstanceState: Bundle?) {
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
@@ -234,12 +219,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 checkLocationPermission()
                             } else {
                                 UserPreference.savedAddressId = validAddresses[0].id ?: ""
-                                UserPreference.address1 = validAddresses[0].address1?:""
-                                UserPreference.address2 = validAddresses[0].address2?:""
-                                UserPreference.city = validAddresses[0].city?:""
-                                UserPreference.province = validAddresses[0].province?:""
-                                UserPreference.country = validAddresses[0].country?:""
-                                UserPreference.zip = validAddresses[0].zip?:""
+                                UserPreference.address1 = validAddresses[0].address1 ?: ""
+                                UserPreference.address2 = validAddresses[0].address2 ?: ""
+                                UserPreference.city = validAddresses[0].city ?: ""
+                                UserPreference.province = validAddresses[0].province ?: ""
+                                UserPreference.country = validAddresses[0].country ?: ""
+                                UserPreference.zip = validAddresses[0].zip ?: ""
                                 val address = listOf(
                                     UserPreference.address1,
                                     UserPreference.address2,
@@ -941,20 +926,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
 
             if (!addresses.isNullOrEmpty()) {
-                addresses[0].getAddressLine(0)
-                val locationText =
-                    addresses[0].subAdminArea + ", " + addresses[0].adminArea + ", " + addresses[0].countryName + " - " + addresses[0].postalCode
-                binding.tvLocation.text = locationText
+                val address = addresses[0]
+
+                UserPreference.address1 = address.featureName ?: ""
+                UserPreference.address2 = address.subLocality ?: ""
+                UserPreference.city = address.locality ?: ""
+                UserPreference.province = address.adminArea ?: ""
+                UserPreference.country = address.countryName ?: ""
+                UserPreference.zip = address.postalCode ?: ""
+
+                val addressTest = listOf(
+                    UserPreference.address1,
+                    UserPreference.address2,
+                    UserPreference.city,
+                    UserPreference.province,
+                    UserPreference.country,
+                    UserPreference.zip
+                ).map { it.trim() }
+                    .filter { it.isNotBlank() }
+                    .joinToString(", ")
+                binding.tvLocation.text = addressTest
+
                 Preferences.setStringPreference(
                     requireContext(),
                     CURRENT_PINCODE,
-                    addresses[0].postalCode
+                    address.postalCode.orEmpty()
                 )
-
             } else {
                 binding.tvLocation.text = getString(R.string.unable_to_fetch_address)
             }
-
         } catch (e: Exception) {
             e.printStackTrace()
             binding.tvLocation.text = getString(R.string.address_fetch_failed)
