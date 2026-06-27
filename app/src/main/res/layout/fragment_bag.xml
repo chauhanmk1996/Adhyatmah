@@ -284,7 +284,7 @@
                     app:layout_constraintTop_toBottomOf="@id/view_all_coupons_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/subtotal_tv"
+                    android:id="@+id/tv_sub_total_heading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -297,108 +297,70 @@
                     tools:ignore="TextSizeCheck" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/price_tv"
+                    android:id="@+id/tv_sub_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/muktamahee_semibold"
-                    android:maxLength="10"
                     android:text="₹0.00"
                     android:textColor="#7C7C7C"
                     android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_sub_total_heading"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/order_details_tv"
+                    app:layout_constraintTop_toTopOf="@id/tv_sub_total_heading"
                     tools:ignore="TextSizeCheck" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/bag_discount_tv"
+                    android:id="@+id/tv_delivery_charge_heading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/jost"
-                    android:text="@string/tax_amount"
-                    android:textColor="#7C7C7C"
-                    android:textSize="15dp"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/subtotal_tv"
-                    tools:ignore="TextSizeCheck" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/discount_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/muktamahee_semibold"
-                    android:maxLength="10"
-                    android:maxLines="1"
-                    android:text="INR 0:00"
-                    android:textColor="#7C7C7C"
-                    android:textSize="15dp"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/price_tv"
-                    tools:ignore="TextSizeCheck" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/coupon_discount_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/jost"
-                    android:text="@string/coupon_discount"
+                    android:text="@string/delivery_charge"
                     android:textColor="#7C7C7C"
                     android:textSize="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/bag_discount_tv"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sub_total_heading"
                     tools:ignore="TextSizeCheck" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/discount_price_tv"
+                    android:id="@+id/tv_delivery_charge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/muktamahee_semibold"
-                    android:maxLength="10"
-                    android:text="INR 0.00"
-                    android:textColor="#7C7C7C"
-                    android:textSize="15dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/discount_tv"
-                    tools:ignore="TextSizeCheck" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/shipping_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/jost"
-                    android:text="@string/shipping"
-                    android:textColor="#7C7C7C"
-                    android:textSize="15dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/coupon_discount_tv"
-                    tools:ignore="TextSizeCheck" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/shippinp_price_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/muktamahee_semibold"
                     android:text="@string/free"
                     android:textColor="#7C7C7C"
                     android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_delivery_charge_heading"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/discount_price_tv"
-                    tools:ignore="TextSizeCheck" />
+                    app:layout_constraintTop_toTopOf="@id/tv_delivery_charge_heading" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/platform_tv"
+                    android:id="@+id/tv_handling_charge_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/jost"
+                    android:text="@string/handling_charge"
+                    android:textColor="#7C7C7C"
+                    android:textSize="15dp"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_delivery_charge_heading" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_handling_charge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/muktamahee_semibold"
+                    android:text="INR 0:00"
+                    android:textColor="#7C7C7C"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_handling_charge_heading"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_handling_charge_heading" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_platform_fee_heading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -407,31 +369,65 @@
                     android:textColor="#7C7C7C"
                     android:textSize="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/shipping_tv"
-                    tools:ignore="TextSizeCheck" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_handling_charge_heading" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/platform_price_tv"
+                    android:id="@+id/tv_platform_fee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/muktamahee_semibold"
                     android:text="@string/free"
                     android:textColor="#7C7C7C"
                     android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_platform_fee_heading"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/shippinp_price_tv"
-                    tools:ignore="TextSizeCheck" />
+                    app:layout_constraintTop_toTopOf="@id/tv_platform_fee_heading" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_coupon_discount_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/coupon_discount"
+                    android:textColor="#7C7C7C"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/jost"
+                    android:textSize="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_platform_fee_heading" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_coupon_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/muktamahee_semibold"
+                    android:text="INR 0.00"
+                    android:textColor="#7C7C7C"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_coupon_discount_heading"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_coupon_discount_heading" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_gst_heading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textColor="@color/theme"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textSize="12dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_coupon_discount_heading"
+                    android:text="@string/gst_inclusive_all_prices_displayed_are_inclusive_of_applicable_gst"/>
 
                 <View
                     android:id="@+id/divider_view"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="8dp"
                     android:background="#E3E3E3"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/platform_price_tv" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_gst_heading" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/total_amount_tv"
@@ -449,7 +445,6 @@
                     android:id="@+id/total_amount_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/muktamahee_semibold"
                     android:maxLength="10"

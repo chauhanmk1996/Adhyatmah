@@ -251,17 +251,12 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                                 Log.d("TAG", "setObserver1: payload is not null")
                                 val data = it.data.payload.cart.cost
                                 val totalAmount = it.data.payload.discountInfo?.savingsSummary
-                                val total =
-                                    totalAmount?.currencyCode + " " + totalAmount?.finalTotal
-                                val subtotal =
-                                    totalAmount?.currencyCode + " " + totalAmount?.originalTotal
+                                val total = totalAmount?.currencyCode + " " + totalAmount?.finalTotal
+                                val subtotal = totalAmount?.currencyCode + " " + totalAmount?.originalTotal
                                 val edges = it.data.payload.cart.lines.edges
-                                val tax =
-                                    data?.totalTaxAmount?.currencyCode + " " + data?.totalTaxAmount?.amount
-                                val shippingFee =
-                                    totalAmount?.currencyCode + " " + it.data.payload.cart.shipping_fee
-                                val platformFee =
-                                    totalAmount?.currencyCode + " " + it.data.payload.cart.platform_fee
+                                val tax = data?.totalTaxAmount?.currencyCode + " " + data?.totalTaxAmount?.amount
+                                val shippingFee = totalAmount?.currencyCode + " " + it.data.payload.cart.shipping_fee
+                                val platformFee = totalAmount?.currencyCode + " " + it.data.payload.cart.platform_fee
                                 val disInfo = it.data.payload.discountInfo
                                 val isDiscount = disInfo?.hasDiscounts
 
@@ -274,7 +269,7 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                                         )
                                     }"
                                     val discountPriceTvText = "- $discount"
-                                    binding.discountPriceTv.text = discountPriceTvText
+                                    binding.tvCouponDiscount.text = discountPriceTvText
                                     if (isDiscount == true) {
                                         val coupon = it.data.payload.cart.discountCodes?.get(0)
                                         isApply = true
@@ -301,7 +296,7 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                                         }
                                     }
                                 } else {
-                                    binding.discountPriceTv.text =
+                                    binding.tvCouponDiscount.text =
                                         getString(R.string.no_discount_applied)
                                 }
 
@@ -313,11 +308,11 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
                                     binding.noBaglayout.visibility = View.GONE
                                     binding.bagLayout.visibility = View.VISIBLE
                                     binding.checkoutBtn.visibility = View.VISIBLE
-                                    binding.discountTv.text = tax
-                                    binding.shippinpPriceTv.text = shippingFee
-                                    binding.platformPriceTv.text = platformFee
+                                    binding.tvHandlingCharge.text = tax
+                                    binding.tvDeliveryCharge.text = shippingFee
+                                    binding.tvPlatformFee.text = platformFee
                                     binding.totalAmountPrice.text = total
-                                    binding.priceTv.text = subtotal
+                                    binding.tvSubTotal.text = subtotal
                                     val cartListContainer = it.data.payload.cart.lines.edges
                                     bagAdapter.updateBagItems(cartListContainer)
                                 }

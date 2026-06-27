@@ -419,4 +419,5 @@
     <string name="there_will_be_no_refund_if_cancelled_before_24_hours_of_the_scheduled_time_do_you_want_to_proceed">There will be no refund if cancelled before 24 hours of the scheduled time. Do you want to proceed?</string>
     <string name="no_product_found">No Product Found!</string>
     <string name="no_category_found">No Category Found!</string>
+    <string name="gst_inclusive_all_prices_displayed_are_inclusive_of_applicable_gst">GST inclusive: All prices displayed are inclusive of applicable GST.</string>
 </resources>
