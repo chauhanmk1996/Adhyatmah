@@ -60,10 +60,12 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
     private var currentPage = 1
     private var isLoading = false
     private var isLastPage = false
+    private var ignoreFirstTextChange = true
 
     override fun setLayout(): Int = R.layout.fragment_pandit_ji
 
     override fun initView(savedInstanceState: Bundle?) {
+        ignoreFirstTextChange = false
         setAdapter()
         setObserver()
         searchListener()
@@ -186,10 +188,15 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val query = s?.toString()?.trim() ?: ""
+                if (ignoreFirstTextChange) {
+                    ignoreFirstTextChange = false
+                    return
+                }
+
+                val query = s?.toString()?.trim().orEmpty()
                 if (query.isNotEmpty()) {
                     searchJob?.cancel()
-                    searchJob = lifecycleScope.launch {
+                    searchJob = viewLifecycleOwner.lifecycleScope.launch {
                         delay(300)
                         performSearch(query)
                     }
@@ -334,5 +341,10 @@ class PanditJiFragment : BaseFragment<FragmentPanditJiBinding>() {
             }
         rvPopularPuja.adapter = popularPujasGridAdapter
         dialog.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        ignoreFirstTextChange = true
     }
 }
