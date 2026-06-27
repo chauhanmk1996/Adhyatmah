@@ -5,15 +5,16 @@ import com.google.gson.annotations.SerializedName
 
 data class Payload(
     @SerializedName("customer", alternate = ["user"])
-    val user: User?=null,
-    val url: String?=null,
-    )
+    val user: User? = null,
+    val url: String? = null,
+)
+
 data class User(
-    val id: String?=null,
-    val email: String?=null,
-    val firstName: String?=null,
-    val lastName: String?=null,
-    val phone: String?=null,
+    val id: String? = null,
+    val email: String? = null,
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val phone: String? = null,
     val cover: Cover? = null,
 
     )

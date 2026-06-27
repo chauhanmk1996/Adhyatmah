@@ -55,5 +55,6 @@ data class SelectedOption(
 
 data class Price(
     val amount: String?,
-    val currencyCode: String?
+    val originalPrice: String?,
+    //val currencyCode: String?
 )

@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:drawableStart="@drawable/rupee"
-                android:drawablePadding="8dp"
+                android:drawablePadding="4dp"
                 android:fontFamily="@font/inter_bold"
                 android:textColor="#000000"
                 android:textSize="11dp"
@@ -64,6 +64,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/cl_button"
                 tools:text="1500" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_old_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/muktamahee_semibold"
+                android:textColor="#A7A7A7"
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_offer_price"
+                app:layout_constraintStart_toEndOf="@+id/tv_offer_price"
+                app:layout_constraintTop_toTopOf="@+id/tv_offer_price"
+                tools:text="1500" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#80A7A7A7"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_old_price"
+                app:layout_constraintEnd_toEndOf="@+id/tv_old_price"
+                app:layout_constraintStart_toStartOf="@+id/tv_old_price"
+                app:layout_constraintTop_toTopOf="@+id/tv_old_price" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_button"
@@ -83,7 +105,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_minus"
-                        android:layout_width="32dp"
+                        android:layout_width="24dp"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/inter_regular"
                         android:gravity="center"
@@ -94,18 +116,18 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_quantity"
-                        android:layout_width="32dp"
+                        android:layout_width="24dp"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/inter_regular"
                         android:gravity="center"
                         android:textColor="@color/orange"
                         android:textSize="14dp"
                         app:layout_constraintStart_toEndOf="@+id/tv_minus"
-                        tools:text="1" />
+                        tools:text="100" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_plus"
-                        android:layout_width="32dp"
+                        android:layout_width="24dp"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/inter_regular"
                         android:gravity="center"

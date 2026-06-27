@@ -11,6 +11,7 @@ import com.app.adhyatmah.R
 import com.app.adhyatmah.data.preferences.ACCESS_TOKEN
 import com.app.adhyatmah.data.preferences.CART_ID
 import com.app.adhyatmah.data.preferences.EMAIL_ID1
+import com.app.adhyatmah.data.preferences.IS_PROFILE_DATA
 import com.app.adhyatmah.data.preferences.Preferences
 import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.data.preferences.UserPreference.CART_COUNT
@@ -18,11 +19,15 @@ import com.app.adhyatmah.databinding.FragmentConfirmOrderBinding
 import com.app.adhyatmah.domain.create_order.creat_order_request.CreaterOrderRequest
 import com.app.adhyatmah.domain.model.bag_response.increase_qty_request.IncreaseQtyRequest
 import com.app.adhyatmah.domain.model.bag_response.increase_qty_request.IncreaseQtyRequest.Variant
+import com.app.adhyatmah.domain.model.profile.add_address.AddAddressRequest
+import com.app.adhyatmah.domain.model.profile.add_address.AddAddressRequest.Address
+import com.app.adhyatmah.domain.model.profile.get_profile.Payload
 import com.app.adhyatmah.payment.paymentIniRequest.PaymentIniRequest
 import com.app.adhyatmah.presentation.ui.activity.MainActivity
 import com.app.adhyatmah.presentation.ui.adapter.BagAdapter
 import com.app.adhyatmah.presentation.ui.viewmodel.BagViewModel
 import com.app.adhyatmah.presentation.ui.viewmodel.PaymentViewModel
+import com.app.adhyatmah.presentation.ui.viewmodel.ProfileViewModel
 import com.app.adhyatmah.utils.base.BaseFragment
 import com.app.adhyatmah.utils.common_utils.ProcessDialog
 import com.app.adhyatmah.utils.common_utils.Status
@@ -36,6 +41,7 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
 
     private val bagViewModel by activityViewModels<BagViewModel>()
     private val paymentViewModel by activityViewModels<PaymentViewModel>()
+    private val profileViewModel by activityViewModels<ProfileViewModel>()
     private lateinit var confirmOrderAdapter: BagAdapter
     var cartId = ""
     var paymentMethod = ""
@@ -43,6 +49,7 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
     var currency = ""
     var amounts = ""
     var emailId = ""
+    private lateinit var oldProfileData: Payload
 
     override fun setLayout(): Int {
         return R.layout.fragment_confirm_order
@@ -50,6 +57,8 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN).toString()
+        oldProfileData =
+            Preferences.getCustomModelPreference(requireContext(), IS_PROFILE_DATA) ?: return
         emailId = Preferences.getStringPreference(requireContext(), EMAIL_ID1).toString()
         paymentMethod = arguments?.getString("paymentMethod").toString()
         cartId = Preferences.getStringPreference(requireContext(), CART_ID).toString()
@@ -58,7 +67,7 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
             findNavController().popBackStack()
         }
 
-        clickConfirm(UserPreference.savedAddressId, cartId, token)
+        clickConfirm()
         setObserver()
         setupRecyclerView()
         bagViewModel.getCartList(token)
@@ -89,7 +98,7 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
 
     private fun hitAddAddressAPI(productVariantId: String, quantity: Int) {
         val request = IncreaseQtyRequest().apply {
-            accessToken = token // avoid hardcoding in production
+            accessToken = token
             variant = Variant().apply {
                 id = productVariantId
                 this.quantity = quantity
@@ -98,30 +107,65 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
         bagViewModel.getPlusQtyList(request)
     }
 
-    fun clickConfirm(addressId: String?, carId: String?, token: String?) {
+    fun clickConfirm() {
         binding.continueBtn.setOnClickListener {
+            placeOrder()
+        }
+    }
+
+    private fun placeOrder() {
+        if (UserPreference.savedAddressId.isEmpty()) {
+            val token = Preferences.getStringPreference(requireContext(), ACCESS_TOKEN)
+            oldProfileData =
+                Preferences.getCustomModelPreference(requireContext(), IS_PROFILE_DATA) ?: return
+
+            val request = AddAddressRequest()
+            val address = Address()
+            address.firstName = oldProfileData.user?.firstName
+            address.lastName = oldProfileData.user?.lastName
+            address.address1 = UserPreference.address1
+            address.address2 = UserPreference.address2
+            address.city = UserPreference.city
+            address.province = UserPreference.province
+            address.country = UserPreference.country
+            address.zip = UserPreference.zip
+            address.phone = oldProfileData.user?.phone
+            request.accessToken = token
+            request.address = address
+            profileViewModel.getCreateAddressData(request)
+        } else {
+            val address = listOf(
+                UserPreference.address1,
+                UserPreference.address2,
+                UserPreference.city,
+                UserPreference.province,
+                UserPreference.country,
+                UserPreference.zip
+            ).map { it.trim() }
+                .filter { it.isNotBlank() }
+                .joinToString(", ")
+
             when (paymentMethod) {
                 "Cash on Delivery" -> {
                     val request = CreaterOrderRequest()
-                    request.addressId = addressId
-                    request.cartId = carId
+                    request.addressId = UserPreference.savedAddressId
+                    request.cartId = cartId
                     request.accessToken = token
                     paymentViewModel.hipAPICreateCODOrder(request)
-
                 }
 
                 "Credit or Debit Card" -> {
                     val bundle = Bundle()
-                    bundle.putString("addressId", addressId)
-                    bundle.putString("cartId", carId)
-                    bundle.putString("add", UserPreference.savedAddress)
+                    bundle.putString("addressId", UserPreference.savedAddressId)
+                    bundle.putString("cartId", cartId)
+                    bundle.putString("add", address)
                     bundle.putString("amount", amounts)
                     bundle.putString("currency", currency)
 
                     val request = PaymentIniRequest()
                     request.accessToken = token
-                    request.addressId = addressId
-                    request.cartId = carId
+                    request.addressId = UserPreference.savedAddressId
+                    request.cartId = cartId
                     request.currency = currency
                     request.email = emailId
                     paymentViewModel.createPayStackOrder(request)
@@ -155,7 +199,17 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
                                 amounts = cost?.totalAmount?.amount ?: ""
                                 currency = cost?.totalAmount?.currencyCode ?: ""
 
-                                binding.userAddressTv.text = UserPreference.savedAddress
+                                val address = listOf(
+                                    UserPreference.address1,
+                                    UserPreference.address2,
+                                    UserPreference.city,
+                                    UserPreference.province,
+                                    UserPreference.country,
+                                    UserPreference.zip
+                                ).map { it.trim() }
+                                    .filter { it.isNotBlank() }
+                                    .joinToString(", ")
+                                binding.userAddressTv.text = address
                                 binding.gpayTv.text = paymentMethod
                                 val currentDateTime = SimpleDateFormat(
                                     "dd MMM yyyy, hh:mm a",
@@ -300,6 +354,39 @@ class ConfirmOrderFragment : BaseFragment<FragmentConfirmOrderBinding>() {
                     Log.e("TAG", "Error: ${it.message}")
                     ProcessDialog.dismissDialog(true)
                     Snackbar.make(requireView(), "${it.message}", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        profileViewModel.getCreateAddressRes().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val statusCode = it.data?.code
+                    when (statusCode) {
+                        200 -> {
+                            ProcessDialog.dismissDialog(true)
+                            val address = it.data.payload.address
+                            UserPreference.savedAddressId = address.id
+                            placeOrder()
+                        }
+
+                        401 -> {
+                            Toast.makeText(requireActivity(), it.data.message, Toast.LENGTH_SHORT)
+                                .show()
+                            Log.e("TAG", "Unauthorized access $it")
+                        }
+                    }
+                    ProcessDialog.dismissDialog(true)
+                }
+
+                Status.LOADING -> {
+                    ProcessDialog.showDialog(requireActivity(), true)
+                }
+
+                Status.ERROR -> {
+                    ProcessDialog.dismissDialog(true)
+                    Snackbar.make(requireView(), "${it.data?.message}", Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }
         }

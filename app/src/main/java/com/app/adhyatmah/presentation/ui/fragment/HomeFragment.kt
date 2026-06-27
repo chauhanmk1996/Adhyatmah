@@ -198,10 +198,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onResume() {
         super.onResume()
         setObserver()
-        if (UserPreference.savedAddress.isEmpty()) {
+        if (UserPreference.address1.isEmpty() && UserPreference.address2.isEmpty() && UserPreference.city.isEmpty() && UserPreference.province.isEmpty()) {
             fetchAddress()
         } else {
-            binding.tvLocation.text = UserPreference.savedAddress
+            val address = listOf(
+                UserPreference.address1,
+                UserPreference.address2,
+                UserPreference.city,
+                UserPreference.province,
+                UserPreference.country,
+                UserPreference.zip
+            ).map { it.trim() }
+                .filter { it.isNotBlank() }
+                .joinToString(", ")
+            binding.tvLocation.text = address
         }
         homeViewModel.homeCollectionApi(token)
     }
@@ -223,10 +233,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             if (data.isEmpty()) {
                                 checkLocationPermission()
                             } else {
-                                val location =
-                                    validAddresses[0].city + ", " + validAddresses[0].province + ", " + validAddresses[0].country + " - " + validAddresses[0].zip
-                                UserPreference.savedAddress = location
-                                binding.tvLocation.text = location
+                                UserPreference.savedAddressId = validAddresses[0].id ?: ""
+                                UserPreference.address1 = validAddresses[0].address1?:""
+                                UserPreference.address2 = validAddresses[0].address2?:""
+                                UserPreference.city = validAddresses[0].city?:""
+                                UserPreference.province = validAddresses[0].province?:""
+                                UserPreference.country = validAddresses[0].country?:""
+                                UserPreference.zip = validAddresses[0].zip?:""
+                                val address = listOf(
+                                    UserPreference.address1,
+                                    UserPreference.address2,
+                                    UserPreference.city,
+                                    UserPreference.province,
+                                    UserPreference.country,
+                                    UserPreference.zip
+                                ).map { it.trim() }
+                                    .filter { it.isNotBlank() }
+                                    .joinToString(", ")
+                                binding.tvLocation.text = address
+
                                 Preferences.setStringPreference(
                                     requireContext(),
                                     CURRENT_PINCODE,

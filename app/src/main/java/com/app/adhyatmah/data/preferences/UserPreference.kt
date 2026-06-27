@@ -7,7 +7,14 @@ object UserPreference {
     var CART_COUNT = 0
     var MOBILE_NUMBER = "MOBILE_NUMBER"
     var panditJiDetails = PanditJiDetails()
-    var savedAddress = ""
+
+    var address1 = ""
+    var address2 = ""
+    var city = ""
+    var province = ""
+    var country = ""
+    var zip = ""
+
     var savedAddressId = ""
     var selectedType:String? = null
     var search:String? = null

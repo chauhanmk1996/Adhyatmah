@@ -42,10 +42,13 @@ class HomeProductsAdapter(
                     R.drawable.un_like
             )
 
-            tvLabel.text = product.title ?: ""
-            val price =
-                "${product.variant?.price?.currencyCode ?: ""} ${product.variant?.price?.amount ?: ""}"
-            tvPrice.text = price
+            tvProductName.text = product.title ?: ""
+
+            val offerPrice = "₹ ${product.variant?.price?.amount ?: ""}"
+            tvOfferPrice.text = offerPrice
+
+            val oldPrice = product.variant?.price?.originalPrice ?: ""
+            tvOldPrice.text = oldPrice
 
             ivWishList.setOnClickListener {
                 if (isSignUp == "1") {

@@ -95,6 +95,12 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
                         binding.tvAddOnsPriceHeading.hide()
                         binding.tvAddOnsPrice.hide()
                         binding.view3.hide()
+                        binding.tvDeliveryChargeHeading.hide()
+                        binding.tvDeliveryCharge.hide()
+                        binding.view4.hide()
+                        binding.tvHandlingChargeHeading.hide()
+                        binding.tvHandlingCharge.hide()
+                        binding.view5.hide()
                     }
                 } else {
                     addOnPujaKitList[pos].quantity = quantity - 1
@@ -165,12 +171,26 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
                 tvAddonPujaKitDetails.show()
                 rvPujaKit.show()
                 addOnKitAdapter.addList(addOnPujaKitList)
+
+                tvDeliveryChargeHeading.show()
+                tvDeliveryCharge.show()
+                view4.show()
+                tvHandlingChargeHeading.show()
+                tvHandlingCharge.show()
+                view5.show()
+
             } else {
                 tvAddonPujaKitDetails.hide()
                 rvPujaKit.hide()
                 tvAddOnsPriceHeading.hide()
                 tvAddOnsPrice.hide()
                 view3.hide()
+                tvDeliveryChargeHeading.hide()
+                tvDeliveryCharge.hide()
+                view4.hide()
+                tvHandlingChargeHeading.hide()
+                tvHandlingCharge.hide()
+                view5.hide()
             }
 
             //Payment Details
@@ -193,8 +213,7 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
 
     override fun onResume() {
         super.onResume()
-        //Address Details
-        if (UserPreference.savedAddress.isEmpty()) {
+        if (UserPreference.address1.isEmpty() && UserPreference.address2.isEmpty() && UserPreference.city.isEmpty() && UserPreference.province.isEmpty()) {
             binding.btnSelectAddress.show()
             binding.tvSelectedAddress.hide()
             binding.tvChange.hide()
@@ -202,7 +221,17 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
             binding.btnSelectAddress.hide()
             binding.tvSelectedAddress.show()
             binding.tvChange.show()
-            binding.tvSelectedAddress.text = UserPreference.savedAddress
+            val address = listOf(
+                UserPreference.address1,
+                UserPreference.address2,
+                UserPreference.city,
+                UserPreference.province,
+                UserPreference.country,
+                UserPreference.zip
+            ).map { it.trim() }
+                .filter { it.isNotBlank() }
+                .joinToString(", ")
+            binding.tvSelectedAddress.text = address
         }
     }
 
@@ -319,10 +348,20 @@ class ConfirmBookingFragment : BaseFragment<FragmentConfirmBookingBinding>() {
         } else {
             fullPayment
         }
+        val address = listOf(
+            UserPreference.address1,
+            UserPreference.address2,
+            UserPreference.city,
+            UserPreference.province,
+            UserPreference.country,
+            UserPreference.zip
+        ).map { it.trim() }
+            .filter { it.isNotBlank() }
+            .joinToString(", ")
 
         val bookPanditJiRequest = BookPanditJiRequest(
             vendorId = panditJiDetails.id ?: "",
-            address = UserPreference.savedAddress,
+            address = address,
             serviceId = bookingRequest.serviceId ?: "",
             poojaType = bookingRequest.poojaType ?: "",
             `package` = "Standard",

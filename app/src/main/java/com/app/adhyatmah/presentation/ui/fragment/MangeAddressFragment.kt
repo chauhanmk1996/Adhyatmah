@@ -59,10 +59,14 @@ class MangeAddressFragment : BaseFragment<FragmentMangeAddressBinding>() {
         manageAddListAdapter = ManageAddressAdapter(addresses) { id, address_data, type, data ->
             if (type == "mainLayoutClick") {
                 if (from == "bookPanditji" || from == "home") {
-                    val address =
-                        data.address1 + ", " + data.city + ", " + data.province + ", " + data.country + " - " + data.zip
                     UserPreference.savedAddressId = data.id ?: ""
-                    UserPreference.savedAddress = address
+                    UserPreference.address1 = data.address1?:""
+                    UserPreference.address2 = data.address2?:""
+                    UserPreference.city = data.city?:""
+                    UserPreference.province = data.province?:""
+                    UserPreference.country = data.country?:""
+                    UserPreference.zip = data.zip?:""
+
                     findNavController().popBackStack()
                 } else {
                     val bundle = Bundle().apply {

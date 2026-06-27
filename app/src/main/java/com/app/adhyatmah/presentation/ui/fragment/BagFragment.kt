@@ -86,7 +86,7 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
 
     override fun onResume() {
         super.onResume()
-        if (UserPreference.savedAddress.isEmpty()) {
+        if (UserPreference.address1.isEmpty() && UserPreference.address2.isEmpty() && UserPreference.city.isEmpty() && UserPreference.province.isEmpty()) {
             binding.btnSelectAddress.show()
             binding.tvSelectedAddress.hide()
             binding.tvChange.hide()
@@ -94,13 +94,25 @@ class BagFragment : BaseFragment<FragmentBagBinding>() {
             binding.btnSelectAddress.hide()
             binding.tvSelectedAddress.show()
             binding.tvChange.show()
-            binding.tvSelectedAddress.text = UserPreference.savedAddress
+            val address = listOf(
+                UserPreference.address1,
+                UserPreference.address2,
+                UserPreference.city,
+                UserPreference.province,
+                UserPreference.country,
+                UserPreference.zip
+            ).map { it.trim() }
+                .filter { it.isNotBlank() }
+                .joinToString(", ")
+            binding.tvSelectedAddress.text = address
         }
     }
 
     private fun initializeView(type: String?) {
         binding.apply {
             checkoutBtn.setOnClickListener {
+
+
                 val bundle = Bundle().apply {
                     putString(CART_ID, cartId)
                     putString(ADDRESS_ID, UserPreference.savedAddressId)

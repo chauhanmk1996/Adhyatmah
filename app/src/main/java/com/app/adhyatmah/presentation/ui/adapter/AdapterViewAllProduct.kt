@@ -76,10 +76,14 @@ class AdapterViewAllProduct(
         Glide.with(holder.itemView.context)
             .load(subListData.url)
             .into(holder.binding.img)
-        holder.binding.label.text = price.title
-        val featuredProducts =
-            price.variants[0].price.currencyCode + " " + price.variants[0].price.amount
-        holder.binding.featuredProducts.text = featuredProducts
+
+        holder.binding.tvProductName.text = product.title
+
+        val offerPrice = "₹ ${price.variants[0].price.amount ?: ""}"
+        holder.binding.tvOfferPrice.text = offerPrice
+
+        val oldPrice = price.variants[0].price.originalPrice ?: ""
+        holder.binding.tvOldPrice.text = oldPrice
 
         holder.binding.wishList.setImageResource(
             if (isSelected) R.drawable.like else R.drawable.un_like

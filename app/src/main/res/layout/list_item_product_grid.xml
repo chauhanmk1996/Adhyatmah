@@ -49,40 +49,64 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/rectangle_top_right_bottom_right"
-                android:gravity="bottom"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/label"
+                    android:id="@+id/tv_product_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="4dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/muktamahee_regular"
                     android:maxLines="1"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textSize="12dp"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Ribbed Top" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/featuredProducts"
+                    android:id="@+id/tv_offer_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="4dp"
                     android:fontFamily="@font/muktamahee_semibold"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
-                    app:layout_constraintStart_toStartOf="@+id/label"
-                    app:layout_constraintTop_toBottomOf="@+id/label"
+                    android:textSize="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
+                    app:layout_constraintStart_toStartOf="parent"
                     tools:text="₹ 599" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_old_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/muktamahee_semibold"
+                    android:textColor="#A7A7A7"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_offer_price"
+                    app:layout_constraintStart_toEndOf="@+id/tv_offer_price"
+                    app:layout_constraintTop_toTopOf="@+id/tv_offer_price"
+                    tools:text="1500" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#80A7A7A7"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_old_price"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_old_price"
+                    app:layout_constraintStart_toStartOf="@+id/tv_old_price"
+                    app:layout_constraintTop_toTopOf="@+id/tv_old_price" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -104,8 +104,8 @@
     <string name="payment_plan">Payment Plan</string>
     <string name="gst">GST</string>
     <string name="platform_fee">Platform Fee</string>
-    <string name="pay_full">Pay Full</string>
-    <string name="pay_advance">Pay Advance</string>
+    <string name="pay_full">Pay Full Service Price</string>
+    <string name="pay_advance">Pay 30% Advance Payment</string>
     <string name="book">Book</string>
     <string name="confirm_order">Confirm Order</string>
     <string name="step_3">Step 3</string>

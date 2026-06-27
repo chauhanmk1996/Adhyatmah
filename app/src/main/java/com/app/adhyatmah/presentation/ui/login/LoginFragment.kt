@@ -16,6 +16,7 @@ import com.app.adhyatmah.data.preferences.FCM_TOKEN
 import com.app.adhyatmah.data.preferences.IS_LOGIN
 import com.app.adhyatmah.data.preferences.IS_PROFILE_DATA
 import com.app.adhyatmah.data.preferences.PROFILE_IMG
+import com.app.adhyatmah.data.preferences.UserPreference
 import com.app.adhyatmah.databinding.FragmentLoginBinding
 import com.app.adhyatmah.domain.model.auth.LoginRequest
 import com.app.adhyatmah.presentation.ui.activity.MainActivity

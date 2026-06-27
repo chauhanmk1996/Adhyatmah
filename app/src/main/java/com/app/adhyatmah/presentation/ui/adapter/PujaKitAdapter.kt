@@ -37,7 +37,9 @@ class PujaKitAdapter(
             }
 
             tvPoojaKitName.text = pujaKit.name ?: ""
+
             tvOfferPrice.text = (pujaKit.price?.getDigit() ?: "")
+            tvOldPrice.text = (pujaKit.originalPrice?.getDigit() ?: "")
 
             val quantity = pujaKit.quantity ?: 0
             if (quantity == 0) {
